@@ -1,0 +1,19 @@
+version: '3'
+services:
+
+  etl-database:
+    container_name: etl-database
+    image: postgres:12.7
+    #    ports:
+    #      - 5432:5432
+    environment:
+      - POSTGRES_DB=etl
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=gems
+      - PGPORT=9876
+      - ALLOW_IP_RANGE=0.0.0.0/0
+    restart: always
+    network_mode: host
+    volumes:
+      - /opt/etl/database:/var/lib/postgresql
+      - /etc/localtime:/etc/localtime:ro
