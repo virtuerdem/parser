@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.DfCliPmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -57,26 +55,22 @@ public class DfCliPmTransferEngine extends TransferBaseEngine {
     }
 
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                getDate(file.getName()),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                getDate(fileName),
+                "yyyy-MM-dd-HH:mmXXX");
     }
 
-    public OffsetDateTime getDate(String fileName) {
+    public String getDate(String fileName) {
         OffsetDateTime date = OffsetDateTime.parse(
                 fileName
                         .split(".csv.")[1]
-                        .substring(0, 13) + ":00+03:00",
-                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mmXXX"));
+                        .substring(0, 13) + ":00+03:00");
         if (fileName.endsWith("-12-1.csv")) {
             date = date.minusHours(12);
         } else if (!fileName.endsWith("-12-2.csv") && fileName.endsWith("-2.csv")) {
             date = date.plusHours(12);
         }
-        return date;
+        return date.toString();
     }
 }
