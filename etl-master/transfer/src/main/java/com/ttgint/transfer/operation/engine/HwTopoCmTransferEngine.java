@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.HwTopoCmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -55,16 +53,12 @@ public class HwTopoCmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".csv"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        file.getName()
-                                .split("_")[file.getName().split("_").length - 3] + " 00:00+03:00",
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mmXXX")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                fileName
+                        .split("_")[fileName.split("_").length - 3] + " 00:00+03:00",
+                "yyyy-MM-dd HH:mmXXX");
     }
 }

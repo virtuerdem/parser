@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.OthTwampCmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -55,18 +53,14 @@ public class OthTwampCmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        String[] split = file.getName().split("-");
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        split[split.length - 3] +
-                                split[split.length - 2] +
-                                split[split.length - 1].split("\\.")[0] + " 0000+03:00",
-                        DateTimeFormatter.ofPattern("yyyyMMdd HHmmXXX")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        String[] split = fileName.split("-");
+        return getDecompressRecordTime(
+                split[split.length - 3] +
+                        split[split.length - 2] +
+                        split[split.length - 1].split("\\.")[0] + " 0000+03:00",
+                "yyyyMMdd HHmmXXX");
     }
 }

@@ -1,8 +1,9 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.repository.NetworkNodeRepository;
+import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
-import com.ttgint.transfer.operation.handler.HwNbCmTransferHandler;
+import com.ttgint.transfer.operation.handler.HwMwReportPmTransferHandler;
+import com.ttgint.transfer.operation.handler.HwU2000PmTransferHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -15,34 +16,34 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Component("HW_NB_CM_TRANSFER")
-public class HwNbCmTransferEngine extends TransferBaseEngine {
+@Component("HW_U2000_PM_TRANSFER")
+public class HwU2000PmTransferEngine extends TransferBaseEngine {
 
-    private final NetworkNodeRepository networkNodeRepository;
+    private final NetworkItemRepository networkItemRepository;
 
-    public HwNbCmTransferEngine(ApplicationContext applicationContext) {
+    public HwU2000PmTransferEngine(ApplicationContext applicationContext) {
         super(applicationContext);
-        this.networkNodeRepository = applicationContext.getBean(NetworkNodeRepository.class);
+        this.networkItemRepository = applicationContext.getBean(NetworkItemRepository.class);
     }
 
     @Override
     protected void onEngine() {
-        log.info("* HwNbCmTransferEngine onTransfer");
-        List<String> nodes
-                = networkNodeRepository.findActiveNodeNamesByBranchId(engineRecord.getBranchId());
+        log.info("* HwU2000PmTransferEngine onTransfer");
+        List<String> items
+                = networkItemRepository.findActiveItemCodesByFlowId(engineRecord.getFlowId());
 
         ExecutorService executor = Executors.newFixedThreadPool(engineRecord.getOnTransferThreadCount());
         getConnections()
                 .forEach(connection -> {
                     try {
                         executor.execute(
-                                new HwNbCmTransferHandler(
+                                new HwU2000PmTransferHandler(
                                         applicationContext,
                                         getTransferHandlerRecord(connection),
-                                        nodes)
+                                        items)
                         );
                     } catch (Exception exception) {
-                        log.error("! HwNbCmTransferEngine onProcess connectionId:{} error: {}", connection.getId(),
+                        log.error("! HwU2000PmTransferEngine onProcess connectionId:{} error: {}", connection.getId(),
                                 exception.getMessage());
                     }
                 });
@@ -54,13 +55,13 @@ public class HwNbCmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
 
+
     @Override
     protected OffsetDateTime getDecompressRecordTime(String fileName) {
         return getDecompressRecordTime(
                 fileName
-                        .split("_")[fileName.split("_").length - 1]
-                        .substring(0, 8) + "00+03:00",
-                "yyyyMMddHHXXX");
+                        .split("_")[fileName.split("_").length - 2] + " 00:00+03:00",
+                ((fileName.split("_")[fileName.split("_").length - 2] + " 00:00+03:00")
+                        .split("-")[0].length() == 4 ? "yyyy-MM-dd" : "MM-dd-yyyy") + " HH:mmXXX");
     }
-
 }

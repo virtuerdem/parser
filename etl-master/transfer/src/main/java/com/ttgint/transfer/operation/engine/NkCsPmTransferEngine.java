@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.NkCsPmTransferHandler;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -56,18 +53,14 @@ public class NkCsPmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        file.getName()
-                                .split("PM")[1]
-                                .substring(0, 17),
-                        DateTimeFormatter.ofPattern("yyyyMMddHHmmZ")
-                ).truncatedTo(ChronoUnit.HOURS),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                fileName
+                        .split("PM")[1]
+                        .substring(0, 17),
+                "yyyyMMddHHmmZ");
     }
+
 }

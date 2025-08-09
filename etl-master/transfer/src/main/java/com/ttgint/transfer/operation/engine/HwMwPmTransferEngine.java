@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.HwMwPmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -56,18 +54,13 @@ public class HwMwPmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        String fileDate = file.getName().split("_")[file.getName().split("_").length - 2] + " 00:00+03:00";
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        fileDate,
-                        DateTimeFormatter.ofPattern(
-                                (fileDate.split("-")[0].length() == 4
-                                        ? "yyyy-MM-dd" : "MM-dd-yyyy") + " HH:mmXXX")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                fileName
+                        .split("_")[fileName.split("_").length - 2] + " 00:00+03:00",
+                ((fileName.split("_")[fileName.split("_").length - 2] + " 00:00+03:00")
+                        .split("-")[0].length() == 4 ? "yyyy-MM-dd" : "MM-dd-yyyy") + " HH:mmXXX");
     }
 }

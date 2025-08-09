@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkNodeRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.HwGnbPmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -56,16 +54,13 @@ public class HwGnbPmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        file.getName()
-                                .split("A")[1].substring(0, 18),
-                        DateTimeFormatter.ofPattern("yyyyMMdd.HHmmZ")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                fileName
+                        .split("A")[1].substring(0, 18),
+                "yyyyMMdd.HHmmZ");
     }
+
 }

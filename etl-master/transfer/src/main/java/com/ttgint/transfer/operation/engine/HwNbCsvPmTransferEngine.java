@@ -1,8 +1,8 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.repository.NetworkNodeRepository;
+import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
-import com.ttgint.transfer.operation.handler.HwNbCmTransferHandler;
+import com.ttgint.transfer.operation.handler.HwNbCsvPmTransferHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -15,34 +15,36 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Component("HW_NB_CM_TRANSFER")
-public class HwNbCmTransferEngine extends TransferBaseEngine {
+@Component("HW_NB_CSV_PM_TRANSFER")
+public class HwNbCsvPmTransferEngine extends TransferBaseEngine {
+    private final NetworkItemRepository networkItemRepository;
 
-    private final NetworkNodeRepository networkNodeRepository;
-
-    public HwNbCmTransferEngine(ApplicationContext applicationContext) {
+    public HwNbCsvPmTransferEngine(ApplicationContext applicationContext, NetworkItemRepository networkItemRepository) {
         super(applicationContext);
-        this.networkNodeRepository = applicationContext.getBean(NetworkNodeRepository.class);
+        this.networkItemRepository = networkItemRepository;
     }
 
     @Override
     protected void onEngine() {
-        log.info("* HwNbCmTransferEngine onTransfer");
-        List<String> nodes
-                = networkNodeRepository.findActiveNodeNamesByBranchId(engineRecord.getBranchId());
+        log.info("* HwNbCsvPmTransferEngine onTransfer");
+        List<String> items
+                = networkItemRepository.findByFlowIdAndIsActive(engineRecord.getFlowId(), true)
+                .stream()
+                .map(e -> "pmresult_" + e.getItemCode() + "_" + e.getSourceTimePeriod() + "_")
+                .toList();
 
         ExecutorService executor = Executors.newFixedThreadPool(engineRecord.getOnTransferThreadCount());
         getConnections()
                 .forEach(connection -> {
                     try {
                         executor.execute(
-                                new HwNbCmTransferHandler(
+                                new HwNbCsvPmTransferHandler(
                                         applicationContext,
                                         getTransferHandlerRecord(connection),
-                                        nodes)
+                                        items)
                         );
                     } catch (Exception exception) {
-                        log.error("! HwNbCmTransferEngine onProcess connectionId:{} error: {}", connection.getId(),
+                        log.error("! HwNbCsvPmTransferEngine onProcess connectionId:{} error: {}", connection.getId(),
                                 exception.getMessage());
                     }
                 });
@@ -51,16 +53,15 @@ public class HwNbCmTransferEngine extends TransferBaseEngine {
 
     @Override
     protected ArrayList<File> getDecompressFiles() {
-        return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
+        return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".csv"));
     }
+
 
     @Override
     protected OffsetDateTime getDecompressRecordTime(String fileName) {
         return getDecompressRecordTime(
                 fileName
-                        .split("_")[fileName.split("_").length - 1]
-                        .substring(0, 8) + "00+03:00",
-                "yyyyMMddHHXXX");
+                        .split("_")[fileName.split("_").length - 2] + " +03:00",
+                "yyyyMMddHHmm XXX");
     }
-
 }

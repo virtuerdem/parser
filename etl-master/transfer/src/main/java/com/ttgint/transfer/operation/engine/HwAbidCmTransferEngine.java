@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.HwAbidCmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -57,16 +55,12 @@ public class HwAbidCmTransferEngine extends TransferBaseEngine {
     }
 
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        file.getName()
-                                .split("-", 2)[1]
-                                .substring(0, 10) + "00+03:00",
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mmXXX")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                fileName
+                        .split("-", 2)[1]
+                        .substring(0, 10) + "00+03:00",
+                "yyyy-MM-dd HH:mmXXX");
     }
+
 }

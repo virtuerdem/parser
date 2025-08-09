@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.HwLogsUserConfTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -56,17 +54,14 @@ public class HwLogsUserConfTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        (file.getName().contains("^^") ?
-                                file.getName().split("\\^")[2].substring(0, 8) :
-                                file.getName().substring(0, 8)) + " 00:00+03:00",
-                        DateTimeFormatter.ofPattern("yyyyMMdd HH:mmXXX")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                (fileName
+                        .contains("^^") ?
+                        fileName.split("\\^")[2].substring(0, 8) :
+                        fileName.substring(0, 8)) + " 00:00+03:00",
+                "yyyyMMdd HH:mmXXX");
     }
 }

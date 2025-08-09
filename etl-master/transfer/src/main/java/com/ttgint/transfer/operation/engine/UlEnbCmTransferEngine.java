@@ -3,7 +3,7 @@ package com.ttgint.transfer.operation.engine;
 import com.ttgint.library.model.Connection;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.base.TransferBaseHandler;
-import com.ttgint.transfer.operation.handler.ErDraPmTransferHandler;
+import com.ttgint.transfer.operation.handler.UlEnbCmTransferHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -13,29 +13,31 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 @Slf4j
-@Component("ER_DRA_PM_TRANSFER")
-public class ErDraPmTransferEngine extends TransferBaseEngine {
+@Component("UL_ENB_CM_TRANSFER")
+public class UlEnbCmTransferEngine extends TransferBaseEngine {
 
-    public ErDraPmTransferEngine(ApplicationContext applicationContext) {
+    public UlEnbCmTransferEngine(ApplicationContext applicationContext) {
         super(applicationContext);
     }
 
     @Override
     protected TransferBaseHandler getTransferHandler(Connection connection) {
-        log.info("* ErDraPmTransferEngine getTransferHandler");
-        return new ErDraPmTransferHandler(applicationContext, getTransferHandlerRecord(connection));
+        log.info("* UlEnbCmTransferEngine getTransferHandler");
+        return new UlEnbCmTransferHandler(applicationContext, getTransferHandlerRecord(connection));
     }
 
     @Override
     protected ArrayList<File> getDecompressFiles() {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
     }
+
+
     @Override
     protected OffsetDateTime getDecompressRecordTime(String fileName) {
         return getDecompressRecordTime(
                 fileName
-                        .split("A")[1]
-                        .substring(0, 18),
-                "yyyyMMdd.HHmmZ");
+                        .split("_")[1]
+                        .substring(0, 10) + " 00:00+03:00",
+                "yyyy-MM-dd HH:mmXXX");
     }
 }

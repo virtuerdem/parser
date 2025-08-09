@@ -1,6 +1,5 @@
 package com.ttgint.transfer.operation.engine;
 
-import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.transfer.base.TransferBaseEngine;
 import com.ttgint.transfer.operation.handler.OthVasPmTransferHandler;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -56,17 +54,14 @@ public class OthVasPmTransferEngine extends TransferBaseEngine {
         return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".csv"));
     }
 
+
     @Override
-    protected DecompressRecord getDecompressRecord(File file) {
-        return DecompressRecord.getRecord(engineRecord,
-                file,
-                OffsetDateTime.parse(
-                        (file.getName().contains("^^") ?
-                                file.getName().split("\\^")[2].split("_")[0] :
-                                file.getName().split("_")[0]) + " 00:00+03:00",
-                        DateTimeFormatter.ofPattern("yyyyMMdd HH:mmXXX")),
-                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
-                null,
-                file.getName());
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                (fileName
+                        .contains("^^") ?
+                        fileName.split("\\^")[2].split("_")[0] :
+                        fileName.split("_")[0]) + " 00:00+03:00",
+                "yyyy-MM-dd HH:mmXXX");
     }
 }
