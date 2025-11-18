@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+  <xmi:Documentation exporter="Manual" exporterVersion="1.0"/>
+
+  <uml:Model xmi:type="uml:Model" xmi:id="seqmodel1" name="Transfer Sequence Diagram">
+
+    <!-- Sequence Diagram -->
+    <packagedElement xmi:type="uml:Interaction" xmi:id="interaction1" name="Transfer Flow Sequence">
+
+      <!-- Lifelines -->
+      <lifeline xmi:type="uml:Lifeline" xmi:id="lifeline1" name="Client" represents="client"/>
+      <lifeline xmi:type="uml:Lifeline" xmi:id="lifeline2" name=":TransferBaseEngine" represents="engine"/>
+      <lifeline xmi:type="uml:Lifeline" xmi:id="lifeline3" name=":ConnectionRepository" represents="connRepo"/>
+      <lifeline xmi:type="uml:Lifeline" xmi:id="lifeline4" name=":TransferBaseHandler" represents="handler"/>
+      <lifeline xmi:type="uml:Lifeline" xmi:id="lifeline5" name=":TransferConnectionFactory" represents="factory"/>
+      <lifeline xmi:type="uml:Lifeline" xmi:id="lifeline6" name=":TransferConnectionResultRepository" represents="resultRepo"/>
+
+      <!-- Messages -->
+
+      <!-- 1. Start Engine -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg1send" message="msg1" covered="lifeline1"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg1recv" message="msg1" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg1" name="startEngine(record)" messageSort="synchCall"
+               sendEvent="msg1send" receiveEvent="msg1recv"/>
+
+      <!-- 2. Prepare Paths -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg2send" message="msg2" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg2recv" message="msg2" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg2" name="preparePaths()" messageSort="synchCall"
+               sendEvent="msg2send" receiveEvent="msg2recv"/>
+
+      <!-- 3. Pre Engine -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg3send" message="msg3" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg3recv" message="msg3" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg3" name="preEngine()" messageSort="synchCall"
+               sendEvent="msg3send" receiveEvent="msg3recv"/>
+
+      <!-- 4. On Engine -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg4send" message="msg4" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg4recv" message="msg4" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg4" name="onEngine()" messageSort="synchCall"
+               sendEvent="msg4send" receiveEvent="msg4recv"/>
+
+      <!-- 5. Get Connections -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg5send" message="msg5" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg5recv" message="msg5" covered="lifeline3"/>
+      <message xmi:type="uml:Message" xmi:id="msg5" name="findByFlowIdAndIsActive()" messageSort="synchCall"
+               sendEvent="msg5send" receiveEvent="msg5recv"/>
+
+      <!-- 6. Return Connections -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg6send" message="msg6" covered="lifeline3"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg6recv" message="msg6" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg6" name="List&lt;Connection&gt;" messageSort="reply"
+               sendEvent="msg6send" receiveEvent="msg6recv"/>
+
+      <!-- Loop for each connection -->
+      <fragment xmi:type="uml:CombinedFragment" xmi:id="loop1" interactionOperator="loop">
+        <operand xmi:type="uml:InteractionOperand" xmi:id="operand1" guard="for each connection">
+
+          <!-- 7. Get Transfer Handler -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg7send" message="msg7" covered="lifeline2"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg7recv" message="msg7" covered="lifeline4"/>
+          <message xmi:type="uml:Message" xmi:id="msg7" name="&lt;&lt;create&gt;&gt;" messageSort="synchCall"
+                   sendEvent="msg7send" receiveEvent="msg7recv"/>
+
+          <!-- 8. Execute Handler -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg8send" message="msg8" covered="lifeline2"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg8recv" message="msg8" covered="lifeline4"/>
+          <message xmi:type="uml:Message" xmi:id="msg8" name="run()" messageSort="asynchCall"
+                   sendEvent="msg8send" receiveEvent="msg8recv"/>
+
+        </operand>
+      </fragment>
+
+      <!-- Handler Internal Flow -->
+
+      <!-- 9. Start Connection -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg9send" message="msg9" covered="lifeline4"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg9recv" message="msg9" covered="lifeline5"/>
+      <message xmi:type="uml:Message" xmi:id="msg9" name="connect()" messageSort="synchCall"
+               sendEvent="msg9send" receiveEvent="msg9recv"/>
+
+      <!-- 10. Return Connection Status -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg10send" message="msg10" covered="lifeline5"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg10recv" message="msg10" covered="lifeline4"/>
+      <message xmi:type="uml:Message" xmi:id="msg10" name="boolean" messageSort="reply"
+               sendEvent="msg10send" receiveEvent="msg10recv"/>
+
+      <!-- Alt fragment for connection success -->
+      <fragment xmi:type="uml:CombinedFragment" xmi:id="alt1" interactionOperator="alt">
+        <operand xmi:type="uml:InteractionOperand" xmi:id="operand2" guard="connection successful">
+
+          <!-- 11. Check Last Modified Time -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg11send" message="msg11" covered="lifeline4"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg11recv" message="msg11" covered="lifeline6"/>
+          <message xmi:type="uml:Message" xmi:id="msg11" name="getMaxModifiedTime()" messageSort="synchCall"
+                   sendEvent="msg11send" receiveEvent="msg11recv"/>
+
+          <!-- 12. Return Max Modified Time -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg12send" message="msg12" covered="lifeline6"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg12recv" message="msg12" covered="lifeline4"/>
+          <message xmi:type="uml:Message" xmi:id="msg12" name="OffsetDateTime" messageSort="reply"
+                   sendEvent="msg12send" receiveEvent="msg12recv"/>
+
+          <!-- 13. Read Files -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg13send" message="msg13" covered="lifeline4"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg13recv" message="msg13" covered="lifeline5"/>
+          <message xmi:type="uml:Message" xmi:id="msg13" name="readFiles(remotePath, filter, walkMethod)" messageSort="synchCall"
+                   sendEvent="msg13send" receiveEvent="msg13recv"/>
+
+          <!-- 14. Return File List -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg14send" message="msg14" covered="lifeline5"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg14recv" message="msg14" covered="lifeline4"/>
+          <message xmi:type="uml:Message" xmi:id="msg14" name="List&lt;RemoteFileRecord&gt;" messageSort="reply"
+                   sendEvent="msg14send" receiveEvent="msg14recv"/>
+
+          <!-- 15. Filter Files -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg15send" message="msg15" covered="lifeline4"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg15recv" message="msg15" covered="lifeline4"/>
+          <message xmi:type="uml:Message" xmi:id="msg15" name="filterFiles()" messageSort="synchCall"
+                   sendEvent="msg15send" receiveEvent="msg15recv"/>
+
+          <!-- 16. Cache Results -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg16send" message="msg16" covered="lifeline4"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg16recv" message="msg16" covered="lifeline6"/>
+          <message xmi:type="uml:Message" xmi:id="msg16" name="saveAll(results)" messageSort="synchCall"
+                   sendEvent="msg16send" receiveEvent="msg16recv"/>
+
+          <!-- 17. Get Connection Results -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg17send" message="msg17" covered="lifeline4"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg17recv" message="msg17" covered="lifeline6"/>
+          <message xmi:type="uml:Message" xmi:id="msg17" name="getFileListToTransfer()" messageSort="synchCall"
+                   sendEvent="msg17send" receiveEvent="msg17recv"/>
+
+          <!-- 18. Return Results -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg18send" message="msg18" covered="lifeline6"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg18recv" message="msg18" covered="lifeline4"/>
+          <message xmi:type="uml:Message" xmi:id="msg18" name="List&lt;TransferConnectionResult&gt;" messageSort="reply"
+                   sendEvent="msg18send" receiveEvent="msg18recv"/>
+
+          <!-- Loop for downloading files -->
+          <fragment xmi:type="uml:CombinedFragment" xmi:id="loop2" interactionOperator="loop">
+            <operand xmi:type="uml:InteractionOperand" xmi:id="operand3" guard="for each file">
+
+              <!-- 19. Download File -->
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg19send" message="msg19" covered="lifeline4"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg19recv" message="msg19" covered="lifeline5"/>
+              <message xmi:type="uml:Message" xmi:id="msg19" name="downloadFile(remotePath, localPath)" messageSort="synchCall"
+                       sendEvent="msg19send" receiveEvent="msg19recv"/>
+
+              <!-- 20. Return Transfer Record -->
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg20send" message="msg20" covered="lifeline5"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg20recv" message="msg20" covered="lifeline4"/>
+              <message xmi:type="uml:Message" xmi:id="msg20" name="RemoteFileTransferRecord" messageSort="reply"
+                       sendEvent="msg20send" receiveEvent="msg20recv"/>
+
+              <!-- 21. Update Result -->
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg21send" message="msg21" covered="lifeline4"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg21recv" message="msg21" covered="lifeline6"/>
+              <message xmi:type="uml:Message" xmi:id="msg21" name="save(result)" messageSort="synchCall"
+                       sendEvent="msg21send" receiveEvent="msg21recv"/>
+
+            </operand>
+          </fragment>
+
+          <!-- 22. Close Connection -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg22send" message="msg22" covered="lifeline4"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg22recv" message="msg22" covered="lifeline5"/>
+          <message xmi:type="uml:Message" xmi:id="msg22" name="disconnect()" messageSort="synchCall"
+                   sendEvent="msg22send" receiveEvent="msg22recv"/>
+
+        </operand>
+      </fragment>
+
+      <!-- Back to Engine -->
+
+      <!-- 23. Decompress -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg23send" message="msg23" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg23recv" message="msg23" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg23" name="decompress()" messageSort="synchCall"
+               sendEvent="msg23send" receiveEvent="msg23recv"/>
+
+      <!-- 24. Validation -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg24send" message="msg24" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg24recv" message="msg24" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg24" name="validation()" messageSort="synchCall"
+               sendEvent="msg24send" receiveEvent="msg24recv"/>
+
+      <!-- 25. Post Engine -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg25send" message="msg25" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg25recv" message="msg25" covered="lifeline2"/>
+      <message xmi:type="uml:Message" xmi:id="msg25" name="postEngine()" messageSort="synchCall"
+               sendEvent="msg25send" receiveEvent="msg25recv"/>
+
+      <!-- 26. Return to Client -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg26send" message="msg26" covered="lifeline2"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg26recv" message="msg26" covered="lifeline1"/>
+      <message xmi:type="uml:Message" xmi:id="msg26" name="return" messageSort="reply"
+               sendEvent="msg26send" receiveEvent="msg26recv"/>
+
+    </packagedElement>
+
+  </uml:Model>
+</xmi:XMI>
