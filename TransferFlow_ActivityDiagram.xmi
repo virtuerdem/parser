@@ -49,62 +49,43 @@
         <body>Establish connection to remote server</body>
       </node>
 
-      <!-- Handler: Pre Handler -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision1" name="PreThread?"/>
+      <!-- Handler Actions -->
       <node xmi:type="uml:Action" xmi:id="handler2" name="preHandler()">
         <body>Pre-handler operations</body>
       </node>
 
-      <!-- Handler: Check Last Modified Time -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision2" name="CheckLastModifiedTime?"/>
       <node xmi:type="uml:Action" xmi:id="handler3" name="checkLastModifiedTime()">
         <body>Verify and update last modified time</body>
       </node>
 
-      <!-- Handler: Read Files -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision3" name="ReadFiles?"/>
       <node xmi:type="uml:Action" xmi:id="handler4" name="readFiles()">
         <body>Read files from remote path</body>
       </node>
 
-      <!-- Handler: Filter Files -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision4" name="FilterFiles?"/>
       <node xmi:type="uml:Action" xmi:id="handler5" name="filterFiles()">
         <body>Filter files by modified time</body>
       </node>
 
-      <!-- Handler: Set File Info -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision5" name="SetFileInfo?"/>
       <node xmi:type="uml:Action" xmi:id="handler6" name="setFileInfo()">
         <body>Set additional file information</body>
       </node>
 
-      <!-- Handler: Cache Results -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision6" name="CacheResults?"/>
       <node xmi:type="uml:Action" xmi:id="handler7" name="cacheResults()">
         <body>Save results to database</body>
       </node>
 
-      <!-- Handler: Set Last Modified Time -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision7" name="SetLastModifiedTime?"/>
       <node xmi:type="uml:Action" xmi:id="handler8" name="setLastModifiedTime()">
         <body>Update last modified time in DB</body>
       </node>
 
-      <!-- Handler: Clear Remote Files -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision8" name="ClearRemoteFiles?"/>
       <node xmi:type="uml:Action" xmi:id="handler9" name="clearRemoteFiles()">
         <body>Clear remote files list</body>
       </node>
 
-      <!-- Handler: Download -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision9" name="Download?"/>
       <node xmi:type="uml:Action" xmi:id="handler10" name="download()">
         <body>Download files from remote server</body>
       </node>
 
-      <!-- Handler: Post Handler -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision10" name="PostThread?"/>
       <node xmi:type="uml:Action" xmi:id="handler11" name="postHandler()">
         <body>Post-handler operations</body>
       </node>
@@ -144,18 +125,6 @@
       <node xmi:type="uml:MergeNode" xmi:id="merge3" name=""/>
       <node xmi:type="uml:MergeNode" xmi:id="merge4" name=""/>
       <node xmi:type="uml:MergeNode" xmi:id="merge5" name=""/>
-
-      <!-- Handler Merge Nodes -->
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge1" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge2" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge3" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge4" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge5" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge6" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge7" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge8" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge9" name=""/>
-      <node xmi:type="uml:MergeNode" xmi:id="hmerge10" name=""/>
 
       <!-- Connection Success Decision -->
       <node xmi:type="uml:DecisionNode" xmi:id="hdecision0" name="Connection Success?"/>
@@ -201,75 +170,24 @@
       <edge xmi:type="uml:ControlFlow" xmi:id="flow25" source="merge5" target="final1"/>
 
       <!-- Handler Internal Flows -->
-      <!-- Start Handler -->
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="action6" target="handler1"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow2" source="handler1" target="hdecision0"/>
 
       <!-- Connection Success Branch -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="hdecision0" target="hdecision1" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="hdecision0" target="handler2" name="YES"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow4" source="hdecision0" target="handler12" name="NO"/>
 
-      <!-- PreThread Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow5" source="hdecision1" target="handler2" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow6" source="hdecision1" target="hmerge1" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow7" source="handler2" target="hmerge1"/>
-
-      <!-- CheckLastModifiedTime Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow8" source="hmerge1" target="hdecision2"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow9" source="hdecision2" target="handler3" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow10" source="hdecision2" target="hmerge2" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow11" source="handler3" target="hmerge2"/>
-
-      <!-- ReadFiles Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow12" source="hmerge2" target="hdecision3"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow13" source="hdecision3" target="handler4" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow14" source="hdecision3" target="hmerge3" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow15" source="handler4" target="hmerge3"/>
-
-      <!-- FilterFiles Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow16" source="hmerge3" target="hdecision4"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow17" source="hdecision4" target="handler5" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow18" source="hdecision4" target="hmerge4" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow19" source="handler5" target="hmerge4"/>
-
-      <!-- SetFileInfo Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow20" source="hmerge4" target="hdecision5"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow21" source="hdecision5" target="handler6" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow22" source="hdecision5" target="hmerge5" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow23" source="handler6" target="hmerge5"/>
-
-      <!-- CacheResults Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow24" source="hmerge5" target="hdecision6"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow25" source="hdecision6" target="handler7" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow26" source="hdecision6" target="hmerge6" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow27" source="handler7" target="hmerge6"/>
-
-      <!-- SetLastModifiedTime Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow28" source="hmerge6" target="hdecision7"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow29" source="hdecision7" target="handler8" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow30" source="hdecision7" target="hmerge7" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow31" source="handler8" target="hmerge7"/>
-
-      <!-- ClearRemoteFiles Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow32" source="hmerge7" target="hdecision8"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow33" source="hdecision8" target="handler9" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow34" source="hdecision8" target="hmerge8" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow35" source="handler9" target="hmerge8"/>
-
-      <!-- Download Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow36" source="hmerge8" target="hdecision9"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow37" source="hdecision9" target="handler10" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow38" source="hdecision9" target="hmerge9" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow39" source="handler10" target="hmerge9"/>
-
-      <!-- PostThread Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow40" source="hmerge9" target="hdecision10"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow41" source="hdecision10" target="handler11" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow42" source="hdecision10" target="hmerge10" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow43" source="handler11" target="hmerge10"/>
-
-      <!-- Close Connection Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow44" source="hmerge10" target="handler12"/>
+      <!-- Sequential Handler Flow -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow5" source="handler2" target="handler3"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow6" source="handler3" target="handler4"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow7" source="handler4" target="handler5"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow8" source="handler5" target="handler6"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow9" source="handler6" target="handler7"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow10" source="handler7" target="handler8"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow11" source="handler8" target="handler9"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow12" source="handler9" target="handler10"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow13" source="handler10" target="handler11"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow14" source="handler11" target="handler12"/>
 
     </packagedElement>
 
