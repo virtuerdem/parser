@@ -31,8 +31,6 @@
         <body>Pre-engine custom preparations (optional)</body>
       </node>
 
-      <node xmi:type="uml:MergeNode" xmi:id="merge1" name=""/>
-
       <!-- Step 4: On Transfer Decision -->
       <node xmi:type="uml:DecisionNode" xmi:id="decision2" name="onTransfer?"/>
 
@@ -47,8 +45,6 @@
       <node xmi:type="uml:Action" xmi:id="step4c" name="For Each Connection: Create Handler">
         <body>Parallel execution with ExecutorService</body>
       </node>
-
-      <node xmi:type="uml:MergeNode" xmi:id="merge2" name=""/>
 
       <!-- ============================================ -->
       <!-- PHASE 2: HANDLER ÇALIŞMASI (PARALLEL) -->
@@ -137,8 +133,6 @@
         <body>Decompress files (.gz, .zip) with thread pool. Error: log and continue</body>
       </node>
 
-      <node xmi:type="uml:MergeNode" xmi:id="merge3" name=""/>
-
       <!-- Step 19: Validation Decision -->
       <node xmi:type="uml:DecisionNode" xmi:id="decision4" name="validation?"/>
 
@@ -146,16 +140,12 @@
         <body>Validate XML files against XSD schema with thread pool. Error: log and continue</body>
       </node>
 
-      <node xmi:type="uml:MergeNode" xmi:id="merge4" name=""/>
-
       <!-- Step 20: Post Transfer Decision -->
       <node xmi:type="uml:DecisionNode" xmi:id="decision5" name="postTransfer?"/>
 
       <node xmi:type="uml:Action" xmi:id="step20" name="postEngine()">
         <body>Archive, reports, notifications, trigger next module (Parser)</body>
       </node>
-
-      <node xmi:type="uml:MergeNode" xmi:id="merge5" name=""/>
 
       <!-- Final Node -->
       <node xmi:type="uml:ActivityFinalNode" xmi:id="final1" name="END - SUCCESS"/>
@@ -172,17 +162,16 @@
 
       <!-- Pre Transfer -->
       <edge xmi:type="uml:ControlFlow" xmi:id="flow4" source="decision1" target="step3" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="decision1" target="merge1" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step3" target="merge1"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="decision1" target="decision2" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step3" target="decision2"/>
 
       <!-- On Transfer -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="merge1" target="decision2"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="decision2" target="step4a" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow9" source="decision2" target="merge2" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="decision2" target="step4a" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="decision2" target="decision3" name="NO"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow10" source="step4a" target="step4b"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow11" source="step4b" target="step4c"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow12" source="step4c" target="handler_start"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow13" source="handler_start" target="merge2"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow13" source="step4c" target="decision3"/>
 
       <!-- PHASE 2 Handler Flows -->
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="handler_start" target="step6"/>
@@ -205,31 +194,22 @@
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow13" source="step15" target="step16"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow14" source="step16" target="step17"/>
 
-      <!-- Handler completes and returns to engine (parallel handlers continue) -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow15" source="step17" target="merge2"/>
-
-      <!-- PHASE 3 Flows -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow14" source="merge2" target="decision3"/>
+      <!-- PHASE 3 Flows (engine continues after handlers complete) -->
 
       <!-- Decompress -->
       <edge xmi:type="uml:ControlFlow" xmi:id="flow15" source="decision3" target="step18" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow16" source="decision3" target="merge3" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow17" source="step18" target="merge3"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow16" source="decision3" target="decision4" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow17" source="step18" target="decision4"/>
 
       <!-- Validation -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow18" source="merge3" target="decision4"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow19" source="decision4" target="step19" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow20" source="decision4" target="merge4" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow21" source="step19" target="merge4"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow20" source="decision4" target="decision5" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow21" source="step19" target="decision5"/>
 
       <!-- Post Transfer -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow22" source="merge4" target="decision5"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow23" source="decision5" target="step20" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow24" source="decision5" target="merge5" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow25" source="step20" target="merge5"/>
-
-      <!-- End -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow26" source="merge5" target="final1"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow24" source="decision5" target="final1" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow25" source="step20" target="final1"/>
 
     </packagedElement>
 
