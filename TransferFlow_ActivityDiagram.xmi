@@ -24,16 +24,12 @@
         <body>Create /raw, /processed, /archive folders</body>
       </node>
 
-      <!-- Step 3: Pre Engine Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision1" name="preTransfer?"/>
-
+      <!-- Step 3: Pre Engine -->
       <node xmi:type="uml:Action" xmi:id="step3" name="preEngine()">
         <body>Pre-engine custom preparations (optional)</body>
       </node>
 
-      <!-- Step 4: On Transfer Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision2" name="onTransfer?"/>
-
+      <!-- Step 4: On Engine -->
       <node xmi:type="uml:Action" xmi:id="step4a" name="onEngine()">
         <body>Coordinate handler execution with thread pool</body>
       </node>
@@ -133,16 +129,12 @@
         <body>Decompress files (.gz, .zip) with thread pool. Error: log and continue</body>
       </node>
 
-      <!-- Step 19: Validation Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision4" name="validation?"/>
-
+      <!-- Step 19: Validation -->
       <node xmi:type="uml:Action" xmi:id="step19" name="validation()">
         <body>Validate XML files against XSD schema with thread pool. Error: log and continue</body>
       </node>
 
-      <!-- Step 20: Post Transfer Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision5" name="postTransfer?"/>
-
+      <!-- Step 20: Post Engine -->
       <node xmi:type="uml:Action" xmi:id="step20" name="postEngine()">
         <body>Archive, reports, notifications, trigger next module (Parser)</body>
       </node>
@@ -158,20 +150,12 @@
       <!-- PHASE 1 Flows -->
       <edge xmi:type="uml:ControlFlow" xmi:id="flow1" source="initial1" target="step1"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow2" source="step1" target="step2"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow3" source="step2" target="decision1"/>
-
-      <!-- Pre Transfer -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow4" source="decision1" target="step3" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="decision1" target="decision2" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step3" target="decision2"/>
-
-      <!-- On Transfer -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="decision2" target="step4a" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="decision2" target="decision3" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow10" source="step4a" target="step4b"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow11" source="step4b" target="step4c"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow12" source="step4c" target="handler_start"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow13" source="step4c" target="decision3"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow3" source="step2" target="step3"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow4" source="step3" target="step4a"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="step4a" target="step4b"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step4b" target="step4c"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="step4c" target="handler_start"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="step4c" target="decision3"/>
 
       <!-- PHASE 2 Handler Flows -->
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="handler_start" target="step6"/>
@@ -196,20 +180,14 @@
 
       <!-- PHASE 3 Flows (engine continues after handlers complete) -->
 
-      <!-- Decompress -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow15" source="decision3" target="step18" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow16" source="decision3" target="decision4" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow17" source="step18" target="decision4"/>
+      <!-- Decompress Decision -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow9" source="decision3" target="step18" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow10" source="decision3" target="step19" name="NO"/>
 
-      <!-- Validation -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow19" source="decision4" target="step19" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow20" source="decision4" target="decision5" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow21" source="step19" target="decision5"/>
-
-      <!-- Post Transfer -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow23" source="decision5" target="step20" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow24" source="decision5" target="final1" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow25" source="step20" target="final1"/>
+      <!-- Sequential Flow -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow11" source="step18" target="step19"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow12" source="step19" target="step20"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow13" source="step20" target="final1"/>
 
     </packagedElement>
 
