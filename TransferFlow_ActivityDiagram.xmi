@@ -2,192 +2,234 @@
 <xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
   <xmi:Documentation exporter="Manual" exporterVersion="1.0"/>
 
-  <uml:Model xmi:type="uml:Model" xmi:id="model1" name="Transfer Flow Model">
+  <uml:Model xmi:type="uml:Model" xmi:id="model1" name="Transfer Flow Model - ETL Transfer Engine">
 
     <!-- Activity Diagram -->
-    <packagedElement xmi:type="uml:Activity" xmi:id="activity1" name="Transfer Engine Flow">
+    <packagedElement xmi:type="uml:Activity" xmi:id="activity1" name="Transfer Engine Complete Flow">
 
       <!-- Initial Node -->
-      <node xmi:type="uml:InitialNode" xmi:id="initial1" name="Start"/>
+      <node xmi:type="uml:InitialNode" xmi:id="initial1" name="START"/>
 
-      <!-- Prepare Paths -->
-      <node xmi:type="uml:Action" xmi:id="action1" name="preparePaths()">
-        <body>Create flow paths and set raw path</body>
+      <!-- ============================================ -->
+      <!-- PHASE 1: ENGINE BAŞLATMA -->
+      <!-- ============================================ -->
+
+      <!-- Step 1: Start Engine -->
+      <node xmi:type="uml:Action" xmi:id="step1" name="startEngine(TransferEngineRecord)">
+        <body>Flow ID, Thread counts, Active steps configuration</body>
       </node>
 
-      <!-- Pre Transfer Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision1" name="PreTransfer?"/>
-
-      <!-- Pre Engine -->
-      <node xmi:type="uml:Action" xmi:id="action2" name="preEngine()">
-        <body>Execute pre-transfer operations</body>
+      <!-- Step 2: Prepare Paths -->
+      <node xmi:type="uml:Action" xmi:id="step2" name="preparePaths()">
+        <body>Create /raw, /processed, /archive folders</body>
       </node>
 
-      <!-- On Transfer Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision2" name="OnTransfer?"/>
+      <!-- Step 3: Pre Engine Decision -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision1" name="preTransfer?"/>
 
-      <!-- On Engine -->
-      <node xmi:type="uml:Action" xmi:id="action3" name="onEngine()">
-        <body>Execute transfer operations with thread pool</body>
+      <node xmi:type="uml:Action" xmi:id="step3" name="preEngine()">
+        <body>Pre-engine custom preparations (optional)</body>
       </node>
 
-      <!-- Get Connections -->
-      <node xmi:type="uml:Action" xmi:id="action4" name="getConnections()">
-        <body>Fetch active connections from repository</body>
-      </node>
-
-      <!-- For Each Connection -->
-      <node xmi:type="uml:Action" xmi:id="action5" name="For Each Connection">
-        <body>Process each connection in parallel</body>
-      </node>
-
-      <!-- Transfer Handler Start -->
-      <node xmi:type="uml:CallBehaviorAction" xmi:id="action6" name="TransferBaseHandler.run()"/>
-
-      <!-- Handler: Start Connection -->
-      <node xmi:type="uml:Action" xmi:id="handler1" name="startConnection()">
-        <body>Establish connection to remote server</body>
-      </node>
-
-      <!-- Handler Actions -->
-      <node xmi:type="uml:Action" xmi:id="handler2" name="preHandler()">
-        <body>Pre-handler operations</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler3" name="checkLastModifiedTime()">
-        <body>Verify and update last modified time</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler4" name="readFiles()">
-        <body>Read files from remote path</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler5" name="filterFiles()">
-        <body>Filter files by modified time</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler6" name="setFileInfo()">
-        <body>Set additional file information</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler7" name="cacheResults()">
-        <body>Save results to database</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler8" name="setLastModifiedTime()">
-        <body>Update last modified time in DB</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler9" name="clearRemoteFiles()">
-        <body>Clear remote files list</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler10" name="download()">
-        <body>Download files from remote server</body>
-      </node>
-
-      <node xmi:type="uml:Action" xmi:id="handler11" name="postHandler()">
-        <body>Post-handler operations</body>
-      </node>
-
-      <!-- Handler: Close Connection -->
-      <node xmi:type="uml:Action" xmi:id="handler12" name="closeConnection()">
-        <body>Disconnect from remote server</body>
-      </node>
-
-      <!-- Decompress Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision3" name="Decompress?"/>
-
-      <!-- Decompress -->
-      <node xmi:type="uml:Action" xmi:id="action7" name="decompress()">
-        <body>Decompress files with thread pool</body>
-      </node>
-
-      <!-- Validation Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision4" name="Validation?"/>
-
-      <!-- Validation -->
-      <node xmi:type="uml:Action" xmi:id="action8" name="validation()">
-        <body>Validate XML files with thread pool</body>
-      </node>
-
-      <!-- Post Transfer Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="decision5" name="PostTransfer?"/>
-
-      <!-- Post Engine -->
-      <node xmi:type="uml:Action" xmi:id="action9" name="postEngine()">
-        <body>Execute post-transfer operations</body>
-      </node>
-
-      <!-- Merge Nodes -->
       <node xmi:type="uml:MergeNode" xmi:id="merge1" name=""/>
+
+      <!-- Step 4: On Transfer Decision -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision2" name="onTransfer?"/>
+
+      <node xmi:type="uml:Action" xmi:id="step4a" name="onEngine()">
+        <body>Coordinate handler execution with thread pool</body>
+      </node>
+
+      <node xmi:type="uml:Action" xmi:id="step4b" name="getConnections()">
+        <body>Fetch active connections from database</body>
+      </node>
+
+      <node xmi:type="uml:Action" xmi:id="step4c" name="For Each Connection: Create Handler">
+        <body>Parallel execution with ExecutorService</body>
+      </node>
+
       <node xmi:type="uml:MergeNode" xmi:id="merge2" name=""/>
+
+      <!-- ============================================ -->
+      <!-- PHASE 2: HANDLER ÇALIŞMASI (PARALLEL) -->
+      <!-- ============================================ -->
+
+      <node xmi:type="uml:CallBehaviorAction" xmi:id="handler_start" name="TransferBaseHandler.run()">
+        <body>One handler per connection - runs in parallel</body>
+      </node>
+
+      <!-- Step 6: Start Connection -->
+      <node xmi:type="uml:Action" xmi:id="step6" name="startConnection()">
+        <body>Connect to remote server (FTP/SFTP/SSH)</body>
+      </node>
+
+      <!-- CRITICAL DECISION: Connection Success -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision_critical" name="Connection Success?"/>
+
+      <!-- Connection Failed Path -->
+      <node xmi:type="uml:Action" xmi:id="step_fail" name="END - CONNECTION FAILED">
+        <body>Critical error - stop this handler (other handlers continue)</body>
+      </node>
+
+      <!-- Step 7: Pre Handler -->
+      <node xmi:type="uml:Action" xmi:id="step7" name="preHandler()">
+        <body>Pre-handler custom operations (optional)</body>
+      </node>
+
+      <!-- Step 8: Check Last Modified Time -->
+      <node xmi:type="uml:Action" xmi:id="step8" name="checkLastModifiedTime()">
+        <body>Get max modified time from database, update connection if newer</body>
+      </node>
+
+      <!-- Step 9: Read Files -->
+      <node xmi:type="uml:Action" xmi:id="step9" name="readFiles()">
+        <body>Read file list from remote server with metadata (name, size, modified time)</body>
+      </node>
+
+      <!-- Step 10: Filter Files -->
+      <node xmi:type="uml:Action" xmi:id="step10" name="filterFiles()">
+        <body>Filter files by lastModifiedTime (only new/changed files)</body>
+      </node>
+
+      <!-- Step 11: Set File Info -->
+      <node xmi:type="uml:Action" xmi:id="step11" name="setFileInfo()">
+        <body>Enrich metadata - vendor-specific info extraction (optional)</body>
+      </node>
+
+      <!-- Step 12: Cache Results -->
+      <node xmi:type="uml:Action" xmi:id="step12" name="cacheResults()">
+        <body>Save file metadata to database (t_transfer_connection_result)</body>
+      </node>
+
+      <!-- Step 13: Set Last Modified Time -->
+      <node xmi:type="uml:Action" xmi:id="step13" name="setLastModifiedTime()">
+        <body>Update connection.lastModifiedTime with newest file time</body>
+      </node>
+
+      <!-- Step 14: Clear Remote Files -->
+      <node xmi:type="uml:Action" xmi:id="step14" name="clearRemoteFiles()">
+        <body>Clear memory - prepare for garbage collection</body>
+      </node>
+
+      <!-- Step 15: Download -->
+      <node xmi:type="uml:Action" xmi:id="step15" name="download()">
+        <body>Physical file download from remote to local. Update: is_downloaded, file_size, transfer_try_count</body>
+      </node>
+
+      <!-- Step 16: Post Handler -->
+      <node xmi:type="uml:Action" xmi:id="step16" name="postHandler()">
+        <body>Post-handler cleanup operations (optional)</body>
+      </node>
+
+      <!-- Step 17: Close Connection -->
+      <node xmi:type="uml:Action" xmi:id="step17" name="closeConnection()">
+        <body>Disconnect from remote server, release resources</body>
+      </node>
+
+      <!-- ============================================ -->
+      <!-- PHASE 3: ENGINE DEVAM -->
+      <!-- ============================================ -->
+
+      <!-- Step 18: Decompress Decision -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision3" name="decompress?"/>
+
+      <node xmi:type="uml:Action" xmi:id="step18" name="decompress()">
+        <body>Decompress files (.gz, .zip) with thread pool. Error: log and continue</body>
+      </node>
+
       <node xmi:type="uml:MergeNode" xmi:id="merge3" name=""/>
+
+      <!-- Step 19: Validation Decision -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision4" name="validation?"/>
+
+      <node xmi:type="uml:Action" xmi:id="step19" name="validation()">
+        <body>Validate XML files against XSD schema with thread pool. Error: log and continue</body>
+      </node>
+
       <node xmi:type="uml:MergeNode" xmi:id="merge4" name=""/>
+
+      <!-- Step 20: Post Transfer Decision -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision5" name="postTransfer?"/>
+
+      <node xmi:type="uml:Action" xmi:id="step20" name="postEngine()">
+        <body>Archive, reports, notifications, trigger next module (Parser)</body>
+      </node>
+
       <node xmi:type="uml:MergeNode" xmi:id="merge5" name=""/>
 
-      <!-- Connection Success Decision -->
-      <node xmi:type="uml:DecisionNode" xmi:id="hdecision0" name="Connection Success?"/>
-
       <!-- Final Node -->
-      <node xmi:type="uml:ActivityFinalNode" xmi:id="final1" name="End"/>
+      <node xmi:type="uml:ActivityFinalNode" xmi:id="final1" name="END - SUCCESS"/>
+      <node xmi:type="uml:ActivityFinalNode" xmi:id="final_fail" name="END - HANDLER FAILED"/>
 
-      <!-- Control Flows -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow1" source="initial1" target="action1"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow2" source="action1" target="decision1"/>
+      <!-- ============================================ -->
+      <!-- CONTROL FLOWS -->
+      <!-- ============================================ -->
 
-      <!-- Pre Transfer Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow3" source="decision1" target="action2" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow4" source="decision1" target="merge1" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="action2" target="merge1"/>
+      <!-- PHASE 1 Flows -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow1" source="initial1" target="step1"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow2" source="step1" target="step2"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow3" source="step2" target="decision1"/>
 
-      <!-- On Transfer Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="merge1" target="decision2"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="decision2" target="action3" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="decision2" target="merge2" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow9" source="action3" target="action4"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow10" source="action4" target="action5"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow11" source="action5" target="action6"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow12" source="action6" target="merge2"/>
+      <!-- Pre Transfer -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow4" source="decision1" target="step3" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="decision1" target="merge1" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step3" target="merge1"/>
 
-      <!-- Decompress Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow13" source="merge2" target="decision3"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow14" source="decision3" target="action7" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow15" source="decision3" target="merge3" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow16" source="action7" target="merge3"/>
+      <!-- On Transfer -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="merge1" target="decision2"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="decision2" target="step4a" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow9" source="decision2" target="merge2" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow10" source="step4a" target="step4b"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow11" source="step4b" target="step4c"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow12" source="step4c" target="handler_start"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow13" source="handler_start" target="merge2"/>
 
-      <!-- Validation Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow17" source="merge3" target="decision4"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow18" source="decision4" target="action8" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow19" source="decision4" target="merge4" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow20" source="action8" target="merge4"/>
+      <!-- PHASE 2 Handler Flows -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="handler_start" target="step6"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow2" source="step6" target="decision_critical"/>
 
-      <!-- Post Transfer Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow21" source="merge4" target="decision5"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow22" source="decision5" target="action9" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow23" source="decision5" target="merge5" name="NO"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow24" source="action9" target="merge5"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow25" source="merge5" target="final1"/>
+      <!-- CRITICAL: Connection Success Branch -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="decision_critical" target="step7" name="YES (Success)"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow4" source="decision_critical" target="step_fail" name="NO (Failed)"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow_fail" source="step_fail" target="final_fail"/>
 
-      <!-- Handler Internal Flows -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="action6" target="handler1"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow2" source="handler1" target="hdecision0"/>
+      <!-- Sequential Handler Flow (on success) -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow5" source="step7" target="step8"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow6" source="step8" target="step9"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow7" source="step9" target="step10"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow8" source="step10" target="step11"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow9" source="step11" target="step12"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow10" source="step12" target="step13"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow11" source="step13" target="step14"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow12" source="step14" target="step15"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow13" source="step15" target="step16"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow14" source="step16" target="step17"/>
 
-      <!-- Connection Success Branch -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="hdecision0" target="handler2" name="YES"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow4" source="hdecision0" target="handler12" name="NO"/>
+      <!-- Handler completes and returns to engine (parallel handlers continue) -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow15" source="step17" target="merge2"/>
 
-      <!-- Sequential Handler Flow -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow5" source="handler2" target="handler3"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow6" source="handler3" target="handler4"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow7" source="handler4" target="handler5"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow8" source="handler5" target="handler6"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow9" source="handler6" target="handler7"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow10" source="handler7" target="handler8"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow11" source="handler8" target="handler9"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow12" source="handler9" target="handler10"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow13" source="handler10" target="handler11"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow14" source="handler11" target="handler12"/>
+      <!-- PHASE 3 Flows -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow14" source="merge2" target="decision3"/>
+
+      <!-- Decompress -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow15" source="decision3" target="step18" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow16" source="decision3" target="merge3" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow17" source="step18" target="merge3"/>
+
+      <!-- Validation -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow18" source="merge3" target="decision4"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow19" source="decision4" target="step19" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow20" source="decision4" target="merge4" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow21" source="step19" target="merge4"/>
+
+      <!-- Post Transfer -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow22" source="merge4" target="decision5"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow23" source="decision5" target="step20" name="YES"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow24" source="decision5" target="merge5" name="NO"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow25" source="step20" target="merge5"/>
+
+      <!-- End -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow26" source="merge5" target="final1"/>
 
     </packagedElement>
 
