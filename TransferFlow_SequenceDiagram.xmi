@@ -210,86 +210,108 @@
           <message xmi:type="uml:Message" xmi:id="msg27" name="disconnect()" messageSort="synchCall"
                    sendEvent="msg27_send" receiveEvent="msg27_recv"/>
 
+          <!-- 28. Handler complete notification -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg28_send" message="msg28" covered="lifeline_handler"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg28_recv" message="msg28" covered="lifeline_engine"/>
+          <message xmi:type="uml:Message" xmi:id="msg28" name="handlerComplete()" messageSort="asynchCall"
+                   sendEvent="msg28_send" receiveEvent="msg28_recv"/>
+
         </operand>
 
         <!-- FAILED Branch -->
         <operand xmi:type="uml:InteractionOperand" xmi:id="operand_failed" guard="connection failed">
 
-          <!-- 28. closeConnection (disconnect after failure) -->
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg28_send" message="msg28" covered="lifeline_handler"/>
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg28_recv" message="msg28" covered="lifeline_factory"/>
-          <message xmi:type="uml:Message" xmi:id="msg28" name="disconnect()" messageSort="synchCall"
-                   sendEvent="msg28_send" receiveEvent="msg28_recv"/>
+          <!-- 29. closeConnection (disconnect after failure) -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg29_send" message="msg29" covered="lifeline_handler"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg29_recv" message="msg29" covered="lifeline_factory"/>
+          <message xmi:type="uml:Message" xmi:id="msg29" name="disconnect()" messageSort="synchCall"
+                   sendEvent="msg29_send" receiveEvent="msg29_recv"/>
+
+          <!-- 30. Handler complete notification (after failure) -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg30_send" message="msg30" covered="lifeline_handler"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg30_recv" message="msg30" covered="lifeline_engine"/>
+          <message xmi:type="uml:Message" xmi:id="msg30" name="handlerComplete()" messageSort="asynchCall"
+                   sendEvent="msg30_send" receiveEvent="msg30_recv"/>
 
         </operand>
 
       </fragment>
+
+      <!-- ============================================ -->
+      <!-- SYNCHRONIZATION: Wait for All Handlers -->
+      <!-- ============================================ -->
+
+      <!-- Note: Engine waits for all handlers to complete before proceeding -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg31_send" message="msg31" covered="lifeline_engine"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg31_recv" message="msg31" covered="lifeline_engine"/>
+      <message xmi:type="uml:Message" xmi:id="msg31" name="awaitHandlerCompletion()" messageSort="synchCall"
+               sendEvent="msg31_send" receiveEvent="msg31_recv"/>
 
       <!-- ============================================ -->
       <!-- PHASE 3: ENGINE DEVAM -->
       <!-- ============================================ -->
 
-      <!-- 29. decompress -->
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg29_send" message="msg29" covered="lifeline_engine"/>
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg29_recv" message="msg29" covered="lifeline_engine"/>
-      <message xmi:type="uml:Message" xmi:id="msg29" name="decompress()" messageSort="synchCall"
-               sendEvent="msg29_send" receiveEvent="msg29_recv"/>
+      <!-- 32. decompress -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg32_send" message="msg32" covered="lifeline_engine"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg32_recv" message="msg32" covered="lifeline_engine"/>
+      <message xmi:type="uml:Message" xmi:id="msg32" name="decompress()" messageSort="synchCall"
+               sendEvent="msg32_send" receiveEvent="msg32_recv"/>
 
       <!-- Loop: Decompress Files -->
       <fragment xmi:type="uml:CombinedFragment" xmi:id="loop_decompress" interactionOperator="loop">
         <operand xmi:type="uml:InteractionOperand" xmi:id="operand_decompress" guard="for each compressed file">
 
-          <!-- 30. create decompress factory -->
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg30_send" message="msg30" covered="lifeline_engine"/>
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg30_recv" message="msg30" covered="lifeline_decompress"/>
-          <message xmi:type="uml:Message" xmi:id="msg30" name="&lt;&lt;create&gt;&gt;" messageSort="synchCall"
-                   sendEvent="msg30_send" receiveEvent="msg30_recv"/>
-
-          <!-- 31. run decompress -->
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg31_send" message="msg31" covered="lifeline_engine"/>
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg31_recv" message="msg31" covered="lifeline_decompress"/>
-          <message xmi:type="uml:Message" xmi:id="msg31" name="run()" messageSort="synchCall"
-                   sendEvent="msg31_send" receiveEvent="msg31_recv"/>
-
-        </operand>
-      </fragment>
-
-      <!-- 32. validation -->
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg32_send" message="msg32" covered="lifeline_engine"/>
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg32_recv" message="msg32" covered="lifeline_engine"/>
-      <message xmi:type="uml:Message" xmi:id="msg32" name="validation()" messageSort="synchCall"
-               sendEvent="msg32_send" receiveEvent="msg32_recv"/>
-
-      <!-- Loop: Validate Files -->
-      <fragment xmi:type="uml:CombinedFragment" xmi:id="loop_validation" interactionOperator="loop">
-        <operand xmi:type="uml:InteractionOperand" xmi:id="operand_validation" guard="for each XML file">
-
-          <!-- 33. create validation -->
+          <!-- 33. create decompress factory -->
           <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg33_send" message="msg33" covered="lifeline_engine"/>
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg33_recv" message="msg33" covered="lifeline_validation"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg33_recv" message="msg33" covered="lifeline_decompress"/>
           <message xmi:type="uml:Message" xmi:id="msg33" name="&lt;&lt;create&gt;&gt;" messageSort="synchCall"
                    sendEvent="msg33_send" receiveEvent="msg33_recv"/>
 
-          <!-- 34. run validation -->
+          <!-- 34. run decompress -->
           <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg34_send" message="msg34" covered="lifeline_engine"/>
-          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg34_recv" message="msg34" covered="lifeline_validation"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg34_recv" message="msg34" covered="lifeline_decompress"/>
           <message xmi:type="uml:Message" xmi:id="msg34" name="run()" messageSort="synchCall"
                    sendEvent="msg34_send" receiveEvent="msg34_recv"/>
 
         </operand>
       </fragment>
 
-      <!-- 35. postEngine -->
+      <!-- 35. validation -->
       <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg35_send" message="msg35" covered="lifeline_engine"/>
       <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg35_recv" message="msg35" covered="lifeline_engine"/>
-      <message xmi:type="uml:Message" xmi:id="msg35" name="postEngine()" messageSort="synchCall"
+      <message xmi:type="uml:Message" xmi:id="msg35" name="validation()" messageSort="synchCall"
                sendEvent="msg35_send" receiveEvent="msg35_recv"/>
 
-      <!-- 36. return to client -->
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg36_send" message="msg36" covered="lifeline_engine"/>
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg36_recv" message="msg36" covered="lifeline_client"/>
-      <message xmi:type="uml:Message" xmi:id="msg36" name="return" messageSort="reply"
-               sendEvent="msg36_send" receiveEvent="msg36_recv"/>
+      <!-- Loop: Validate Files -->
+      <fragment xmi:type="uml:CombinedFragment" xmi:id="loop_validation" interactionOperator="loop">
+        <operand xmi:type="uml:InteractionOperand" xmi:id="operand_validation" guard="for each XML file">
+
+          <!-- 36. create validation -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg36_send" message="msg36" covered="lifeline_engine"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg36_recv" message="msg36" covered="lifeline_validation"/>
+          <message xmi:type="uml:Message" xmi:id="msg36" name="&lt;&lt;create&gt;&gt;" messageSort="synchCall"
+                   sendEvent="msg36_send" receiveEvent="msg36_recv"/>
+
+          <!-- 37. run validation -->
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg37_send" message="msg37" covered="lifeline_engine"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg37_recv" message="msg37" covered="lifeline_validation"/>
+          <message xmi:type="uml:Message" xmi:id="msg37" name="run()" messageSort="synchCall"
+                   sendEvent="msg37_send" receiveEvent="msg37_recv"/>
+
+        </operand>
+      </fragment>
+
+      <!-- 38. postEngine -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg38_send" message="msg38" covered="lifeline_engine"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg38_recv" message="msg38" covered="lifeline_engine"/>
+      <message xmi:type="uml:Message" xmi:id="msg38" name="postEngine()" messageSort="synchCall"
+               sendEvent="msg38_send" receiveEvent="msg38_recv"/>
+
+      <!-- 39. return to client -->
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg39_send" message="msg39" covered="lifeline_engine"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="msg39_recv" message="msg39" covered="lifeline_client"/>
+      <message xmi:type="uml:Message" xmi:id="msg39" name="return" messageSort="reply"
+               sendEvent="msg39_send" receiveEvent="msg39_recv"/>
 
     </packagedElement>
 
