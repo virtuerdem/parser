@@ -42,10 +42,6 @@
         <body>Parallel execution with ExecutorService</body>
       </node>
 
-      <node xmi:type="uml:Action" xmi:id="step4d" name="[Engine] Wait for All Handlers to Complete">
-        <body>ExecutorService.shutdown() - wait for all parallel handlers to finish</body>
-      </node>
-
       <!-- ============================================ -->
       <!-- PHASE 2: HANDLER ÇALIŞMASI (PARALLEL) -->
       <!-- ============================================ -->
@@ -157,8 +153,6 @@
       <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="step4a" target="step4b"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step4b" target="step4c"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="step4c" target="handler_start"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="step4c" target="step4d"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="flow8b" source="step4d" target="step18"/>
 
       <!-- PHASE 2 Handler Flows -->
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="handler_start" target="step6"/>
@@ -180,6 +174,7 @@
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow12" source="step14" target="step15"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow13" source="step15" target="step16"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow14" source="step16" target="step17"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow15" source="step17" target="step18"/>
 
       <!-- PHASE 3 Flows (engine continues after handlers complete) -->
 
