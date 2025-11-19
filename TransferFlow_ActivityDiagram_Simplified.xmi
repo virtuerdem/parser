@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+  <xmi:Documentation exporter="Manual" exporterVersion="1.0"/>
+
+  <uml:Model xmi:type="uml:Model" xmi:id="model1" name="Transfer Flow Model - Simplified">
+
+    <!-- Activity Diagram -->
+    <packagedElement xmi:type="uml:Activity" xmi:id="activity1" name="Transfer Engine Complete Flow - Simplified">
+
+      <!-- Initial Node -->
+      <node xmi:type="uml:InitialNode" xmi:id="initial1" name="START"/>
+
+      <!-- ============================================ -->
+      <!-- PHASE 1: ENGINE STARTUP -->
+      <!-- ============================================ -->
+
+      <!-- Step 1: Start Engine -->
+      <node xmi:type="uml:Action" xmi:id="step1" name="[Engine] startEngine(flowId)">
+        <body>Entry point - triggered by Scheduler</body>
+      </node>
+
+      <!-- Step 2: Load Configuration from Repository -->
+      <node xmi:type="uml:Action" xmi:id="step2" name="[Engine] Repository.findConnections(flowId)">
+        <body>DB: t_connection - Load connection configurations</body>
+      </node>
+
+      <node xmi:type="uml:Action" xmi:id="step3" name="[Engine] Repository.getEngineConfig(flowId)">
+        <body>DB: t_transfer_engine - Load workflow flags and thread counts</body>
+      </node>
+
+      <!-- Step 4: Prepare Paths -->
+      <node xmi:type="uml:Action" xmi:id="step4" name="[Engine] preparePaths()">
+        <body>Create /raw, /processed, /archive folders</body>
+      </node>
+
+      <!-- Step 5: Create Handlers -->
+      <node xmi:type="uml:Action" xmi:id="step5" name="[Engine] For Each Connection: Create Handler">
+        <body>Parallel execution with ExecutorService thread pool</body>
+      </node>
+
+      <!-- ============================================ -->
+      <!-- PHASE 2: HANDLER WORKFLOW (PARALLEL) -->
+      <!-- ============================================ -->
+
+      <node xmi:type="uml:CallBehaviorAction" xmi:id="handler_start" name="[Handler] run()">
+        <body>One handler per connection - runs in parallel threads</body>
+      </node>
+
+      <!-- Step 6: Connect to Remote Server -->
+      <node xmi:type="uml:Action" xmi:id="step6" name="[Handler] ConnectionFactory.connect(server, path)">
+        <body>SFTP/FTP connection establishment using t_server config</body>
+      </node>
+
+      <!-- CRITICAL DECISION: Connection Success -->
+      <node xmi:type="uml:DecisionNode" xmi:id="decision_critical" name="Connection Success?"/>
+
+      <!-- Connection Failed Path -->
+      <node xmi:type="uml:Action" xmi:id="step_fail" name="[Handler] ConnectionFactory.disconnect()">
+        <body>Connection failed - cleanup and exit this handler</body>
+      </node>
+
+      <node xmi:type="uml:ActivityFinalNode" xmi:id="final_fail" name="END - HANDLER FAILED"/>
+
+      <!-- Step 7: Get Last Modified Time -->
+      <node xmi:type="uml:Action" xmi:id="step7" name="[Handler] Repository.getLastModifiedTime(connectionId)">
+        <body>DB: t_connection.last_modified_time - For incremental transfer</body>
+      </node>
+
+      <!-- Step 8: List Remote Files -->
+      <node xmi:type="uml:Action" xmi:id="step8" name="[Handler] ConnectionFactory.listFiles(path)">
+        <body>Read file list from remote server with metadata</body>
+      </node>
+
+      <!-- Step 9: Filter Files -->
+      <node xmi:type="uml:Action" xmi:id="step9" name="[Handler] filterFiles(lastModifiedTime)">
+        <body>Filter files: only transfer new/changed files since last run</body>
+      </node>
+
+      <!-- Step 10: Download Files -->
+      <node xmi:type="uml:Action" xmi:id="step10" name="[Handler] ConnectionFactory.downloadFile()">
+        <body>Physical file transfer - loop for each filtered file</body>
+      </node>
+
+      <!-- Step 11: Save Results to Database -->
+      <node xmi:type="uml:Action" xmi:id="step11" name="[Handler] Repository.saveResults(fileList)">
+        <body>DB: t_transfer_connection_result - Save file metadata and transfer status</body>
+      </node>
+
+      <!-- Step 12: Update Last Modified Time -->
+      <node xmi:type="uml:Action" xmi:id="step12" name="[Handler] Repository.updateLastModifiedTime(connectionId, time)">
+        <body>DB: t_connection.last_modified_time - Update with newest file time</body>
+      </node>
+
+      <!-- Step 13: Disconnect -->
+      <node xmi:type="uml:Action" xmi:id="step13" name="[Handler] ConnectionFactory.disconnect()">
+        <body>Close connection, release resources</body>
+      </node>
+
+      <!-- Step 14: Handler Complete -->
+      <node xmi:type="uml:Action" xmi:id="step14" name="[Handler] Notify Engine: handlerComplete()">
+        <body>Async notification to Engine - handler finished successfully</body>
+      </node>
+
+      <!-- ============================================ -->
+      <!-- PHASE 3: ENGINE POST-PROCESSING -->
+      <!-- ============================================ -->
+
+      <!-- Step 15: Await Handler Completion -->
+      <node xmi:type="uml:Action" xmi:id="step15" name="[Engine] awaitHandlerCompletion()">
+        <body>Wait for all parallel handlers to complete</body>
+      </node>
+
+      <!-- Step 16: Decompress (Internal Operation) -->
+      <node xmi:type="uml:Action" xmi:id="step16" name="[Engine] decompress()">
+        <body>Internal operation - decompress .gz, .zip files with thread pool. No separate lifeline.</body>
+      </node>
+
+      <!-- Step 17: Validation (Internal Operation) -->
+      <node xmi:type="uml:Action" xmi:id="step17" name="[Engine] validation()">
+        <body>Internal operation - validate XML against XSD schema. No separate lifeline.</body>
+      </node>
+
+      <!-- Step 18: Save Process History -->
+      <node xmi:type="uml:Action" xmi:id="step18" name="[Engine] Repository.saveProcessHistory(flowId, stats)">
+        <body>DB: t_transfer_process_history - Save execution statistics</body>
+      </node>
+
+      <!-- Step 19: Post Engine -->
+      <node xmi:type="uml:Action" xmi:id="step19" name="[Engine] postEngine()">
+        <body>Archive, reports, notifications, trigger next module (Parser)</body>
+      </node>
+
+      <!-- Final Node -->
+      <node xmi:type="uml:ActivityFinalNode" xmi:id="final1" name="END - SUCCESS"/>
+
+      <!-- ============================================ -->
+      <!-- CONTROL FLOWS -->
+      <!-- ============================================ -->
+
+      <!-- PHASE 1 Flows -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow1" source="initial1" target="step1"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow2" source="step1" target="step2"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow3" source="step2" target="step3"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow4" source="step3" target="step4"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow5" source="step4" target="step5"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow6" source="step5" target="handler_start"/>
+
+      <!-- PHASE 2 Handler Flows -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow1" source="handler_start" target="step6"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow2" source="step6" target="decision_critical"/>
+
+      <!-- CRITICAL DECISION: Connection Success Branch -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="decision_critical" target="step7" name="YES (Connected)"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow4" source="decision_critical" target="step_fail" name="NO (Failed)"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow_fail" source="step_fail" target="final_fail"/>
+
+      <!-- Sequential Handler Flow (on success) -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow5" source="step7" target="step8"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow6" source="step8" target="step9"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow7" source="step9" target="step10"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow8" source="step10" target="step11"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow9" source="step11" target="step12"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow10" source="step12" target="step13"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow11" source="step13" target="step14"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow12" source="step14" target="step15"/>
+
+      <!-- PHASE 3 Flows (engine continues after handlers complete) -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow7" source="step15" target="step16"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow8" source="step16" target="step17"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow9" source="step17" target="step18"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow10" source="step18" target="step19"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="flow11" source="step19" target="final1"/>
+
+    </packagedElement>
+
+  </uml:Model>
+</xmi:XMI>
