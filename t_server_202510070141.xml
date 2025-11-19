@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_server>
+  <DATA_RECORD>
+    <id>1</id>
+    <connection_protocol>SFTP</connection_protocol>
+    <ip>127.0.0.1</ip>
+    <user_name>sftpuser</user_name>
+    <user_pass>P_5mFYW2efFrG_gH</user_pass>
+    <connection_port>3,645</connection_port>
+    <server_tag>local1</server_tag>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>2</id>
+    <connection_protocol>SFTP</connection_protocol>
+    <ip>192.168.0.180</ip>
+    <user_name>ttg</user_name>
+    <user_pass>ttgttg</user_pass>
+    <connection_port>22</connection_port>
+    <server_tag>ttg-test-1</server_tag>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_server>
