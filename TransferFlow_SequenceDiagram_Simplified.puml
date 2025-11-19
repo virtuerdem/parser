@@ -1,0 +1,106 @@
+@startuml Transfer Flow Sequence Diagram - Simplified
+title Transfer Engine Complete Flow - Simplified\n(5 Lifelines - Unified Repository)
+
+actor "Client\n(Scheduler)" as Client
+participant ":TransferBaseEngine" as Engine
+participant ":TransferBaseHandler" as Handler
+participant ":TransferConnectionFactory" as Factory
+database ":Repository" as Repository
+
+== PHASE 1: Engine Startup ==
+
+Client -> Engine: startEngine(flowId)
+activate Engine
+
+Engine -> Repository: findConnections(flowId)\n[t_connection]
+activate Repository
+Repository --> Engine: List<Connection>
+deactivate Repository
+
+Engine -> Repository: getEngineConfig(flowId)\n[t_transfer_engine]
+activate Repository
+Repository --> Engine: EngineConfig
+deactivate Repository
+
+Engine -> Engine: preparePaths()
+note right: Creates /raw, /processed, /archive
+
+== PHASE 2: Handler Workflow (Parallel) ==
+
+loop for each connection
+    Engine -> Handler: <<create>>
+    activate Handler
+
+    Engine ->> Handler: run() [async]
+    note right: Parallel execution\nvia ExecutorService
+
+    alt connection successful
+        Handler -> Factory: connect(server, path)
+        activate Factory
+        Factory --> Handler: success
+        deactivate Factory
+
+        Handler -> Repository: getLastModifiedTime(connectionId)\n[t_connection.last_modified_time]
+        activate Repository
+        Repository --> Handler: lastModifiedTime
+        deactivate Repository
+
+        loop for each file to download
+            Handler -> Factory: listFiles(path)
+            activate Factory
+            Factory --> Handler: fileList
+            deactivate Factory
+
+            Handler -> Factory: downloadFile(filename)
+            activate Factory
+            Factory --> Handler: file
+            deactivate Factory
+        end
+
+        Handler -> Repository: saveResults(fileList)\n[t_transfer_connection_result]
+        activate Repository
+        Repository --> Handler
+        deactivate Repository
+
+        Handler -> Repository: updateLastModifiedTime(connectionId, time)\n[t_connection.last_modified_time]
+        activate Repository
+        Repository --> Handler
+        deactivate Repository
+
+        Handler -> Factory: disconnect()
+        activate Factory
+        Factory --> Handler
+        deactivate Factory
+
+        Handler ->> Engine: handlerComplete() [async]
+
+    else connection failed
+        Handler -> Factory: disconnect()
+        activate Factory
+        Factory --> Handler
+        deactivate Factory
+    end
+
+    deactivate Handler
+end
+
+== PHASE 3: Engine Post-processing ==
+
+Engine -> Engine: awaitHandlerCompletion()
+note right: Waits for all async\nhandlers to complete
+
+Engine -> Engine: decompress()
+note right: Internal operation\n(no separate lifeline)
+
+Engine -> Engine: validation()
+note right: Internal operation\n(no separate lifeline)
+
+Engine -> Repository: saveProcessHistory(flowId, stats)\n[t_transfer_process_history]
+activate Repository
+Repository --> Engine
+deactivate Repository
+
+Engine --> Client: return
+deactivate Engine
+
+@enduml

@@ -1,0 +1,78 @@
+sequenceDiagram
+    title Transfer Engine Complete Flow - Simplified (5 Lifelines - Unified Repository)
+
+    actor Client as Client (Scheduler)
+    participant Engine as :TransferBaseEngine
+    participant Handler as :TransferBaseHandler
+    participant Factory as :TransferConnectionFactory
+    participant Repository as :Repository
+
+    Note over Client,Repository: PHASE 1: Engine Startup
+
+    Client->>+Engine: startEngine(flowId)
+
+    Engine->>+Repository: findConnections(flowId)<br/>[t_connection]
+    Repository-->>-Engine: List<Connection>
+
+    Engine->>+Repository: getEngineConfig(flowId)<br/>[t_transfer_engine]
+    Repository-->>-Engine: EngineConfig
+
+    Engine->>Engine: preparePaths()
+    Note right of Engine: Creates /raw, /processed, /archive
+
+    Note over Client,Repository: PHASE 2: Handler Workflow (Parallel)
+
+    loop for each connection
+        Engine->>+Handler: <<create>>
+        Engine-->>Handler: run() [async]
+        Note right of Handler: Parallel execution<br/>via ExecutorService
+
+        alt connection successful
+            Handler->>+Factory: connect(server, path)
+            Factory-->>-Handler: success
+
+            Handler->>+Repository: getLastModifiedTime(connectionId)<br/>[t_connection.last_modified_time]
+            Repository-->>-Handler: lastModifiedTime
+
+            loop for each file to download
+                Handler->>+Factory: listFiles(path)
+                Factory-->>-Handler: fileList
+
+                Handler->>+Factory: downloadFile(filename)
+                Factory-->>-Handler: file
+            end
+
+            Handler->>+Repository: saveResults(fileList)<br/>[t_transfer_connection_result]
+            Repository-->>-Handler:
+
+            Handler->>+Repository: updateLastModifiedTime(connectionId, time)<br/>[t_connection.last_modified_time]
+            Repository-->>-Handler:
+
+            Handler->>+Factory: disconnect()
+            Factory-->>-Handler:
+
+            Handler-->>Engine: handlerComplete() [async]
+
+        else connection failed
+            Handler->>+Factory: disconnect()
+            Factory-->>-Handler:
+        end
+
+        deactivate Handler
+    end
+
+    Note over Client,Repository: PHASE 3: Engine Post-processing
+
+    Engine->>Engine: awaitHandlerCompletion()
+    Note right of Engine: Waits for all async<br/>handlers to complete
+
+    Engine->>Engine: decompress()
+    Note right of Engine: Internal operation<br/>(no separate lifeline)
+
+    Engine->>Engine: validation()
+    Note right of Engine: Internal operation<br/>(no separate lifeline)
+
+    Engine->>+Repository: saveProcessHistory(flowId, stats)<br/>[t_transfer_process_history]
+    Repository-->>-Engine:
+
+    Engine-->>-Client: return
