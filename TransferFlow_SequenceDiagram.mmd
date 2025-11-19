@@ -1,0 +1,132 @@
+sequenceDiagram
+    title Transfer Engine Complete Flow - ETL Transfer System
+
+    participant Client as Client<br/>(Scheduler)
+    participant Engine as :TransferBaseEngine
+    participant ConnRepo as :ConnectionRepository
+    participant Handler as :TransferBaseHandler
+    participant Factory as :TransferConnectionFactory
+    participant ResultRepo as :TransferConnectionResultRepository
+    participant Decompress as :DecompressFactory
+    participant Validation as :XmlValidation
+
+    %% ============================================
+    %% PHASE 1: ENGINE STARTUP
+    %% ============================================
+
+    Client->>+Engine: startEngine(record)
+
+    Engine->>Engine: preparePaths()
+    Note right of Engine: Create /raw, /processed,<br/>/archive folders
+
+    Engine->>Engine: preEngine()
+    Note right of Engine: Optional pre-engine<br/>operations
+
+    Engine->>Engine: onEngine()
+    Note right of Engine: Coordinate handler<br/>execution
+
+    Engine->>+ConnRepo: findByFlowIdAndIsActive(flowId, true)
+    ConnRepo-->>-Engine: List<Connection>
+
+    %% ============================================
+    %% LOOP: For Each Connection
+    %% ============================================
+
+    loop for each connection
+        Engine->>+Handler: <<create>>
+        Engine-->>Handler: run() [async]
+        Note over Handler: Parallel execution<br/>per connection
+
+        %% ============================================
+        %% PHASE 2: HANDLER WORKFLOW
+        %% ============================================
+
+        Handler->>+Factory: connect()
+        Factory-->>-Handler: boolean (success/failed)
+
+        alt connection successful
+            Handler->>Handler: preHandler()
+
+            Handler->>+ResultRepo: getMaxModifiedTime(connectionId)
+            ResultRepo-->>-Handler: OffsetDateTime
+
+            Handler->>+Factory: readFiles(remotePath, filter, walkMethod)
+            Factory-->>-Handler: List<RemoteFileRecord>
+
+            Handler->>Handler: filterFiles()
+            Note right of Handler: Filter by<br/>lastModifiedTime
+
+            Handler->>Handler: setFileInfo()
+            Note right of Handler: Enrich metadata
+
+            Handler->>+ResultRepo: saveAll(results)
+            ResultRepo-->>-Handler:
+
+            Handler->>+ConnRepo: save(connection)
+            ConnRepo-->>-Handler:
+
+            Handler->>Handler: clearRemoteFiles()
+
+            Handler->>+ResultRepo: getFileListToTransfer(connectionId, ...)
+            ResultRepo-->>-Handler: List<TransferConnectionResult>
+
+            %% LOOP: Download Files
+            loop for each file to download
+                Handler->>+Factory: downloadFile(remotePath, localPath)
+                Factory-->>-Handler: RemoteFileTransferRecord
+
+                Handler->>+ResultRepo: save(result)
+                ResultRepo-->>-Handler:
+            end
+
+            Handler->>Handler: postHandler()
+
+            Handler->>+Factory: disconnect()
+            Factory-->>-Handler:
+
+            Handler-->>Engine: handlerComplete() [async]
+
+        else connection failed
+            Handler->>+Factory: disconnect()
+            Factory-->>-Handler:
+
+            Handler-->>Engine: handlerComplete() [async]
+            Note right of Handler: Failed notification
+        end
+
+        deactivate Handler
+    end
+
+    %% ============================================
+    %% SYNCHRONIZATION POINT
+    %% ============================================
+
+    Engine->>Engine: awaitHandlerCompletion()
+    Note right of Engine: Wait for ALL handlers<br/>ExecutorService.awaitTermination()
+
+    %% ============================================
+    %% PHASE 3: ENGINE POST-PROCESSING
+    %% ============================================
+
+    Engine->>Engine: decompress()
+
+    loop for each compressed file
+        Engine->>+Decompress: <<create>>
+        Engine->>Decompress: run()
+        Note right of Decompress: Decompress .gz,<br/>.zip files
+        Decompress-->>-Engine:
+    end
+
+    Engine->>Engine: validation()
+
+    loop for each XML file
+        Engine->>+Validation: <<create>>
+        Engine->>Validation: run()
+        Note right of Validation: Validate against<br/>XSD schema
+        Validation-->>-Engine:
+    end
+
+    Engine->>Engine: postEngine()
+    Note right of Engine: Archive, reports,<br/>trigger Parser module
+
+    Engine-->>-Client: return
