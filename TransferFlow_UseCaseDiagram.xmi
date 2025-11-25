@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+  <xmi:Documentation exporter="Manual" exporterVersion="1.0"/>
+
+  <uml:Model xmi:type="uml:Model" xmi:id="model1" name="Transfer Module Use Case Model">
+
+    <!-- Use Case Diagram -->
+    <packagedElement xmi:type="uml:Package" xmi:id="package1" name="Transfer Module">
+
+      <!-- ============================================ -->
+      <!-- ACTORS -->
+      <!-- ============================================ -->
+
+      <!-- Actor 1: Scheduler (Primary Actor) -->
+      <packagedElement xmi:type="uml:Actor" xmi:id="actor_scheduler" name="Scheduler">
+        <ownedComment xmi:id="comment_scheduler" annotatedElement="actor_scheduler">
+          <body>Cron-based scheduler that triggers transfer flows automatically</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- Actor 2: System Administrator -->
+      <packagedElement xmi:type="uml:Actor" xmi:id="actor_admin" name="System Administrator">
+        <ownedComment xmi:id="comment_admin" annotatedElement="actor_admin">
+          <body>Manages transfer configurations, connections, and engine settings</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- Actor 3: Monitoring System -->
+      <packagedElement xmi:type="uml:Actor" xmi:id="actor_monitor" name="Monitoring System">
+        <ownedComment xmi:id="comment_monitor" annotatedElement="actor_monitor">
+          <body>Monitors transfer execution, checks status, and generates reports</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- Actor 4: Remote Server (External System) -->
+      <packagedElement xmi:type="uml:Actor" xmi:id="actor_remote" name="Remote Server">
+        <ownedComment xmi:id="comment_remote" annotatedElement="actor_remote">
+          <body>External SFTP/FTP server hosting telecom network element files</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- ============================================ -->
+      <!-- USE CASES -->
+      <!-- ============================================ -->
+
+      <!-- UC1: Execute Transfer Flow (Main Use Case) -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc1" name="Execute Transfer Flow">
+        <ownedComment xmi:id="comment_uc1" annotatedElement="uc1">
+          <body>Main workflow: Start engine, execute handlers, download files, decompress, validate
+Triggered by: Scheduler via cron job (t_flow.flow_cron)
+Database tables: t_connection, t_transfer_engine, t_transfer_connection_result</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC2: Connect to Remote Server -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc2" name="Connect to Remote Server">
+        <ownedComment xmi:id="comment_uc2" annotatedElement="uc2">
+          <body>Establish SFTP/FTP connection to remote server
+Uses: TransferConnectionFactory
+Configuration: t_server (IP, port, credentials)</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC3: List and Filter Files -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc3" name="List and Filter Files">
+        <ownedComment xmi:id="comment_uc3" annotatedElement="uc3">
+          <body>Read remote file list and filter by lastModifiedTime
+Incremental transfer: Only new/changed files since last run
+Database: t_connection.last_modified_time</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC4: Download Files -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc4" name="Download Files">
+        <ownedComment xmi:id="comment_uc4" annotatedElement="uc4">
+          <body>Physical file transfer from remote to local /raw directory
+Retry mechanism: t_connection.transfer_try_count_max_limit
+Updates: t_transfer_connection_result (is_downloaded, file_size, transfer_try_count)</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC5: Store Transfer Results -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc5" name="Store Transfer Results">
+        <ownedComment xmi:id="comment_uc5" annotatedElement="uc5">
+          <body>Save file metadata and transfer status to database
+Repository.saveResults() → t_transfer_connection_result
+Repository.updateLastModifiedTime() → t_connection.last_modified_time</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC6: Decompress Files (Optional) -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc6" name="Decompress Files">
+        <ownedComment xmi:id="comment_uc6" annotatedElement="uc6">
+          <body>Extract compressed files (.gz, .zip) with thread pool
+Configuration: t_transfer_engine.decompress = true/false
+Location: /processed directory</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC7: Validate XML Files (Optional) -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc7" name="Validate XML Files">
+        <ownedComment xmi:id="comment_uc7" annotatedElement="uc7">
+          <body>Validate XML files against XSD schema
+Configuration: t_transfer_engine.validation = true/false
+Error handling: Log and continue</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC8: Configure Transfer Settings -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc8" name="Configure Transfer Settings">
+        <ownedComment xmi:id="comment_uc8" annotatedElement="uc8">
+          <body>Manage transfer configurations via database
+Tables: t_connection, t_transfer_engine, t_server, t_path, t_transfer_component
+Settings: retry limits, time filters, thread counts, workflow flags</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC9: Manage Connections -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc9" name="Manage Connections">
+        <ownedComment xmi:id="comment_uc9" annotatedElement="uc9">
+          <body>Create, update, activate/deactivate connections
+Database: t_connection (flow_id, server_id, path_id, transfer_work_type, filters)
+Fields: is_active, last_modified_time, transfer_try_count limits</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC10: Manage Engine Configuration -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc10" name="Manage Engine Configuration">
+        <ownedComment xmi:id="comment_uc10" annotatedElement="uc10">
+          <body>Configure workflow steps and thread pool sizes
+Database: t_transfer_engine
+Flags: pre_transfer, on_transfer, decompress, validation, post_transfer
+Thread counts: on_transfer_thread_count, decompress_thread_count, validation_thread_count</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC11: Monitor Transfer Status -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc11" name="Monitor Transfer Status">
+        <ownedComment xmi:id="comment_uc11" annotatedElement="uc11">
+          <body>View real-time transfer execution status and history
+Query: t_transfer_connection_result, t_transfer_process_history
+Metrics: file counts, sizes, success/failure rates, execution times</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC12: View Transfer History -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc12" name="View Transfer History">
+        <ownedComment xmi:id="comment_uc12" annotatedElement="uc12">
+          <body>Query historical transfer records
+Database: t_transfer_connection_result (9.1MB - largest table)
+Fields: flow_process_code, remote_file_name, is_downloaded, file_modified_time, transfer_try_count</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC13: View Process Statistics -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc13" name="View Process Statistics">
+        <ownedComment xmi:id="comment_uc13" annotatedElement="uc13">
+          <body>View aggregated statistics per flow execution
+Database: t_transfer_process_history
+Statistics: total files, success count, failure count, total size, execution duration</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- UC14: Retry Failed Transfer -->
+      <packagedElement xmi:type="uml:UseCase" xmi:id="uc14" name="Retry Failed Transfer">
+        <ownedComment xmi:id="comment_uc14" annotatedElement="uc14">
+          <body>Automatic retry for failed transfers within limits
+Configuration: t_connection.transfer_try_count_max_limit (default: 10)
+Updates: t_transfer_connection_result.transfer_try_count</body>
+        </ownedComment>
+      </packagedElement>
+
+      <!-- ============================================ -->
+      <!-- ASSOCIATIONS (Actor -> Use Case) -->
+      <!-- ============================================ -->
+
+      <!-- Scheduler -> Execute Transfer Flow -->
+      <packagedElement xmi:type="uml:Association" xmi:id="assoc1">
+        <memberEnd xmi:idref="end1_scheduler"/>
+        <memberEnd xmi:idref="end1_uc1"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end1_scheduler" type="actor_scheduler"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end1_uc1" type="uc1"/>
+      </packagedElement>
+
+      <!-- System Administrator -> Configure Transfer Settings -->
+      <packagedElement xmi:type="uml:Association" xmi:id="assoc2">
+        <memberEnd xmi:idref="end2_admin"/>
+        <memberEnd xmi:idref="end2_uc8"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end2_admin" type="actor_admin"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end2_uc8" type="uc8"/>
+      </packagedElement>
+
+      <!-- Monitoring System -> Monitor Transfer Status -->
+      <packagedElement xmi:type="uml:Association" xmi:id="assoc3">
+        <memberEnd xmi:idref="end3_monitor"/>
+        <memberEnd xmi:idref="end3_uc11"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end3_monitor" type="actor_monitor"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end3_uc11" type="uc11"/>
+      </packagedElement>
+
+      <!-- Remote Server -> Connect to Remote Server (reverse - system connects to remote) -->
+      <packagedElement xmi:type="uml:Association" xmi:id="assoc4">
+        <memberEnd xmi:idref="end4_uc2"/>
+        <memberEnd xmi:idref="end4_remote"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end4_uc2" type="uc2"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="end4_remote" type="actor_remote"/>
+      </packagedElement>
+
+      <!-- ============================================ -->
+      <!-- USE CASE RELATIONSHIPS -->
+      <!-- ============================================ -->
+
+      <!-- <<include>> relationships: Execute Transfer Flow includes these -->
+
+      <!-- Execute Transfer Flow <<include>> Connect to Remote Server -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include1">
+        <includingCase xmi:idref="uc1"/>
+        <addition xmi:idref="uc2"/>
+      </packagedElement>
+
+      <!-- Execute Transfer Flow <<include>> List and Filter Files -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include2">
+        <includingCase xmi:idref="uc1"/>
+        <addition xmi:idref="uc3"/>
+      </packagedElement>
+
+      <!-- Execute Transfer Flow <<include>> Download Files -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include3">
+        <includingCase xmi:idref="uc1"/>
+        <addition xmi:idref="uc4"/>
+      </packagedElement>
+
+      <!-- Execute Transfer Flow <<include>> Store Transfer Results -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include4">
+        <includingCase xmi:idref="uc1"/>
+        <addition xmi:idref="uc5"/>
+      </packagedElement>
+
+      <!-- <<extend>> relationships: Optional extensions to Execute Transfer Flow -->
+
+      <!-- Decompress Files <<extend>> Execute Transfer Flow -->
+      <packagedElement xmi:type="uml:Extend" xmi:id="extend1">
+        <extendedCase xmi:idref="uc1"/>
+        <extension xmi:idref="uc6"/>
+        <extensionLocation xmi:id="extpoint1" name="after file download"/>
+      </packagedElement>
+
+      <!-- Validate XML Files <<extend>> Execute Transfer Flow -->
+      <packagedElement xmi:type="uml:Extend" xmi:id="extend2">
+        <extendedCase xmi:idref="uc1"/>
+        <extension xmi:idref="uc7"/>
+        <extensionLocation xmi:id="extpoint2" name="after decompression"/>
+      </packagedElement>
+
+      <!-- Retry Failed Transfer <<extend>> Execute Transfer Flow -->
+      <packagedElement xmi:type="uml:Extend" xmi:id="extend3">
+        <extendedCase xmi:idref="uc1"/>
+        <extension xmi:idref="uc14"/>
+        <extensionLocation xmi:id="extpoint3" name="on download failure"/>
+      </packagedElement>
+
+      <!-- <<include>> relationships: Configure Transfer Settings includes these -->
+
+      <!-- Configure Transfer Settings <<include>> Manage Connections -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include5">
+        <includingCase xmi:idref="uc8"/>
+        <addition xmi:idref="uc9"/>
+      </packagedElement>
+
+      <!-- Configure Transfer Settings <<include>> Manage Engine Configuration -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include6">
+        <includingCase xmi:idref="uc8"/>
+        <addition xmi:idref="uc10"/>
+      </packagedElement>
+
+      <!-- <<include>> relationships: Monitor Transfer Status includes these -->
+
+      <!-- Monitor Transfer Status <<include>> View Transfer History -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include7">
+        <includingCase xmi:idref="uc11"/>
+        <addition xmi:idref="uc12"/>
+      </packagedElement>
+
+      <!-- Monitor Transfer Status <<include>> View Process Statistics -->
+      <packagedElement xmi:type="uml:Include" xmi:id="include8">
+        <includingCase xmi:idref="uc11"/>
+        <addition xmi:idref="uc13"/>
+      </packagedElement>
+
+    </packagedElement>
+
+  </uml:Model>
+</xmi:XMI>
