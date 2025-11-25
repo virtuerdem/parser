@@ -366,8 +366,20 @@ Updates: t_transfer_connection_result.transfer_try_count</body>
       <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow1" source="act_handler_start" target="act_step6"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow2" source="act_step6" target="act_decision_critical"/>
 
-      <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow3" source="act_decision_critical" target="act_step7" name="YES (Connected)"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow4" source="act_decision_critical" target="act_step_fail" name="NO (Failed)"/>
+      <!-- Decision: Connection Success - YES branch -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow3" source="act_decision_critical" target="act_step7" name="[connection successful]">
+        <guard xmi:type="uml:OpaqueExpression" xmi:id="act_guard_yes">
+          <body>connection successful</body>
+        </guard>
+      </edge>
+
+      <!-- Decision: Connection Success - NO branch -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow4" source="act_decision_critical" target="act_step_fail" name="[connection failed]">
+        <guard xmi:type="uml:OpaqueExpression" xmi:id="act_guard_no">
+          <body>connection failed</body>
+        </guard>
+      </edge>
+
       <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow_fail" source="act_step_fail" target="act_final_fail"/>
 
       <edge xmi:type="uml:ControlFlow" xmi:id="act_hflow5" source="act_step7" target="act_step8"/>

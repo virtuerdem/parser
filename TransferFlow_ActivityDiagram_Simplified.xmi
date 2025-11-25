@@ -150,8 +150,20 @@
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow2" source="step6" target="decision_critical"/>
 
       <!-- CRITICAL DECISION: Connection Success Branch -->
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="decision_critical" target="step7" name="YES (Connected)"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="hflow4" source="decision_critical" target="step_fail" name="NO (Failed)"/>
+      <!-- YES: Connection successful - proceed with file transfer -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow3" source="decision_critical" target="step7" name="[connection successful]">
+        <guard xmi:type="uml:OpaqueExpression" xmi:id="guard_yes">
+          <body>connection successful</body>
+        </guard>
+      </edge>
+
+      <!-- NO: Connection failed - cleanup and exit -->
+      <edge xmi:type="uml:ControlFlow" xmi:id="hflow4" source="decision_critical" target="step_fail" name="[connection failed]">
+        <guard xmi:type="uml:OpaqueExpression" xmi:id="guard_no">
+          <body>connection failed</body>
+        </guard>
+      </edge>
+
       <edge xmi:type="uml:ControlFlow" xmi:id="hflow_fail" source="step_fail" target="final_fail"/>
 
       <!-- Sequential Handler Flow (on success) -->
