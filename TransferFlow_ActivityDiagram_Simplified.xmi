@@ -16,26 +16,48 @@
 
       <!-- Step 1: Start Engine -->
       <node xmi:type="uml:Action" xmi:id="step1" name="[Engine] startEngine(flowId)">
-        <body>Entry point - triggered by Scheduler</body>
+        <body>ENTRY POINT - Transfer workflow başlatılır
+- Input: flowId (t_flow.id)
+- Scheduler tarafından cron job ile tetiklenir
+- Engine konfigürasyonunu yükler ve workflow'u başlatır
+- Thread pool'ları initialize eder</body>
       </node>
 
       <!-- Step 2: Load Configuration from Repository -->
       <node xmi:type="uml:Action" xmi:id="step2" name="[Engine] Repository.findConnections(flowId)">
-        <body>DB: t_connection - Load connection configurations</body>
+        <body>DATABASE: t_connection tablosundan aktif connection'ları yükle
+- Query: SELECT * FROM t_connection WHERE flow_id = ? AND is_active = true
+- Returns: List&lt;Connection&gt; (server_id, path_id, filters, retry limits)
+- Her connection bir SFTP/FTP bağlantısını temsil eder
+- Connection başına bir Handler thread oluşturulacak</body>
       </node>
 
       <node xmi:type="uml:Action" xmi:id="step3" name="[Engine] Repository.getEngineConfig(flowId)">
-        <body>DB: t_transfer_engine - Load workflow flags and thread counts</body>
+        <body>DATABASE: t_transfer_engine tablosundan workflow konfigürasyonu
+- Query: SELECT * FROM t_transfer_engine WHERE flow_id = ?
+- Flags: pre_transfer, on_transfer, decompress, validation, post_transfer
+- Thread counts: on_transfer_thread_count (default: 8), decompress_thread_count, validation_thread_count
+- Bu flagler hangi adımların çalışacağını belirler</body>
       </node>
 
       <!-- Step 4: Prepare Paths -->
       <node xmi:type="uml:Action" xmi:id="step4" name="[Engine] preparePaths()">
-        <body>Create /raw, /processed, /archive folders</body>
+        <body>DIRECTORY SETUP - Gerekli klasör yapısını oluştur
+- Creates: /raw (download edilen dosyalar)
+- Creates: /processed (decompress edilen dosyalar)
+- Creates: /archive (işlenmiş dosyalar)
+- Folder structure: /[component]/[date]/[raw|processed|archive]
+- If exists: skip creation</body>
       </node>
 
       <!-- Step 5: Create Handlers -->
       <node xmi:type="uml:Action" xmi:id="step5" name="[Engine] For Each Connection: Create Handler">
-        <body>Parallel execution with ExecutorService thread pool</body>
+        <body>PARALLEL EXECUTION - Her connection için Handler thread oluştur
+- ExecutorService thread pool kullanır (size: on_transfer_thread_count)
+- Her connection için TransferBaseHandler instance yaratır
+- Handler'lar parallel olarak çalışır (non-blocking)
+- Engine tüm handler'ların tamamlanmasını bekler
+- Thread pool: fixed size, bounded queue</body>
       </node>
 
       <!-- ============================================ -->
@@ -43,12 +65,23 @@
       <!-- ============================================ -->
 
       <node xmi:type="uml:CallBehaviorAction" xmi:id="handler_start" name="[Handler] run()">
-        <body>One handler per connection - runs in parallel threads</body>
+        <body>HANDLER THREAD BAŞLATILDI - Implements Runnable interface
+- Her handler bir connection için çalışır
+- Parallel thread execution (ExecutorService pool)
+- Independent: bir handler'ın hatası diğerlerini etkilemez
+- Life cycle: connect → transfer → disconnect
+- Exception handling: log and continue (other handlers keep running)</body>
       </node>
 
       <!-- Step 6: Connect to Remote Server -->
       <node xmi:type="uml:Action" xmi:id="step6" name="[Handler] ConnectionFactory.connect(server, path)">
-        <body>SFTP/FTP connection establishment using t_server config</body>
+        <body>REMOTE CONNECTION - SFTP/FTP bağlantısı kur
+- Input: t_server (IP, port, username, password, protocol)
+- Protocol: SFTP (default) or FTP
+- Connection timeout: 30 seconds
+- Returns: boolean (success/failure)
+- On failure: log error, throw ConnectionException
+- CRITICAL DECISION POINT: Success/Failure determines next step</body>
       </node>
 
       <!-- CRITICAL DECISION: Connection Success -->
@@ -56,49 +89,99 @@
 
       <!-- Connection Failed Path -->
       <node xmi:type="uml:Action" xmi:id="step_fail" name="[Handler] ConnectionFactory.disconnect()">
-        <body>Connection failed - cleanup and exit this handler</body>
+        <body>CONNECTION FAILED - Cleanup ve handler'ı sonlandır
+- Reason: Wrong credentials, network error, server unreachable
+- Actions: close socket, release resources, log error
+- Database: connection failure kaydedilmez (no results to save)
+- Handler exits: diğer handler'lar çalışmaya devam eder
+- End state: HANDLER FAILED (individual failure, not system failure)</body>
       </node>
 
       <node xmi:type="uml:ActivityFinalNode" xmi:id="final_fail" name="END - HANDLER FAILED"/>
 
       <!-- Step 7: Get Last Modified Time -->
       <node xmi:type="uml:Action" xmi:id="step7" name="[Handler] Repository.getLastModifiedTime(connectionId)">
-        <body>DB: t_connection.last_modified_time - For incremental transfer</body>
+        <body>DATABASE: Incremental transfer için son dosya zamanını oku
+- Query: SELECT last_modified_time FROM t_connection WHERE id = ?
+- Purpose: Sadece yeni/değişmiş dosyaları transfer et
+- If NULL: ilk transfer, tüm dosyalar indirilir
+- If NOT NULL: sadece lastModifiedTime'dan sonraki dosyalar
+- Performance: milyonlarca dosya arasından filtering</body>
       </node>
 
       <!-- Step 8: List Remote Files -->
       <node xmi:type="uml:Action" xmi:id="step8" name="[Handler] ConnectionFactory.listFiles(path)">
-        <body>Read file list from remote server with metadata</body>
+        <body>REMOTE FILE LISTING - Uzak sunucudaki dosya listesini oku
+- SFTP command: ls -la /remote/path
+- Returns: List&lt;RemoteFile&gt; (name, size, modifiedTime, permissions)
+- Recursive: path_walk_method = NESTED ise subdirectory'leri de tarar
+- Performance: 10,000+ files için optimize edilmiş
+- Metadata: file name, size (bytes), modified time, path</body>
       </node>
 
       <!-- Step 9: Filter Files -->
       <node xmi:type="uml:Action" xmi:id="step9" name="[Handler] filterFiles(lastModifiedTime)">
-        <body>Filter files: only transfer new/changed files since last run</body>
+        <body>FILE FILTERING - Sadece yeni/değişmiş dosyaları seç
+- Filter: file.modifiedTime &gt; connection.lastModifiedTime
+- Additional filters: file size, extension, naming pattern
+- Fragment time filter: min/max time limits (t_connection config)
+- Retry filter: transfer_try_count &lt; max_limit
+- Result: Filtered file list ready for download
+- Performance gain: Sadece delta transfer (incremental)</body>
       </node>
 
       <!-- Step 10: Download Files -->
       <node xmi:type="uml:Action" xmi:id="step10" name="[Handler] ConnectionFactory.downloadFile()">
-        <body>Physical file transfer - loop for each filtered file</body>
+        <body>FILE DOWNLOAD - Fiziksel dosya transferi (LOOP: her dosya için)
+- Protocol: SFTP GET command, binary mode
+- Target: /raw/[component]/[date]/[filename]
+- Retry mechanism: max 10 attempts (configurable)
+- Buffer size: 64KB chunks
+- Progress tracking: bytes transferred, speed (MB/s)
+- On error: increment transfer_try_count, retry or skip
+- Typical files: XML.gz (Huawei eNodeB PM: 1-50MB, CM: 100KB-5MB)</body>
       </node>
 
       <!-- Step 11: Save Results to Database -->
       <node xmi:type="uml:Action" xmi:id="step11" name="[Handler] Repository.saveResults(fileList)">
-        <body>DB: t_transfer_connection_result - Save file metadata and transfer status</body>
+        <body>DATABASE: Transfer sonuçlarını kaydet (BULK INSERT)
+- Table: t_transfer_connection_result (9.1MB - en büyük tablo)
+- Fields: file_id, remote_file_name, is_downloaded, file_size,
+         transfer_try_count, file_modified_time, file_read_time,
+         file_transfer_time, source_node_name, fragment_time
+- Bulk insert: 1000+ records at once (batch operation)
+- Transaction: COMMIT on success, ROLLBACK on error
+- Purpose: Transfer history, audit trail, debugging</body>
       </node>
 
       <!-- Step 12: Update Last Modified Time -->
       <node xmi:type="uml:Action" xmi:id="step12" name="[Handler] Repository.updateLastModifiedTime(connectionId, time)">
-        <body>DB: t_connection.last_modified_time - Update with newest file time</body>
+        <body>DATABASE: Son dosya zamanını güncelle (incremental transfer)
+- Query: UPDATE t_connection SET last_modified_time = ? WHERE id = ?
+- Value: MAX(file.modifiedTime) from downloaded files
+- Purpose: Bir sonraki çalıştırmada sadece yeni dosyalar indirilecek
+- Critical for performance: 10,000+ files günlük artış
+- Example: 2024-07-07 16:01:53.736 → 2024-07-08 03:30:00.000</body>
       </node>
 
       <!-- Step 13: Disconnect -->
       <node xmi:type="uml:Action" xmi:id="step13" name="[Handler] ConnectionFactory.disconnect()">
-        <body>Close connection, release resources</body>
+        <body>CONNECTION CLOSE - Bağlantıyı kapat, kaynakları serbest bırak
+- SFTP: close session, disconnect socket
+- Cleanup: temp files, buffers, file handles
+- Release: thread resources, memory
+- Logging: transfer summary (file count, total size, duration)
+- Always execute: finally block (even on exception)</body>
       </node>
 
       <!-- Step 14: Handler Complete -->
       <node xmi:type="uml:Action" xmi:id="step14" name="[Handler] Notify Engine: handlerComplete()">
-        <body>Async notification to Engine - handler finished successfully</body>
+        <body>ASYNC NOTIFICATION - Handler tamamlandı, Engine'e bildir
+- Async message: non-blocking, fire-and-forget
+- CountDownLatch.countDown() veya CompletableFuture.complete()
+- Engine: tüm handler'ların bitmesini bekliyor
+- Success: bu handler başarıyla tamamlandı
+- Next: Engine post-processing (decompress, validation)</body>
       </node>
 
       <!-- ============================================ -->
@@ -107,27 +190,64 @@
 
       <!-- Step 15: Await Handler Completion -->
       <node xmi:type="uml:Action" xmi:id="step15" name="[Engine] awaitHandlerCompletion()">
-        <body>Wait for all parallel handlers to complete</body>
+        <body>SYNCHRONIZATION POINT - Tüm parallel handler'ların bitmesini bekle
+- Mechanism: CountDownLatch.await() or ExecutorService.awaitTermination()
+- Blocking call: Engine thread bu noktada bekler
+- Timeout: configurable (default: 1 hour)
+- Success: tüm handler'lar tamamlandı (success or failure)
+- On timeout: log warning, proceed anyway
+- Result: downloaded files ready in /raw directory</body>
       </node>
 
       <!-- Step 16: Decompress (Internal Operation) -->
       <node xmi:type="uml:Action" xmi:id="step16" name="[Engine] decompress()">
-        <body>Internal operation - decompress .gz, .zip files with thread pool. No separate lifeline.</body>
+        <body>DECOMPRESSION - Sıkıştırılmış dosyaları aç (.gz, .zip)
+- Internal operation (no separate lifeline/class)
+- Config: t_transfer_engine.decompress = true/false
+- Thread pool: decompress_thread_count (default: 8 threads)
+- Input: /raw/*.gz, /raw/*.zip
+- Output: /processed/*.xml
+- Libraries: Java GZIPInputStream, ZipInputStream
+- Error handling: log and continue (corrupt files are skipped)
+- Typical: 100MB .gz → 500MB XML (5x expansion)
+- Performance: 8 threads × 10MB/s = 80MB/s decompression rate</body>
       </node>
 
       <!-- Step 17: Validation (Internal Operation) -->
       <node xmi:type="uml:Action" xmi:id="step17" name="[Engine] validation()">
-        <body>Internal operation - validate XML against XSD schema. No separate lifeline.</body>
+        <body>XML VALIDATION - XML dosyalarını XSD schema'ya göre doğrula
+- Internal operation (no separate lifeline/class)
+- Config: t_transfer_engine.validation = true/false
+- Thread pool: validation_thread_count (default: 8 threads)
+- Input: /processed/*.xml
+- XSD schema: vendor-specific (Huawei, Ericsson, Nokia)
+- Validation: javax.xml.validation.Validator
+- Error handling: log invalid files, continue processing
+- Purpose: corrupt/malformed XML'leri Parser'a göndermemek
+- Performance: 1000 files/second (small XMLs)</body>
       </node>
 
       <!-- Step 18: Save Process History -->
       <node xmi:type="uml:Action" xmi:id="step18" name="[Engine] Repository.saveProcessHistory(flowId, stats)">
-        <body>DB: t_transfer_process_history - Save execution statistics</body>
+        <body>DATABASE: Flow execution istatistiklerini kaydet
+- Table: t_transfer_process_history
+- Fields: flow_process_code, total_files, success_count, failure_count,
+         total_size (bytes), execution_duration (ms), start_time, end_time
+- Purpose: Performance monitoring, trend analysis, debugging
+- Statistics: toplam dosya sayısı, başarı oranı, süre, toplam boyut
+- Example: flow_id=111, total=1000, success=998, failed=2, size=50GB, duration=180s</body>
       </node>
 
       <!-- Step 19: Post Engine -->
       <node xmi:type="uml:Action" xmi:id="step19" name="[Engine] postEngine()">
-        <body>Archive, reports, notifications, trigger next module (Parser)</body>
+        <body>POST-PROCESSING - Archive, notifications, trigger next module
+- Archive: move /processed files to /archive (optional cleanup)
+- Reports: generate summary report (file counts, sizes, errors)
+- Notifications: email/SMS alerts on success/failure
+- Trigger: start next module (Parser) via message queue or REST API
+- Cleanup: delete old files (retention policy: 30 days)
+- Logging: final summary to application log
+- Integration: Kafka, RabbitMQ, or HTTP callback</body>
       </node>
 
       <!-- Final Node -->
