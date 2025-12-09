@@ -1,0 +1,601 @@
+🔵 PHASE 1: Engine Startup (Başlangıç)
+1️⃣ startEngine(flowId)
+Ne Yapar:
+- Transfer workflow'unun başlangıç noktası
+- Scheduler (cron job) tarafından otomatik tetiklenir
+- Örnek cron: "0 * * * * *" (her saat başı)
+
+Detay:
+- flowId örnek: 111 (VF_TR_D_HW_ENB-PM)
+- ExecutorService thread pool'ları oluşturur
+- Log dosyasına başlangıç kaydı yazar
+- JVM heap memory check yapar
+
+Gerçek Kullanım:
+Scheduler → 10:00:00 → startEngine(flowId=111) çağrısı
+
+2️⃣ Repository.findConnections(flowId)
+Ne Yapar:
+Bu flow'a ait tüm aktif connection'ları database'den yükler
+
+SQL Query:
+SELECT * FROM t_connection 
+WHERE flow_id = 111 
+  AND is_active = true
+
+Dönen Data (Örnek):
+[
+  {id: 1111, server_id: 2, path_id: 117, last_modified_time: "2024-07-07 16:01:53"},
+  {id: 1112, server_id: 2, path_id: 118, last_modified_time: "2024-07-07 16:01:53"},
+  {id: 1113, server_id: 2, path_id: 119, last_modified_time: "2024-07-07 16:01:53"}
+]
+
+Her Connection Nedir:
+- server_id: Hangi SFTP server (IP, port, credentials)
+- path_id: Hangi remote path (/export/home/omc/var/fileint/pmneexport/)
+- last_modified_time: Son transfer edilen dosyanın tarihi (incremental için)
+
+Sonuç:
+3 connection → 3 Handler thread yaratılacak (parallel)
+
+3️⃣ Repository.getEngineConfig(flowId)
+Ne Yapar:
+Bu flow için hangi adımların çalışacağını belirleyen konfigürasyonu yükler
+
+SQL Query:
+SELECT * FROM t_transfer_engine 
+WHERE flow_id = 111
+
+Dönen Data (Örnek):
+{
+  flow_id: 111,
+  pre_transfer: true,
+  on_transfer: true,
+  decompress: true,           ← .gz dosyalarını aç
+  validation: true,            ← XML'leri XSD ile validate et
+  post_transfer: true,
+  on_transfer_thread_count: 8, ← Kaç tane handler parallel çalışsın
+  decompress_thread_count: 8,
+  validation_thread_count: 8
+}
+
+Bu Flags Ne İşe Yarar:
+- decompress=false → .gz dosyaları olduğu gibi bırakılır
+- validation=false → XML validation atlanır (daha hızlı)
+- Thread counts → Performance tuning için
+
+4️⃣ preparePaths()
+Ne Yapar:
+Dosyaların indirileceği, işleneceği klasörleri oluşturur
+
+Oluşturulan Klasörler:
+/data/transfer/HW_ENB_PM_TRANSFER/20240708/raw/
+/data/transfer/HW_ENB_PM_TRANSFER/20240708/processed/
+/data/transfer/HW_ENB_PM_TRANSFER/20240708/archive/
+
+Detay:
+- component: HW_ENB_PM_TRANSFER (t_transfer_component tablosundan)
+- date: 20240708 (bugünün tarihi)
+- Eğer klasör varsa → skip (hata vermez)
+- Eğer disk doluysa → Exception throw eder
+
+Neden Gerekli:
+Her günün dosyaları ayrı klasörlerde tutulur
+Örnek: 1 haftalık veri = 7 klasör (retention policy)
+
+5️⃣ For Each Connection: Create Handler
+Ne Yapar:
+Her connection için bir Handler thread yaratır ve parallel çalıştırır
+
+Kod Mantığı:
+ExecutorService executor = Executors.newFixedThreadPool(8);
+for (Connection conn : connections) {
+    TransferBaseHandler handler = new TransferBaseHandler(conn);
+    executor.submit(handler); // Async çalıştır
+}
+
+Örnek:
+3 connection → 3 Handler thread
+Thread-1: eNodeB_001 için transfer
+Thread-2: eNodeB_002 için transfer  
+Thread-3: eNodeB_003 için transfer
+
+Her üçü AYNI ANDA çalışır (parallel)
+
+Performance:
+Sequential: 3 × 10 dakika = 30 dakika
+Parallel: MAX(10, 10, 10) = 10 dakika ✅
+
+🟢 PHASE 2: Handler Workflow (Her Connection İçin)
+6️⃣ run()
+Ne Yapar:
+Handler thread'in ana metodu (Runnable interface)
+
+Kod:
+public void run() {
+    try {
+        // Tüm işlemler burada
+    } catch (Exception e) {
+        log.error("Handler failed", e);
+        // DEVAM ET (diğer handler'lar etkilenmez)
+    }
+}
+
+Önemli:
+Bir handler hata verse bile diğerleri çalışmaya devam eder
+Örnek: eNodeB_001 bağlantı hatası → eNodeB_002 ve 003 etkilenmez
+
+7️⃣ ConnectionFactory.connect(server, path)
+Ne Yapar:
+Uzak SFTP/FTP sunucusuna bağlanır
+
+Server Bilgisi (t_server tablosundan):
+{
+  id: 2,
+  ip: "192.168.0.180",
+  port: 22,
+  username: "ttg",
+  password: "ttgttg",
+  protocol: "SFTP"
+}
+
+Bağlantı Süreci:
+1. TCP socket aç (192.168.0.180:22)
+2. SSH handshake
+3. Authentication (username/password)
+4. SFTP session başlat
+5. Change directory → /export/home/omc/var/fileint/pmneexport/
+
+Timeout:
+30 saniye içinde bağlanamazsa → ConnectionException
+
+Hata Durumları:
+- Wrong password → Authentication failed
+- Network down → Connection timeout
+- Server kapalı → Connection refused
+
+Bu durumda:
+→ disconnect() çağrılır
+→ Handler sonlanır (diğerleri devam eder)
+→ Database'e kayıt YAPILMAZ (failed connection)
+
+8️⃣ Repository.getLastModifiedTime(connectionId)
+Ne Yapar:
+Son transfer edilen dosyanın tarihini database'den okur
+
+SQL Query:
+SELECT last_modified_time 
+FROM t_connection 
+WHERE id = 1111
+
+Dönen Değer:
+"2024-07-07 16:01:53.736"
+
+Bu Ne İşe Yarar (CRITICAL):
+Incremental Transfer Mantığı:
+- İlk çalışma: last_modified_time = NULL → TÜM DOSYALAR indirilir
+- 2. çalışma: last_modified_time = "2024-07-07 16:01:53" 
+  → SADECE bu tarihten SONRAKI dosyalar indirilir
+
+Performance Kazancı:
+İlk çalışma: 100,000 dosya indir (10 saat)
+2. çalışma: 1,000 yeni dosya indir (6 dakika) ✅
+
+Örnekle:
+Bugün saat 10:00'da çalıştı → 1000 dosya indirdi
+Bugün saat 11:00'da çalıştı → Sadece 10:00'dan sonraki dosyalar (50 dosya)
+
+9️⃣ ConnectionFactory.listFiles(path)
+Ne Yapar:
+Remote server'daki dosya listesini okur
+
+SFTP Command:
+ls -la /export/home/omc/var/fileint/pmneexport/
+
+Dönen Data (Örnek):
+[
+  {name: "A20240708.0000+0300-0100+0300_eNodeB_001.xml.gz", 
+   size: 15728640, 
+   modifiedTime: "2024-07-08 00:15:00"},
+  
+  {name: "A20240708.0100+0300-0200+0300_eNodeB_001.xml.gz",
+   size: 16234567,
+   modifiedTime: "2024-07-08 01:15:00"},
+  
+  ... (10,000+ dosya)
+]
+
+Recursive Scan:
+Eğer path_walk_method = "NESTED" ise:
+/pmneexport/
+  ├── neexport_20240708/
+  │   ├── eNodeB_001/
+  │   └── eNodeB_002/
+  └── neexport_20240709/
+
+Tüm subdirectory'leri tarar
+
+Performance:
+10,000 dosya listesi → 2-3 saniye (SFTP optimize edilmiş)
+
+🔟 filterFiles(lastModifiedTime)
+Ne Yapar:
+Sadece yeni/değişmiş dosyaları seçer
+
+Filter Mantığı:
+List<File> filtered = new ArrayList<>();
+for (File f : allFiles) {
+    if (f.modifiedTime > lastModifiedTime) {  // ← CORE LOGIC
+        filtered.add(f);
+    }
+}
+
+Örnek:
+lastModifiedTime = "2024-07-07 16:01:53"
+
+Tüm Dosyalar (10,000):
+❌ A20240707.1500+0300_eNodeB_001.xml.gz → modifiedTime: 2024-07-07 15:30:00 (ESKİ)
+❌ A20240707.1530+0300_eNodeB_001.xml.gz → modifiedTime: 2024-07-07 16:00:00 (ESKİ)
+✅ A20240707.1600+0300_eNodeB_001.xml.gz → modifiedTime: 2024-07-07 16:15:00 (YENİ)
+✅ A20240708.0000+0300_eNodeB_001.xml.gz → modifiedTime: 2024-07-08 00:15:00 (YENİ)
+
+Filtered List: 2 dosya (10,000'den sadece 2 tanesi)
+
+Ek Filtreler:
+- File size > 0 bytes (boş dosyalar hariç)
+- Extension: .xml.gz, .zip (sadece bunlar)
+- transfer_try_count < 10 (10 kez denenmişse artık deneme)
+
+Delta Transfer:
+10,000 dosya → 50 dosya filter sonrası
+Transfer time: 10 saat → 5 dakika ✅
+
+1️⃣1️⃣ ConnectionFactory.downloadFile()
+Ne Yapar:
+Dosyaları fiziksel olarak remote'dan local'e indirir
+
+SFTP GET Command:
+for (File file : filteredFiles) {
+    sftp.get(remoteFile, localFile);
+}
+
+Örnek:
+Remote: /pmneexport/A20240708.0000+0300_eNodeB_001.xml.gz
+Local:  /data/transfer/HW_ENB_PM/20240708/raw/A20240708.0000+0300_eNodeB_001.xml.gz
+
+Transfer Detayları:
+- Protocol: SFTP (SSH over FTP)
+- Mode: Binary (not text)
+- Buffer: 64KB chunks (her seferinde 64KB okur/yazar)
+- Progress: 0% → 25% → 50% → 75% → 100%
+
+Retry Mechanism:
+Attempt 1: Transfer başladı → Network error → RETRY
+Attempt 2: 50% indirdi → Connection lost → RETRY (kaldığı yerden devam)
+Attempt 3: 100% → SUCCESS ✅
+
+Max retry: 10 (configurable)
+10 attempt sonra: Skip dosyayı, devam et
+
+Performance:
+Network speed: 100 Mbps
+File size: 15 MB
+Transfer time: 15 × 8 / 100 = 1.2 saniye
+
+50 dosya × 1.2 saniye = 60 saniye (1 dakika)
+
+Real-world Files:
+Huawei eNodeB PM: 1-50MB (compressed XML)
+Huawei eNodeB CM: 100KB-5MB (configuration)
+
+1️⃣2️⃣ Repository.saveResults(fileList)
+Ne Yapar:
+İndirilen dosyaların metadata'sını database'e kaydeder
+
+Bulk Insert (1000 record at once):
+INSERT INTO t_transfer_connection_result 
+(file_id, remote_file_name, is_downloaded, file_size, 
+ transfer_try_count, file_modified_time, file_transfer_time,
+ source_node_name, fragment_time, connection_id)
+VALUES
+  ('20240708000001', 'A20240708.0000+0300_eNodeB_001.xml.gz', true, 15728640, 
+   1, '2024-07-08 00:15:00', '2024-07-08 10:05:32', 'eNodeB_001', 
+   '2024-07-08 00:00:00', 1111),
+  
+  ('20240708000002', 'A20240708.0100+0300_eNodeB_001.xml.gz', true, 16234567,
+   1, '2024-07-08 01:15:00', '2024-07-08 10:05:34', 'eNodeB_001',
+   '2024-07-08 01:00:00', 1111),
+  
+  ... (1000 records)
+
+Transaction:
+BEGIN TRANSACTION
+  INSERT 1000 records
+  IF SUCCESS → COMMIT
+  IF ERROR → ROLLBACK (hiçbir kayıt yazılmaz)
+END TRANSACTION
+
+Neden Bulk Insert:
+Tek tek insert: 1000 × 10ms = 10 saniye
+Bulk insert: 1 × 100ms = 0.1 saniye ✅ (100x hızlı)
+
+Bu Tablo Ne İşe Yarar:
+- Transfer history (audit trail)
+- Debugging (hangi dosya ne zaman indirildi)
+- Monitoring (toplam dosya sayısı, success rate)
+- Retry logic (transfer_try_count)
+
+Table Size:
+9.1MB (largest table in Transfer module)
+Millions of records over time
+
+1️⃣3️⃣ Repository.updateLastModifiedTime()
+Ne Yapar:
+Connection'ın last_modified_time'ını günceller (next run için)
+
+Calculation:
+maxModifiedTime = MAX(file.modifiedTime) from downloaded files
+maxModifiedTime = "2024-07-08 03:30:00"
+
+SQL Update:
+UPDATE t_connection 
+SET last_modified_time = '2024-07-08 03:30:00'
+WHERE id = 1111
+
+Önce:
+last_modified_time = "2024-07-07 16:01:53.736"
+
+Sonra:
+last_modified_time = "2024-07-08 03:30:00.000"
+
+Bir Sonraki Çalışma (1 saat sonra):
+filterFiles() → Sadece "2024-07-08 03:30:00"'dan SONRAKİ dosyalar
+
+Bu CRITICAL çünkü:
+Bu değer güncellenme zse → Bir sonraki çalışmada TÜM DOSYALAR tekrar indirilir
+10,000 dosya × her saat = Gereksiz network traffic, disk dolumu
+
+1️⃣4️⃣ ConnectionFactory.disconnect()
+Ne Yapar:
+SFTP bağlantısını kapatır, kaynakları serbest bırakır
+
+Cleanup Operations:
+1. sftp.disconnect()     // SFTP session kapat
+2. channel.disconnect()  // SSH channel kapat
+3. socket.close()        // TCP socket kapat
+4. Temp files temizle
+5. Buffers'ı free et
+6. Thread resources release
+
+Log Summary:
+log.info("Transfer completed: connection={}, files={}, totalSize={}, duration={}",
+         connectionId, fileCount, totalSize, duration);
+
+Output:
+"Transfer completed: connection=1111, files=50, totalSize=750MB, duration=65s"
+
+Finally Block:
+try {
+    // transfer operations
+} finally {
+    disconnect(); // ← ALWAYS EXECUTE (even if exception)
+}
+
+Neden Finally:
+Exception olsa bile bağlantı mutlaka kapanmalı
+Yoksa: connection leak → server'da açık socket'ler birikir
+
+1️⃣5️⃣ handlerComplete()
+Ne Yapar:
+Handler'ın işini bitirdiğini Engine'e bildirir
+
+Synchronization Mechanism:
+CountDownLatch latch = new CountDownLatch(3); // 3 handler var
+
+Handler-1 bitince: latch.countDown()  // 3 → 2
+Handler-2 bitince: latch.countDown()  // 2 → 1
+Handler-3 bitince: latch.countDown()  // 1 → 0
+
+Engine bekliyor:
+latch.await()  // ← Block here until count = 0
+
+Async Notification:
+Handler → Engine'e message gönderir (non-blocking)
+Handler devam etmez, thread sonlanır
+Engine hala bekliyor (awaitHandlerCompletion'da)
+
+Timeline:
+10:00:00 - 3 handler başladı
+10:05:00 - Handler-1 bitti → handlerComplete()
+10:06:00 - Handler-2 bitti → handlerComplete()
+10:07:00 - Handler-3 bitti → handlerComplete()  ← Count = 0
+10:07:00 - Engine devam ediyor (decompress)
+
+🟡 PHASE 3: Engine Post-processing
+1️⃣6️⃣ awaitHandlerCompletion()
+Ne Yapar:
+Tüm handler'ların bitmesini bekler (BLOCKING)
+
+Code:
+boolean completed = latch.await(1, TimeUnit.HOURS);
+if (!completed) {
+    log.warn("Timeout: Some handlers still running");
+    // Proceed anyway
+}
+
+Timeline:
+10:00:00 - Engine: await başladı (BLOCKED)
+10:07:00 - Handler-3 (son handler) bitti
+10:07:00 - Engine: await sona erdi (UNBLOCKED) → devam et
+
+Timeout Scenario:
+Default: 1 saat
+Eğer handler 1 saatten fazla sürerse → Warning log, devam et
+
+Result:
+/raw/ klasöründe 150 dosya (3 handler × 50 dosya)
+Toplam: 2.2 GB compressed
+
+1️⃣7️⃣ decompress()
+Ne Yapar:
+.gz ve .zip dosyalarını açar (extract)
+
+Thread Pool:
+ExecutorService pool = Executors.newFixedThreadPool(8);
+for (File gzFile : rawFiles) {
+    pool.submit(() -> decompress(gzFile));
+}
+
+Decompression:
+Input:  /raw/A20240708.0000+0300_eNodeB_001.xml.gz (15 MB)
+Output: /processed/A20240708.0000+0300_eNodeB_001.xml (75 MB)
+
+Expansion Rate: 5x (15MB → 75MB)
+
+Java Library:
+GZIPInputStream gzis = new GZIPInputStream(new FileInputStream(gzFile));
+// Read compressed → Write decompressed
+
+Performance:
+Single thread: 10 MB/s
+8 threads: 8 × 10 = 80 MB/s
+
+150 files × 15MB = 2.2 GB
+Decompression time: 2200 / 80 = 27.5 saniye
+
+Error Handling:
+Corrupt .gz file → Log error, SKIP, devam et
+(corrupt 1 dosya → 149 dosya başarılı)
+
+1️⃣8️⃣ validation()
+Ne Yapar:
+XML dosyalarını XSD schema'ya göre validate eder
+
+XSD Schema (Vendor-specific):
+Huawei: huawei_pm_schema.xsd
+Ericsson: ericsson_pm_schema.xsd
+Nokia: nokia_cm_schema.xsd
+
+Validation Process:
+SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = factory.newSchema(new File("huawei_pm_schema.xsd"));
+Validator validator = schema.newValidator();
+
+for (File xmlFile : processedFiles) {
+    try {
+        validator.validate(new StreamSource(xmlFile));
+        // VALID ✅
+    } catch (SAXException e) {
+        log.error("Invalid XML: {}", xmlFile);
+        // INVALID ❌ → Skip, continue
+    }
+}
+
+Neden Gerekli:
+Corrupt/malformed XML'leri Parser'a göndermemek
+Parser crash'ini önlemek
+Data quality assurance
+
+Performance:
+Small XMLs (100KB): 1ms per file
+1000 files/second × 8 threads = 8000 files/second
+150 files / 8000 = 0.02 saniye (instant)
+
+Error Count:
+149 valid, 1 invalid → %99.3 success rate
+
+1️⃣9️⃣ saveProcessHistory()
+Ne Yapar:
+Flow execution istatistiklerini database'e kaydeder
+
+Generated Statistics:
+{
+  flow_process_code: "20240708100000000111",
+  flow_id: 111,
+  total_files: 150,
+  success_count: 149,
+  failure_count: 1,
+  total_size_bytes: 2_200_000_000, // 2.2 GB
+  execution_duration_ms: 420_000,   // 7 dakika
+  start_time: "2024-07-08 10:00:00",
+  end_time: "2024-07-08 10:07:00"
+}
+
+SQL Insert:
+INSERT INTO t_transfer_process_history 
+(flow_process_code, flow_id, total_files, success_count, failure_count,
+ total_size_bytes, execution_duration_ms, start_time, end_time)
+VALUES
+('20240708100000000111', 111, 150, 149, 1, 2200000000, 420000,
+ '2024-07-08 10:00:00', '2024-07-08 10:07:00')
+
+Bu Data Ne İşe Yarar:
+- Performance monitoring dashboard
+- Trend analysis (daily/weekly/monthly)
+- SLA reporting (99% uptime)
+- Capacity planning (disk, network)
+- Debugging (slow runs, failures)
+
+Grafana Dashboard:
+Chart 1: Transfer duration trend (7 minutes average)
+Chart 2: Success rate (99.3%)
+Chart 3: Total data transferred (2.2 GB/hour)
+
+2️⃣0️⃣ postEngine()
+Ne Yapar:
+Son işlemler: arşivleme, bildirim, next module trigger
+
+Operations:
+
+1. Archive:
+   Move /processed/*.xml → /archive/
+   Retention policy: 30 günlük data, sonra sil
+   
+2. Reports:
+   Generate summary report (PDF/Excel)
+   Email to: ops-team@company.com
+   Subject: "Transfer Report - 2024-07-08 10:00"
+   
+3. Notifications:
+   If success_rate < 95% → SMS alert to on-call engineer
+   If failure → PagerDuty incident
+   
+4. Trigger Parser:
+   Send message to Kafka topic: "parser.input"
+   Message: {files: 149, path: "/archive/20240708/"}
+   Parser consumes → Starts processing XMLs
+   
+5. Cleanup:
+   Delete files older than 30 days
+   Delete /raw/*.gz (already decompressed)
+   Free disk space
+   
+6. Final Log:
+   log.info("Transfer workflow completed successfully");
+
+Integration Options:
+- Kafka: Message queue for Parser
+- RabbitMQ: Alternative message queue
+- REST API: HTTP POST to Parser endpoint
+- File watcher: Parser monitors /archive/ directory
+
+🎯 Özet: Complete Flow
+10:00:00 ─ START
+       ├─ Load 3 connections from DB
+       ├─ Create 3 handlers (parallel)
+       │
+10:00:05 ─ Handler-1: Connect to eNodeB_001
+       ├─ List 10,000 files
+       ├─ Filter → 50 new files
+       ├─ Download 50 × 15MB = 750MB
+       ├─ Save to DB (bulk insert)
+       ├─ Disconnect
+       └─ Complete (5 minutes)
+       
+10:07:00 ─ All handlers done
+       ├─ Decompress: 150 files (30 seconds)
+       ├─ Validate: 149 valid, 1 invalid (instant)
+       ├─ Save stats to DB
+       └─ Trigger Parser
+       
+10:07:30 ─ END SUCCESS
