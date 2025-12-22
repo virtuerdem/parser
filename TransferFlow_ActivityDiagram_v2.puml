@@ -1,0 +1,205 @@
+@startuml TransferFlow_ActivityDiagram_v2
+title Transfer Flow - Activity Diagram (Loop + Parallel Execution)
+
+|#LightBlue|Engine Thread|
+start
+
+:startEngine(flowId);
+note right
+  Triggered by scheduler
+  flowId = 111 (VF_TR_D_HW_ENB-PM)
+end note
+
+:Load connections from DB
+Repository.findConnections(flowId);
+note right
+  Returns: 3 active connections
+  Each has: server_id, path_id,
+  last_modified_time
+end note
+
+:Get engine configuration
+Repository.getEngineConfig(flowId);
+note right
+  Settings: thread counts,
+  decompress, validation flags
+end note
+
+:Create directory structure
+preparePaths();
+note right
+  Creates: raw/, processed/,
+  archive/ folders
+end note
+
+:Create Thread Pool
+ExecutorService (size=8);
+
+:<b>Loop</b> - Create & Submit Handlers]
+repeat :Get next connection;
+  :Create TransferBaseHandler(connection);
+  :Submit handler to thread pool
+  (non-blocking);
+  note right
+    Handler creation is sequential
+    but execution is parallel
+  end note
+repeat while (more connections?) is (yes)
+->no;
+
+floating note left
+  <b>PARALLELIZATION POINT</b>
+  ==================
+  All handlers now run
+  concurrently in thread pool
+end note
+
+fork
+  |#LightGreen|Handler Thread 1|
+  :run() - Connection 1;
+  :connect(server, path);
+  :getLastModifiedTime();
+  :listFiles(remotePath);
+  :filterFiles(lastModTime);
+  note right
+    Only new files
+    after last transfer
+  end note
+  :downloadFile() - N files;
+  :saveResults(fileList);
+  :updateLastModifiedTime();
+  :disconnect();
+  :handlerComplete();
+
+fork again
+  |#LightGreen|Handler Thread 2|
+  :run() - Connection 2;
+  :connect(server, path);
+  :getLastModifiedTime();
+  :listFiles(remotePath);
+  :filterFiles(lastModTime);
+  :downloadFile() - N files;
+  :saveResults(fileList);
+  :updateLastModifiedTime();
+  :disconnect();
+  :handlerComplete();
+
+fork again
+  |#LightGreen|Handler Thread 3|
+  :run() - Connection 3;
+  :connect(server, path);
+  :getLastModifiedTime();
+  :listFiles(remotePath);
+  :filterFiles(lastModTime);
+  :downloadFile() - N files;
+  :saveResults(fileList);
+  :updateLastModifiedTime();
+  :disconnect();
+  :handlerComplete();
+
+end fork
+
+floating note right
+  <b>SYNCHRONIZATION POINT</b>
+  ====================
+  Wait for all handlers
+  to complete
+end note
+
+|#LightBlue|Engine Thread|
+:awaitHandlerCompletion()
+CountDownLatch.await();
+note right
+  Blocks until all
+  handlers finish
+end note
+
+partition "Post-Processing" {
+  :<b>Parallel</b> - Decompress Files]
+  fork
+    :Decompress file 1.gz;
+  fork again
+    :Decompress file 2.gz;
+  fork again
+    :Decompress file N.gz;
+  end fork
+  note right
+    Thread pool (size=8)
+    Extracts .gz files
+  end note
+
+  :<b>Parallel</b> - Validate XML Files]
+  fork
+    :Validate XML 1
+    against XSD schema;
+    if (Valid?) then (yes)
+      :Mark as valid;
+    else (no)
+      :Move to quarantine;
+      :Log error;
+    endif
+  fork again
+    :Validate XML 2
+    against XSD schema;
+    if (Valid?) then (yes)
+      :Mark as valid;
+    else (no)
+      :Move to quarantine;
+      :Log error;
+    endif
+  fork again
+    :Validate XML N
+    against XSD schema;
+    if (Valid?) then (yes)
+      :Mark as valid;
+    else (no)
+      :Move to quarantine;
+      :Log error;
+    endif
+  end fork
+  note right
+    Thread pool (size=8)
+    XSD schema validation
+    Success rate: ~99%
+  end note
+}
+
+:Save process history
+Repository.saveProcessHistory();
+note right
+  Statistics:
+  - Total files: 150
+  - Success: 149
+  - Failed: 1
+  - Duration: 7 min
+end note
+
+:Post-processing
+postEngine();
+note right
+  - Archive files
+  - Send notifications
+  - Trigger Parser
+  - Cleanup old data
+end note
+
+stop
+
+legend right
+  <b>Key Points:</b>
+  • Loop creates handlers sequentially
+  • Fork enables parallel execution
+  • Join synchronizes completion
+  • Post-processing also uses parallelism
+
+  <b>Performance:</b>
+  • Sequential: 3 × 10 min = 30 min
+  • Parallel: MAX(10, 10, 10) = 10 min
+
+  <b>Thread Pools:</b>
+  • Handler pool: 8 threads
+  • Decompress pool: 8 threads
+  • Validation pool: 8 threads
+end legend
+
+@enduml

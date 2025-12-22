@@ -1,0 +1,282 @@
+@startuml TransferFlow_SequenceDiagram_v2
+title Transfer Flow - Sequence Diagram (Detailed)
+
+actor "Scheduler" as Scheduler
+participant "TransferEngine" as Engine
+participant "Repository" as Repo
+database "Database" as DB
+participant "ExecutorService\n(ThreadPool)" as Pool
+participant "Handler1\n(Thread)" as H1
+participant "Handler2\n(Thread)" as H2
+participant "Handler3\n(Thread)" as H3
+participant "ConnectionFactory" as ConnFactory
+participant "SFTP Server" as SFTP
+participant "ValidationService" as Validator
+participant "Parser" as Parser
+
+== Phase 1: Engine Startup ==
+
+Scheduler -> Engine: startEngine(flowId=111)
+activate Engine
+
+Engine -> Repo: findConnections(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_connection\nWHERE flow_id=111 AND is_active=true
+activate DB
+DB --> Repo: 3 connections
+deactivate DB
+Repo --> Engine: List<Connection>
+deactivate Repo
+
+note right of Engine
+  Connections:
+  1. id=1111, server_id=2, path_id=117
+  2. id=1112, server_id=2, path_id=118
+  3. id=1113, server_id=2, path_id=119
+end note
+
+Engine -> Repo: getEngineConfig(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_transfer_engine\nWHERE flow_id=111
+activate DB
+DB --> Repo: EngineConfig
+deactivate DB
+Repo --> Engine: config (threads=8, decompress=true, validation=true)
+deactivate Repo
+
+Engine -> Engine: preparePaths()
+note right
+  Create directories:
+  /data/transfer/.../20240708/raw/
+  /data/transfer/.../20240708/processed/
+  /data/transfer/.../20240708/archive/
+end note
+
+Engine -> Pool: Create ExecutorService (threadPoolSize=8)
+activate Pool
+
+== Phase 2: Handler Creation & Parallel Execution ==
+
+loop for each connection [1..3]
+  Engine -> Pool: submit(new Handler(connection))
+  note right
+    Non-blocking submit
+    Handlers execute immediately
+    in parallel
+  end note
+end
+
+note over Engine, Pool
+  <b>PARALLELIZATION POINT</b>
+  All 3 handlers now run concurrently
+end note
+
+par Handler 1 Execution
+  Pool -> H1: run()
+  activate H1
+
+  H1 -> Repo: getLastModifiedTime(connectionId=1111)
+  activate Repo
+  Repo -> DB: SELECT last_modified_time\nFROM t_connection\nWHERE id=1111
+  activate DB
+  DB --> Repo: "2024-07-07 16:01:53"
+  deactivate DB
+  Repo --> H1: lastModTime
+  deactivate Repo
+
+  H1 -> ConnFactory: connect(server, path)
+  activate ConnFactory
+  ConnFactory -> SFTP: SSH connect (192.168.0.180:22)
+  activate SFTP
+  SFTP --> ConnFactory: authenticated
+  ConnFactory --> H1: connection established
+  deactivate ConnFactory
+
+  H1 -> ConnFactory: listFiles(remotePath)
+  activate ConnFactory
+  ConnFactory -> SFTP: ls -la /pmneexport/
+  SFTP --> ConnFactory: 10,000 files
+  ConnFactory --> H1: List<RemoteFile>
+  deactivate ConnFactory
+
+  H1 -> H1: filterFiles(lastModTime)
+  note right
+    Filter: file.modTime > lastModTime
+    Result: 50 new files (from 10,000)
+  end note
+
+  loop for each filtered file [50 files]
+    H1 -> ConnFactory: downloadFile(remoteFile, localPath)
+    activate ConnFactory
+    ConnFactory -> SFTP: get file (15MB)
+    SFTP --> ConnFactory: file data
+    ConnFactory --> H1: saved to /raw/
+    deactivate ConnFactory
+  end
+
+  H1 -> Repo: saveResults(fileList)
+  activate Repo
+  Repo -> DB: BULK INSERT INTO\nt_transfer_connection_result\n(1000 records at once)
+  activate DB
+  DB --> Repo: success
+  deactivate DB
+  Repo --> H1: saved
+  deactivate Repo
+
+  H1 -> Repo: updateLastModifiedTime(maxModTime)
+  activate Repo
+  Repo -> DB: UPDATE t_connection\nSET last_modified_time='2024-07-08 03:30:00'\nWHERE id=1111
+  activate DB
+  DB --> Repo: updated
+  deactivate DB
+  Repo --> H1: success
+  deactivate Repo
+
+  H1 -> ConnFactory: disconnect()
+  activate ConnFactory
+  ConnFactory -> SFTP: close connection
+  deactivate SFTP
+  ConnFactory --> H1: disconnected
+  deactivate ConnFactory
+
+  H1 -> Engine: handlerComplete()
+  note right
+    CountDownLatch.countDown()
+    3 → 2
+  end note
+  deactivate H1
+
+else Handler 2 Execution
+  Pool -> H2: run()
+  activate H2
+  H2 -> Repo: getLastModifiedTime(connectionId=1112)
+  H2 -> ConnFactory: connect(server, path)
+  H2 -> ConnFactory: listFiles(remotePath)
+  H2 -> H2: filterFiles(lastModTime)
+  H2 -> ConnFactory: downloadFile(...)
+  H2 -> Repo: saveResults(fileList)
+  H2 -> Repo: updateLastModifiedTime(maxModTime)
+  H2 -> ConnFactory: disconnect()
+  H2 -> Engine: handlerComplete()
+  note right
+    CountDownLatch.countDown()
+    2 → 1
+  end note
+  deactivate H2
+
+else Handler 3 Execution
+  Pool -> H3: run()
+  activate H3
+  H3 -> Repo: getLastModifiedTime(connectionId=1113)
+  H3 -> ConnFactory: connect(server, path)
+  H3 -> ConnFactory: listFiles(remotePath)
+  H3 -> H3: filterFiles(lastModTime)
+  H3 -> ConnFactory: downloadFile(...)
+  H3 -> Repo: saveResults(fileList)
+  H3 -> Repo: updateLastModifiedTime(maxModTime)
+  H3 -> ConnFactory: disconnect()
+  H3 -> Engine: handlerComplete()
+  note right
+    CountDownLatch.countDown()
+    1 → 0 (RELEASE!)
+  end note
+  deactivate H3
+end
+
+note over Engine, H3
+  <b>SYNCHRONIZATION POINT</b>
+  All handlers completed
+end note
+
+== Phase 3: Post-Processing ==
+
+Engine -> Engine: awaitHandlerCompletion()
+note right
+  CountDownLatch.await()
+  Blocks until count = 0
+  Now unblocked, continue...
+end note
+
+Engine -> Pool: Create decompression pool (threads=8)
+
+par Parallel Decompression [150 files]
+  Engine -> Pool: decompress(file1.gz)
+  Pool -> Pool: extract file1.xml (15MB → 75MB)
+
+  Engine -> Pool: decompress(file2.gz)
+  Pool -> Pool: extract file2.xml
+
+  Engine -> Pool: decompress(fileN.gz)
+  Pool -> Pool: extract fileN.xml
+end
+
+note right of Pool
+  Decompression completed
+  Duration: ~30 seconds
+  150 files processed
+end note
+
+Engine -> Validator: validateFiles(xmlFiles)
+activate Validator
+
+par Parallel Validation [150 files]
+  Validator -> Validator: validate(file1.xml, schema.xsd)
+  note right
+    Check: structure, data types,
+    required fields, value ranges
+  end note
+  alt Valid XML
+    Validator -> Validator: mark as valid
+  else Invalid XML
+    Validator -> Validator: move to quarantine/
+    Validator -> Validator: log error
+  end
+
+  Validator -> Validator: validate(file2.xml, schema.xsd)
+  Validator -> Validator: validate(fileN.xml, schema.xsd)
+end
+
+Validator --> Engine: validationResults\n(149 valid, 1 invalid)
+deactivate Validator
+
+Engine -> Repo: saveProcessHistory(stats)
+activate Repo
+Repo -> DB: INSERT INTO t_transfer_process_history\n(total=150, success=149, failed=1,\n size=2.2GB, duration=7min)
+activate DB
+DB --> Repo: saved
+deactivate DB
+Repo --> Engine: success
+deactivate Repo
+
+Engine -> Engine: postEngine()
+note right
+  1. Archive valid files
+  2. Send notifications to ops team
+  3. Generate reports
+  4. Cleanup old data (>30 days)
+end note
+
+Engine -> Parser: trigger(validFiles)
+activate Parser
+Parser --> Engine: acknowledged
+deactivate Parser
+
+note right of Parser
+  Parser starts processing
+  149 validated XML files
+end note
+
+Engine --> Scheduler: Transfer completed successfully
+deactivate Engine
+deactivate Pool
+
+note over Scheduler, Parser
+  <b>Summary:</b>
+  • Duration: ~7 minutes
+  • Files transferred: 150 (2.2 GB)
+  • Success rate: 99.3% (149/150)
+  • Parallel handlers: 3 concurrent
+  • Thread pool size: 8
+end note
+
+@enduml

@@ -1,0 +1,142 @@
+@startuml TransferFlow_UseCaseDiagram
+title Transfer Flow - Use Case Diagram
+
+left to right direction
+
+actor "Scheduler\n(Cron Job)" as Scheduler
+actor "SFTP Server\n(Remote)" as SFTPServer
+actor "Operations Team" as OpsTeam
+actor "Parser Module" as Parser
+actor "Monitoring System" as Monitor
+
+rectangle "Transfer Flow System" {
+
+  package "Engine Management" {
+    usecase "Start Transfer\nEngine" as UC1
+    usecase "Load\nConfiguration" as UC2
+    usecase "Create\nDirectory Structure" as UC3
+    usecase "Initialize\nThread Pool" as UC4
+  }
+
+  package "Connection Handling" {
+    usecase "Get Active\nConnections" as UC5
+    usecase "Create\nHandler Threads" as UC6
+    usecase "Execute Handlers\nin Parallel" as UC7
+  }
+
+  package "File Transfer" {
+    usecase "Connect to\nRemote Server" as UC8
+    usecase "List Remote\nFiles" as UC9
+    usecase "Filter New\nFiles" as UC10
+    usecase "Download\nFiles" as UC11
+    usecase "Update Last\nModified Time" as UC12
+    usecase "Disconnect from\nServer" as UC13
+  }
+
+  package "Post-Processing" {
+    usecase "Wait for All\nHandlers" as UC14
+    usecase "Decompress\nFiles" as UC15
+    usecase "Validate XML\nFiles" as UC16
+    usecase "Save Process\nHistory" as UC17
+  }
+
+  package "Integration & Monitoring" {
+    usecase "Archive\nFiles" as UC18
+    usecase "Trigger\nParser" as UC19
+    usecase "Send\nNotifications" as UC20
+    usecase "Log\nErrors" as UC21
+    usecase "Generate\nReports" as UC22
+  }
+}
+
+' Scheduler relationships
+Scheduler --> UC1 : triggers hourly
+
+' Engine Management flow
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+
+' Connection Handling flow
+UC5 ..> UC6 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+' Handler execution includes file transfer
+UC7 ..> UC8 : <<include>>
+UC8 ..> UC9 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC10 ..> UC11 : <<include>>
+UC11 ..> UC12 : <<include>>
+UC12 ..> UC13 : <<include>>
+
+' SFTP Server interaction
+UC8 --> SFTPServer : authenticates
+UC9 --> SFTPServer : lists files
+UC11 --> SFTPServer : downloads
+
+' Post-processing flow
+UC7 ..> UC14 : <<include>>
+UC14 ..> UC15 : <<include>>
+UC14 ..> UC16 : <<include>>
+UC16 ..> UC17 : <<include>>
+
+' Integration
+UC17 ..> UC18 : <<include>>
+UC17 ..> UC19 : <<include>>
+
+' Parser interaction
+UC19 --> Parser : triggers
+
+' Monitoring and notifications
+UC17 ..> UC20 : <<include>>
+UC20 --> OpsTeam : emails/SMS
+UC17 ..> UC22 : <<include>>
+UC22 --> Monitor : sends metrics
+UC22 --> OpsTeam : sends reports
+
+' Error handling
+UC8 ..> UC21 : <<extend>>\n(connection failed)
+UC11 ..> UC21 : <<extend>>\n(download failed)
+UC16 ..> UC21 : <<extend>>\n(validation failed)
+UC21 --> OpsTeam : alerts
+UC21 --> Monitor : logs
+
+note right of UC7
+  <b>Parallel Execution</b>
+  Multiple handlers run
+  concurrently using
+  thread pool (size=8)
+end note
+
+note right of UC10
+  <b>Incremental Transfer</b>
+  Only downloads files
+  modified after last
+  successful run
+end note
+
+note right of UC16
+  <b>Quality Gate</b>
+  Invalid files are
+  quarantined and not
+  sent to Parser
+end note
+
+legend bottom
+  <b>Actor Descriptions:</b>
+  • <b>Scheduler:</b> Cron job that triggers transfer hourly
+  • <b>SFTP Server:</b> Remote Huawei eNodeB data server
+  • <b>Operations Team:</b> Receives alerts and reports
+  • <b>Parser Module:</b> Processes validated XML files
+  • <b>Monitoring System:</b> Collects metrics and logs
+
+  <b>Key Use Cases:</b>
+  • <b>UC1-UC4:</b> Engine initialization and setup
+  • <b>UC5-UC7:</b> Handler creation and parallel execution
+  • <b>UC8-UC13:</b> SFTP operations (connect, list, filter, download)
+  • <b>UC14-UC17:</b> Post-processing (decompress, validate, save stats)
+  • <b>UC18-UC22:</b> Integration with downstream systems
+end legend
+
+@enduml
