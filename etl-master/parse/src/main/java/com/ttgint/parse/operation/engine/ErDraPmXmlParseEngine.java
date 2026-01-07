@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,20 +38,33 @@ public class ErDraPmXmlParseEngine extends ParseBaseEngine {
                 .forEach(e -> nodeIds.put(e.getNodeName(), e.getNodeId()));
 
         ArrayList<File> files
-                = new ArrayList<>(fileLib.readFilesInWalkingPathByPostfix(engineRecord.getRawPath(), ".xml"));
+                = new ArrayList<>(fileLib.readFilesInWalkingPathByContains(engineRecord.getRawPath(), ".xml"));
         log.info("* ErDraPmXmlParseEngine onEngine fileSize: {}", files.size());
 
         ExecutorService executor = Executors.newFixedThreadPool(engineRecord.getOnParseThreadCount());
-        files.forEach(file -> {
+        for (File file : files) {
             try {
-                ParseBaseHandler handler = new ErDraPmXmlParseHandler(applicationContext,
-                        ParseHandlerRecord.getRecord(engineRecord, file, ProgressType.TEST),
-                        nodeIds);
-                executor.execute(handler);
+                for (File f : prepareFile(file)) {
+                    if (f.getName().endsWith(".xml")) {
+                        ParseBaseHandler handler = new ErDraPmXmlParseHandler(applicationContext,
+                                ParseHandlerRecord.getRecord(engineRecord, f, ProgressType.TEST),
+                                nodeIds);
+                        executor.execute(handler);
+                    }
+                }
             } catch (Exception exception) {
             }
-        });
+        }
         shutdownExecutorService(executor);
+    }
+
+    @Override
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return getDecompressRecordTime(
+                fileName
+                        .split("A")[1]
+                        .substring(0, 18),
+                "yyyyMMdd.HHmmZ");
     }
 
 }

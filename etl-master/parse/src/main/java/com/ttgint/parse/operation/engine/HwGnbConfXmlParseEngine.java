@@ -4,7 +4,7 @@ import com.ttgint.library.enums.ProgressType;
 import com.ttgint.library.record.ParseHandlerRecord;
 import com.ttgint.parse.base.ParseBaseEngine;
 import com.ttgint.parse.base.ParseBaseHandler;
-import com.ttgint.parse.operation.handler.HwGnbPmXmlParseHandler;
+import com.ttgint.parse.operation.handler.HwGnbConfXmlParseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,26 +16,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Component("HW_GNB_PM_XML_PARSE")
-public class HwGnbPmXmlParseEngine extends ParseBaseEngine {
+@Component("HW_GNB_CONF_XML_PARSE")
+public class HwGnbConfXmlParseEngine extends ParseBaseEngine {
 
-    public HwGnbPmXmlParseEngine(ApplicationContext applicationContext) {
+    public HwGnbConfXmlParseEngine(ApplicationContext applicationContext) {
         super(applicationContext);
     }
 
     @Override
     protected void onEngine() {
         Map<String, Long> nodeIds = getNetworkNodesByBranchId();
-        log.info("* HwGnbPmXmlParseEngine onEngine activeNodeSize: {}", nodeIds.size());
+        log.info("* HwGnbConfXmlParseEngine onEngine activeNodeSize: {}", nodeIds.size());
 
         ArrayList<File> files
                 = new ArrayList<>(fileLib.readFilesInWalkingPathByPostfix(engineRecord.getRawPath(), ".xml"));
-        log.info("* HwGnbPmXmlParseEngine onEngine fileSize: {}", files.size());
+        log.info("* HwGnbConfXmlParseEngine onEngine fileSize: {}", files.size());
 
         ExecutorService executor = Executors.newFixedThreadPool(engineRecord.getOnParseThreadCount());
         files.forEach(file -> {
             try {
-                ParseBaseHandler handler = new HwGnbPmXmlParseHandler(applicationContext,
+                ParseBaseHandler handler = new HwGnbConfXmlParseHandler(applicationContext,
                         ParseHandlerRecord.getRecord(engineRecord, file, ProgressType.TEST),
                         nodeIds);
                 executor.execute(handler);

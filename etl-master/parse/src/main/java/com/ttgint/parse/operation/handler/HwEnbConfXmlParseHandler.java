@@ -12,20 +12,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class HwBscCmXmlParseHandler extends ParseXmlHandler {
+public class HwEnbConfXmlParseHandler extends ParseXmlHandler {
 
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
-    private final HashMap<String, String> measInfoKeyValue = new HashMap<>();
     private final HashMap<String, String> keyValue = new HashMap<>();
     private String measInfo;
-    private String tagValue;
-    private int moIndex = 0;
-    private String attrName;
+    private int objectIndex = 0;
+    private int classIndex = 0;
 
-    public HwBscCmXmlParseHandler(ApplicationContext applicationContext,
-                                  ParseHandlerRecord handlerRecord,
-                                  Map<String, Long> nodeIds) {
+    public HwEnbConfXmlParseHandler(ApplicationContext applicationContext,
+                                    ParseHandlerRecord handlerRecord,
+                                    Map<String, Long> nodeIds) {
         super(applicationContext, handlerRecord);
         this.nodeIds = nodeIds;
     }
@@ -49,39 +47,42 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        tagValue = "";
         switch (qName) {
-            case "MO":
-                if (moIndex == 1) {
-                    write();
-                    autoCounterDefine(null, null, measInfo, keyValue.keySet());
-                    clear();
+            case "class":
+                classIndex++;
+                measInfo = null;
+                if (classIndex >= 1) {
+                    measInfo = attributes.getValue("name");
                 }
-                measInfo = attributes.getValue("className");
-                measInfoKeyValue.put("etlApp.constant.MO.fdn", attributes.getValue("fdn"));
-                moIndex++;
                 break;
-            case "attr":
-                attrName = attributes.getValue("name");
+            case "object":
+                objectIndex++;
+                break;
+            case "parameter":
+                keyValue.put(attributes.getValue("name"), attributes.getValue("value"));
                 break;
         }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        tagValue += new String(ch, start, length);
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName) {
-            case "attr":
-                measInfoKeyValue.put(attrName, tagValue);
+            case "class":
+                classIndex--;
                 break;
-            case "MO":
-                write();
-                autoCounterDefine(null, null, measInfo, keyValue.keySet());
-                clear();
+            case "object":
+                objectIndex--;
+                if (objectIndex == 1) {
+                    write();
+                    autoCounterDefine(null, null, measInfo, keyValue.keySet());
+                    keyValue.clear();
+                }
+                break;
+            case "parameter":
                 break;
         }
     }
@@ -89,7 +90,6 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
     @Override
     public void postHandler() {
         keyValue.clear();
-        measInfoKeyValue.clear();
         headerKeyValue.clear();
         nodeIds.clear();
     }
@@ -102,7 +102,6 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
 
     private void write() {
         keyValue.putAll(headerKeyValue);
-        keyValue.putAll(measInfoKeyValue);
         ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(measInfo);
         if (parseMap != null) {
             keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
@@ -112,11 +111,6 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
             keyValue.put("etlApp.info.uniqueRowHashCode", "");
             keyValue.put("etlApp.info.uniqueRowCode", "");
         }
-    }
-
-    private void clear() {
-        keyValue.clear();
-        measInfoKeyValue.clear();
     }
 
 }

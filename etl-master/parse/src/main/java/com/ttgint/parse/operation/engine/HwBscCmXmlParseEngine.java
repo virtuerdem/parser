@@ -21,20 +21,14 @@ import java.util.concurrent.Executors;
 @Component("HW_BSC_CM_XML_PARSE")
 public class HwBscCmXmlParseEngine extends ParseBaseEngine {
 
-    private final NetworkNodeRepository networkNodeRepository;
-
-    public HwBscCmXmlParseEngine(ApplicationContext applicationContext,
-                                 NetworkNodeRepository networkNodeRepository) {
+    public HwBscCmXmlParseEngine(ApplicationContext applicationContext) {
         super(applicationContext);
-        this.networkNodeRepository = networkNodeRepository;
     }
 
     @Override
     protected void onEngine() {
-        Map<String, Long> nodeIds = new HashMap<>();
-        networkNodeRepository
-                .findByBranchIdAndIsActive(engineRecord.getBranchId(), true)
-                .forEach(e -> nodeIds.put(e.getNodeName(), e.getNodeId()));
+        Map<String, Long> nodeIds = getNetworkNodesByBranchId();
+        log.info("* HwBscCmXmlParseEngine onEngine activeNodeSize: {}", nodeIds.size());
 
         ArrayList<File> files
                 = new ArrayList<>(fileLib.readFilesInWalkingPathByPostfix(engineRecord.getRawPath(), ".xml"));

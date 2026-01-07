@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class HwBscCmXmlParseHandler extends ParseXmlHandler {
+public class HwGnbCmXmlParseHandler extends ParseXmlHandler {
 
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
@@ -23,7 +23,7 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
     private int moIndex = 0;
     private String attrName;
 
-    public HwBscCmXmlParseHandler(ApplicationContext applicationContext,
+    public HwGnbCmXmlParseHandler(ApplicationContext applicationContext,
                                   ParseHandlerRecord handlerRecord,
                                   Map<String, Long> nodeIds) {
         super(applicationContext, handlerRecord);

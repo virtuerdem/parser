@@ -13,21 +13,22 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Slf4j
-public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
+public class HwCsPmXmlParseHandler extends ParseXmlHandler {
 
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
     private final HashMap<String, String> measInfoKeyValue = new HashMap<>();
     private final HashMap<String, String> indexKey = new HashMap<>();
     private final HashMap<String, String> keyValue = new HashMap<>();
+    private String elementType;
     private String measInfo;
     private String measInfoType;
     private String tagValue;
     private boolean dateSet = false;
 
-    public HwGnbPmXmlParseHandler(ApplicationContext applicationContext,
-                                  ParseHandlerRecord handlerRecord,
-                                  Map<String, Long> nodeIds) {
+    public HwCsPmXmlParseHandler(ApplicationContext applicationContext,
+                                 ParseHandlerRecord handlerRecord,
+                                 Map<String, Long> nodeIds) {
         super(applicationContext, handlerRecord);
         this.nodeIds = nodeIds;
     }
@@ -35,7 +36,8 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
     @Override
     public void preHandler() {
         if (getHandlerRecord().getFile().getName().contains("^^")) {
-            headerKeyValue.put("etlApp.info.fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
+            headerKeyValue.put("etlApp.info.fileId",
+                    getHandlerRecord().getFile().getName().split("\\^")[0]);
         }
         headerKeyValue.put("etlApp.constant.fragmentDate",
                 stringDateFormatter(getHandlerRecord().getFile().getName().split("A")[1].substring(0, 18),
@@ -52,6 +54,9 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         tagValue = "";
         switch (qName) {
+            case "fileSender":
+                elementType = attributes.getValue("elementType");
+                break;
             case "measCollec":
                 if (!dateSet) {
                     headerKeyValue.put("etlApp.constant.measCollec.beginTime",
@@ -93,14 +98,15 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
                 break;
             case "measResults":
                 int valIndex = 0;
-                for (String tagSplit : tagValue.split("\\ ")) {
-                    keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(), tagSplit);
+                for (String tagSplit : tagValue.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")) {
+                    keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(),
+                            ((tagSplit.startsWith("\"") && tagSplit.endsWith("\"")) ? tagSplit.substring(1, tagSplit.length() - 1) : tagSplit));
                     valIndex++;
                 }
                 break;
             case "measValue":
                 write();
-                autoCounterDefine(null, measInfoType, measInfo, keyValue.keySet());
+                autoCounterDefine(elementType, measInfoType, measInfo, keyValue.keySet());
                 break;
             case "measInfo":
                 keyValue.clear();
@@ -169,7 +175,7 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
         keyValue.putAll(headerKeyValue);
         keyValue.putAll(measInfoKeyValue);
         ParseMapRecord parseMap
-                = getParseMapper().getMapByObjectTypeObjectKey(measInfoType, measInfo);
+                = getParseMapper().getMapByElementTypeObjectTypeObjectKey(elementType, measInfoType, measInfo);
         if (parseMap != null) {
             keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));

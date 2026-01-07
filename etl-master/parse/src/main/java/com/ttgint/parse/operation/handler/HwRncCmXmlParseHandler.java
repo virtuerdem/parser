@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class HwBscCmXmlParseHandler extends ParseXmlHandler {
+public class HwRncCmXmlParseHandler extends ParseXmlHandler {
 
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
@@ -23,7 +23,7 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
     private int moIndex = 0;
     private String attrName;
 
-    public HwBscCmXmlParseHandler(ApplicationContext applicationContext,
+    public HwRncCmXmlParseHandler(ApplicationContext applicationContext,
                                   ParseHandlerRecord handlerRecord,
                                   Map<String, Long> nodeIds) {
         super(applicationContext, handlerRecord);
@@ -54,8 +54,6 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
             case "MO":
                 if (moIndex == 1) {
                     write();
-                    autoCounterDefine(null, null, measInfo, keyValue.keySet());
-                    clear();
                 }
                 measInfo = attributes.getValue("className");
                 measInfoKeyValue.put("etlApp.constant.MO.fdn", attributes.getValue("fdn"));
@@ -80,8 +78,6 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
                 break;
             case "MO":
                 write();
-                autoCounterDefine(null, null, measInfo, keyValue.keySet());
-                clear();
                 break;
         }
     }

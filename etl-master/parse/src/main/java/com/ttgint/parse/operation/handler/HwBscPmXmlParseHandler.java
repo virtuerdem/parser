@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Slf4j
-public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
+public class HwBscPmXmlParseHandler extends ParseXmlHandler {
 
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
@@ -25,7 +25,7 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
     private String tagValue;
     private boolean dateSet = false;
 
-    public HwGnbPmXmlParseHandler(ApplicationContext applicationContext,
+    public HwBscPmXmlParseHandler(ApplicationContext applicationContext,
                                   ParseHandlerRecord handlerRecord,
                                   Map<String, Long> nodeIds) {
         super(applicationContext, handlerRecord);

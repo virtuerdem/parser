@@ -16,13 +16,10 @@ public class HwBscConfXmlParseHandler extends ParseXmlHandler {
 
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
-    private final HashMap<String, String> measInfoKeyValue = new HashMap<>();
-    private final HashMap<String, String> indexKey = new HashMap<>();
     private final HashMap<String, String> keyValue = new HashMap<>();
-    private String tagValue;
-    private String index;
     private String measInfo;
-    private boolean dateSet = false;
+    private int objectIndex = 0;
+    private int classIndex = 0;
 
     public HwBscConfXmlParseHandler(ApplicationContext applicationContext,
                                     ParseHandlerRecord handlerRecord,
@@ -50,24 +47,40 @@ public class HwBscConfXmlParseHandler extends ParseXmlHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        tagValue = "";
         switch (qName) {
-            case "className":
+            case "class":
+                classIndex++;
+                measInfo = null;
+                if (classIndex >= 1) {
+                    measInfo = attributes.getValue("name");
+                }
+                break;
+            case "object":
+                objectIndex++;
                 break;
             case "parameter":
+                keyValue.put(attributes.getValue("name"), attributes.getValue("value"));
                 break;
         }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        tagValue += new String(ch, start, length);
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName) {
-            case "className":
+            case "class":
+                classIndex--;
+                break;
+            case "object":
+                objectIndex--;
+                if (objectIndex == 1) {
+                    write();
+                    autoCounterDefine(null, null, measInfo, keyValue.keySet());
+                    keyValue.clear();
+                }
                 break;
             case "parameter":
                 break;
@@ -77,8 +90,6 @@ public class HwBscConfXmlParseHandler extends ParseXmlHandler {
     @Override
     public void postHandler() {
         keyValue.clear();
-        indexKey.clear();
-        measInfoKeyValue.clear();
         headerKeyValue.clear();
         nodeIds.clear();
     }
@@ -91,7 +102,6 @@ public class HwBscConfXmlParseHandler extends ParseXmlHandler {
 
     private void write() {
         keyValue.putAll(headerKeyValue);
-        keyValue.putAll(measInfoKeyValue);
         ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(measInfo);
         if (parseMap != null) {
             keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
