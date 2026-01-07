@@ -157,12 +157,9 @@ public abstract class ParseBaseHandler extends DefaultHandler implements ParseHa
                                   String counterGroupKey,
                                   Set<String> counterKeys) {
         if (getHandlerRecord().getIsActiveAutoCounter()) {
-            autoCounterDefine.collect(
-                    counterKeys.stream()
-                            .map(counterKey ->
-                                    new CounterDefineRecord(nodeGroupType, counterGroupType, counterGroupKey, counterKey))
-                            .toList()
-            );
+            counterKeys.forEach(counterKey ->
+                    autoCounterDefine.collect(
+                            new CounterDefineRecord(nodeGroupType, counterGroupType, counterGroupKey, counterKey)));
         }
     }
 
