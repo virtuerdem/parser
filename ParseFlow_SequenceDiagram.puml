@@ -19,6 +19,46 @@ participant "LoaderFactory" as Loader
 Trigger -> Engine: startEngine(ParseEngineRecord)
 activate Engine
 
+note over Trigger, Engine
+  <b>ParseConstructor reads configuration tables</b>
+end note
+
+Engine -> Repo: findById(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_flow\nWHERE id = ?
+activate DB
+DB --> Repo: Flow record
+deactivate DB
+Repo --> Engine: Flow
+deactivate Repo
+
+Engine -> Repo: findById(branchId)
+activate Repo
+Repo -> DB: SELECT * FROM t_branch\nWHERE id = ?
+activate DB
+DB --> Repo: Branch record
+deactivate DB
+Repo --> Engine: Branch
+deactivate Repo
+
+Engine -> Repo: findByFlowId(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_parse_engine\nWHERE flow_id = ?
+activate DB
+DB --> Repo: ParseEngine record
+deactivate DB
+Repo --> Engine: ParseEngine
+deactivate Repo
+
+Engine -> Repo: findById(componentId)
+activate Repo
+Repo -> DB: SELECT * FROM t_parse_component\nWHERE id = ?
+activate DB
+DB --> Repo: ParseComponent record
+deactivate DB
+Repo --> Engine: ParseComponent
+deactivate Repo
+
 Engine -> Engine: preparePaths()
 note right
   Create flow directories:
@@ -30,7 +70,7 @@ end note
 alt isActiveFetchTables = true
   Engine -> Repo: fetchTables()
   activate Repo
-  Repo -> DB: Generate metadata tables\nfrom schema
+  Repo -> DB: Generate metadata tables\nfrom schema (t_all_table, t_all_column)
   activate DB
   DB --> Repo: metadata created
   deactivate DB
@@ -38,20 +78,29 @@ alt isActiveFetchTables = true
   deactivate Repo
 end
 
+note over Engine, Repo
+  <b>ParseMapper loads table/column metadata</b>
+end note
+
 Engine -> Repo: getTables(flowId)
 activate Repo
-Repo -> DB: SELECT * FROM parse_table_metadata\nWHERE flow_id = ?
+Repo -> DB: SELECT * FROM t_parse_table\nWHERE flow_id = ? AND is_active = true
 activate DB
 DB --> Repo: table definitions
 deactivate DB
-Repo --> Engine: Map<tableName, tableMetadata>
+Repo -> DB: SELECT * FROM t_parse_column\nWHERE flow_id = ? AND is_active = true
+activate DB
+DB --> Repo: column definitions
+deactivate DB
+Repo --> Engine: Map<tableName, ParseMapRecord>
 deactivate Repo
 
 note right of Engine
-  Table metadata contains:
-  - Column names
-  - Data types
-  - Mapping rules
+  ParseMapRecord contains:
+  - Table name (t_pm_cell_huawei)
+  - Object key (Cell, Sector)
+  - Column list with XML paths
+  - Data types & mappings
 end note
 
 alt isActivePreParse = true
@@ -271,11 +320,22 @@ alt isActivePostParse = true
 end
 
 alt isActiveAutoCounter = true
+  note over Engine, Repo
+    <b>Save auto-discovered counter definitions</b>
+  end note
   Engine -> Repo: save(autoCounterDefinitions)
   activate Repo
-  Repo -> DB: INSERT INTO t_auto_counter\n(counter_name, data_type, table_name)
+  Repo -> DB: SELECT * FROM t_all_counter\nWHERE flow_id = ?
   activate DB
-  DB --> Repo: saved
+  DB --> Repo: existing counters
+  deactivate DB
+  Repo -> DB: INSERT INTO t_all_counter\n(flow_id, node_group_type, counter_group_type,\ncounter_group_key, counter_key, counter_name)\nVALUES (?, ?, ?, ?, ?, ?)
+  activate DB
+  note right
+    Only insert new counters
+    that don't exist yet
+  end note
+  DB --> Repo: ~1000 new counters saved
   deactivate DB
   Repo --> Engine: success
   deactivate Repo
@@ -304,6 +364,19 @@ alt isActiveDiscoverContentDate = true
     Extract min/max dates
     from timestamp columns
   end note
+
+  note over Pool, Repo
+    <b>Save content date results</b>
+  end note
+
+  Pool -> Repo: saveAll(contentDateResults)
+  activate Repo
+  Repo -> DB: INSERT INTO t_content_date_result\n(flow_id, flow_process_code, file_name,\nfragment_date, min_date, max_date)\nVALUES (?, ?, ?, ?, ?, ?)
+  activate DB
+  DB --> Repo: ~50 records saved
+  deactivate DB
+  Repo --> Pool: saved
+  deactivate Repo
 
   Pool --> Engine: date ranges discovered
   deactivate Pool
@@ -339,8 +412,32 @@ par Parallel Data Loading
     activate Loader
     Loader -> DB: COPY table FROM csv\n(or bulk INSERT)
     activate DB
+    note right
+      Bulk load methods:
+      - PostgreSQL: COPY
+      - Oracle: SQLLDR
+      - MSSQL: BULK INSERT
+    end note
     DB --> Loader: rows inserted
     deactivate DB
+
+    note over Loader, Repo
+      <b>Save loader result</b>
+    end note
+
+    Loader -> Repo: save(loaderResult)
+    activate Repo
+    Repo -> DB: INSERT INTO t_loader_result\n(flow_id, flow_process_code, file_name,\ntable_name, row_count, status,\nerror_message, duration_ms)\nVALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    activate DB
+    note right
+      Status: SUCCESS or FAILED
+      duration_ms: load time
+    end note
+    DB --> Repo: result saved
+    deactivate DB
+    Repo --> Loader: success
+    deactivate Repo
+
     Loader --> Engine: load complete
     deactivate Loader
   end
@@ -354,6 +451,7 @@ note right of Engine
   - 50 CSV files
   - ~10M records
   - Duration: ~5 minutes
+  - Results logged in t_loader_result
 end note
 
 alt isActiveCleanDuplicateAfter = true
