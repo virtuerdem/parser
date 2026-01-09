@@ -1,0 +1,324 @@
+@startuml ParseFlow_ActivityDiagram
+title Parse Flow - Activity Diagram (Loop + Parallel Execution)
+
+|#LightBlue|Parse Engine Thread|
+start
+
+:startEngine(ParseEngineRecord);
+note right
+  Triggered by Transfer Module
+  or Scheduler
+  Contains: flowId, paths, config
+end note
+
+:preparePaths();
+note right
+  Create directories:
+  - /raw/ (input XML files)
+  - /result/ (parsed output)
+  - /error/ (failed parses)
+end note
+
+if (isActiveFetchTables?) then (yes)
+  :fetchTables();
+  note right
+    Generate metadata tables
+    from DB schema
+  end note
+endif
+
+:getTables();
+note right
+  Load table metadata
+  from repository
+end note
+
+if (isActivePreParse?) then (yes)
+  :preEngine();
+  note right
+    Pre-processing tasks
+    (vendor-specific)
+  end note
+endif
+
+if (isActiveOnParse?) then (yes)
+
+  partition "Main Parsing Phase" {
+
+    :Get network nodes from DB
+    Repository.getNetworkNodesByBranchId();
+    note right
+      Load active nodes:
+      eNodeB, gNodeB, RNC, BSC
+      Returns: Map<nodeName, nodeId>
+    end note
+
+    :Read XML files from /raw/;
+    note right
+      File patterns:
+      - *_eNodeB_*.xml (4G PM)
+      - *_gNodeB_*.xml (5G PM)
+      - *_RNC_*.xml (3G PM)
+      Example: 150 files
+    end note
+
+    :Create Thread Pool
+    ExecutorService (size=configured);
+    note right
+      Default: 8 threads
+      Configurable per flow
+    end note
+
+    :<b>Loop</b> - Create & Submit Handlers]
+    repeat :Get next XML file;
+      :Determine parser type
+      (based on filename/vendor);
+      note right
+        Examples:
+        - HwEnbPmXmlParseHandler
+        - HwGnbPmXmlParseHandler
+        - HwRncCmXmlParseHandler
+      end note
+      :Create ParseHandler(file, nodeIds);
+      :Submit handler to thread pool
+      (non-blocking);
+    repeat while (more files?) is (yes)
+    ->no;
+
+    floating note left
+      <b>PARALLELIZATION POINT</b>
+      ==================
+      All handlers now run
+      concurrently in thread pool
+    end note
+
+    fork
+      |#LightGreen|Handler Thread 1|
+      :run() - Parse XML file 1;
+      :preHandler();
+      note right
+        Extract metadata from filename:
+        - fragmentDate
+        - nodeName
+        - fileId
+      end note
+      :Open XML file with SAX parser;
+      :Parse XML elements;
+      note right
+        SAX events:
+        - startElement
+        - characters
+        - endElement
+      end note
+      repeat :Read measInfo section;
+        repeat :Read measValue record;
+          :Extract metrics
+          (RSRP, Throughput, etc.);
+          :Map to table columns;
+          :Write to CSV buffer;
+          note right
+            Output format:
+            table_name-timestamp.csv
+          end note
+          if (autoCounter enabled?) then (yes)
+            :Collect counter definitions;
+          endif
+        repeat while (more measValues?) is (yes)
+        ->no;
+      repeat while (more measInfos?) is (yes)
+      ->no;
+      :postHandler();
+      note right
+        Cleanup resources
+        Close file handles
+      end note
+
+    fork again
+      |#LightGreen|Handler Thread 2|
+      :run() - Parse XML file 2;
+      :preHandler();
+      :Open XML file with SAX parser;
+      :Parse XML elements;
+      repeat :Read measInfo section;
+        repeat :Read measValue record;
+          :Extract metrics;
+          :Write to CSV buffer;
+        repeat while (more measValues?) is (yes)
+        ->no;
+      repeat while (more measInfos?) is (yes)
+      ->no;
+      :postHandler();
+
+    fork again
+      |#LightGreen|Handler Thread N|
+      :run() - Parse XML file N;
+      :preHandler();
+      :Open XML file with SAX parser;
+      :Parse XML elements;
+      repeat :Read measInfo section;
+        repeat :Read measValue record;
+          :Extract metrics;
+          :Write to CSV buffer;
+        repeat while (more measValues?) is (yes)
+        ->no;
+      repeat while (more measInfos?) is (yes)
+      ->no;
+      :postHandler();
+
+    end fork
+
+    floating note right
+      <b>SYNCHRONIZATION POINT</b>
+      ====================
+      Wait for all handlers
+      to complete parsing
+    end note
+
+    |#LightBlue|Parse Engine Thread|
+    :shutdownExecutorService();
+    note right
+      executor.shutdown()
+      await termination
+    end note
+
+    :writer.closeAllStreams();
+    note right
+      Flush all CSV buffers
+      Close file writers
+    end note
+  }
+
+endif
+
+if (isActivePostParse?) then (yes)
+  :postEngine();
+  note right
+    Post-processing tasks
+    (vendor-specific)
+    - Aggregations
+    - Validations
+  end note
+endif
+
+if (isActiveAutoCounter?) then (yes)
+  :Save auto counter definitions;
+  note right
+    Store discovered metrics
+    to metadata tables
+  end note
+  :autoCounterDefine.clear();
+endif
+
+if (isActiveDiscoverContentDate?) then (yes)
+  partition "Content Date Discovery" {
+    :Read parsed CSV files from /result/;
+
+    :<b>Parallel</b> - Discover Content Dates]
+    fork
+      :Analyze CSV file 1
+      Extract min/max dates;
+    fork again
+      :Analyze CSV file 2
+      Extract min/max dates;
+    fork again
+      :Analyze CSV file N
+      Extract min/max dates;
+    end fork
+
+    :Aggregate date ranges;
+    :Print discovered dates;
+  }
+endif
+
+partition "Data Loading Phase" {
+
+  if (isActiveCleanDuplicateBefore?) then (yes)
+    :cleanDuplicateBeforeLoader();
+    note right
+      Remove duplicate records
+      before DB load
+    end note
+  endif
+
+  :Read CSV files from /result/;
+
+  :<b>Parallel</b> - Load to Database]
+  fork
+    :LoaderFactory.load(csv1);
+    note right
+      Bulk insert to DB
+      Using COPY or
+      prepared statements
+    end note
+  fork again
+    :LoaderFactory.load(csv2);
+  fork again
+    :LoaderFactory.load(csvN);
+  end fork
+
+  :shutdownExecutorService();
+  note right
+    Wait for all loaders
+    to complete
+  end note
+
+  if (isActiveCleanDuplicateAfter?) then (yes)
+    :cleanDuplicateAfterLoader();
+    note right
+      Remove duplicates
+      after load
+      (DB constraints)
+    end note
+  endif
+}
+
+if (isActiveCallProcedure?) then (yes)
+  :callProcedure();
+  note right
+    Execute stored procedures
+    for data transformations
+  end note
+endif
+
+if (isActiveCallAggregate?) then (yes)
+  :callAggregate();
+  note right
+    Run aggregation queries
+    (hourly, daily KPIs)
+  end note
+endif
+
+if (isActiveCallExport?) then (yes)
+  :callExport();
+  note right
+    Export processed data
+    to external systems
+  end note
+endif
+
+stop
+
+legend right
+  <b>Key Points:</b>
+  • Loop creates handlers sequentially
+  • Fork enables parallel XML parsing
+  • Join synchronizes completion
+  • Loader also uses parallelism
+  • SAX parser for memory efficiency
+
+  <b>Performance:</b>
+  • Sequential: 150 × 2 min = 300 min (5h)
+  • Parallel (8 threads): 300 / 8 ≈ 38 min
+
+  <b>Thread Pools:</b>
+  • Parse handler pool: 8 threads
+  • Content date pool: 8 threads
+  • Loader pool: 8 threads
+
+  <b>File Types:</b>
+  • PM (Performance): Metrics data
+  • CM (Configuration): Config data
+  • Conf: Configuration parameters
+end legend
+
+@enduml

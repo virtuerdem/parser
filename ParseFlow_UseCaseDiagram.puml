@@ -1,0 +1,190 @@
+@startuml ParseFlow_UseCaseDiagram
+title Parse Flow - Use Case Diagram
+
+left to right direction
+
+actor "Transfer Module" as Transfer
+actor "Scheduler" as Scheduler
+actor "Database Administrator" as DBA
+actor "Data Analyst" as Analyst
+actor "Monitoring System" as Monitor
+
+rectangle "Parse Flow System" {
+
+  package "Engine Management" {
+    usecase "Start Parse\nEngine" as UC1
+    usecase "Prepare Directory\nStructure" as UC2
+    usecase "Load Flow\nConfiguration" as UC3
+    usecase "Initialize\nThread Pool" as UC4
+  }
+
+  package "Metadata Management" {
+    usecase "Fetch Table\nMetadata" as UC5
+    usecase "Generate Metadata\nTables" as UC6
+    usecase "Load Table\nDefinitions" as UC7
+    usecase "Discover Auto\nCounters" as UC8
+  }
+
+  package "XML Parsing" {
+    usecase "Read XML Files\nfrom Raw Path" as UC9
+    usecase "Create Parse\nHandlers" as UC10
+    usecase "Execute Handlers\nin Parallel" as UC11
+    usecase "Parse XML with\nSAX Parser" as UC12
+    usecase "Extract Performance\nMetrics" as UC13
+    usecase "Extract Configuration\nData" as UC14
+    usecase "Write to CSV\nFiles" as UC15
+  }
+
+  package "Content Analysis" {
+    usecase "Discover Content\nDate Ranges" as UC16
+    usecase "Analyze CSV\nFiles" as UC17
+    usecase "Extract Min/Max\nDates" as UC18
+  }
+
+  package "Data Loading" {
+    usecase "Clean Duplicates\nBefore Load" as UC19
+    usecase "Bulk Load CSV\nto Database" as UC20
+    usecase "Clean Duplicates\nAfter Load" as UC21
+  }
+
+  package "Post-Processing" {
+    usecase "Execute Stored\nProcedures" as UC22
+    usecase "Run Aggregation\nQueries" as UC23
+    usecase "Calculate KPIs" as UC24
+    usecase "Export Processed\nData" as UC25
+  }
+
+  package "Monitoring & Logging" {
+    usecase "Log Parsing\nProgress" as UC26
+    usecase "Track Parse\nStatistics" as UC27
+    usecase "Send Alerts on\nFailure" as UC28
+    usecase "Generate Parse\nReports" as UC29
+  }
+}
+
+' Transfer Module relationships
+Transfer --> UC1 : triggers after\nfile transfer
+Scheduler --> UC1 : triggers\nscheduled parse
+
+' Engine Management flow
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+
+' Metadata Management flow
+UC1 ..> UC5 : <<extend>>\n(if isActiveFetchTables)
+UC5 ..> UC6 : <<include>>
+UC1 ..> UC7 : <<include>>
+UC11 ..> UC8 : <<include>>\n(if isActiveAutoCounter)
+
+' XML Parsing flow
+UC1 ..> UC9 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC10 ..> UC11 : <<include>>
+UC11 ..> UC12 : <<include>>
+UC12 ..> UC13 : <<extend>>\n(PM files)
+UC12 ..> UC14 : <<extend>>\n(CM/Conf files)
+UC12 ..> UC15 : <<include>>
+
+' Content Analysis flow
+UC1 ..> UC16 : <<extend>>\n(if isActiveDiscoverContentDate)
+UC16 ..> UC17 : <<include>>
+UC17 ..> UC18 : <<include>>
+
+' Data Loading flow
+UC1 ..> UC19 : <<extend>>\n(if isActiveCleanDuplicateBefore)
+UC1 ..> UC20 : <<include>>
+UC20 ..> UC21 : <<extend>>\n(if isActiveCleanDuplicateAfter)
+
+' Post-Processing flow
+UC1 ..> UC22 : <<extend>>\n(if isActiveCallProcedure)
+UC1 ..> UC23 : <<extend>>\n(if isActiveCallAggregate)
+UC23 ..> UC24 : <<include>>
+UC1 ..> UC25 : <<extend>>\n(if isActiveCallExport)
+
+' Monitoring relationships
+UC11 ..> UC26 : <<include>>
+UC20 ..> UC27 : <<include>>
+UC27 --> Monitor : sends metrics
+UC11 ..> UC28 : <<extend>>\n(on error)
+UC28 --> Monitor : triggers alert
+UC1 ..> UC29 : <<include>>
+UC29 --> Analyst : provides reports
+
+' DBA interactions
+UC6 --> DBA : creates tables
+UC20 --> DBA : loads data
+UC22 --> DBA : executes procedures
+
+note right of UC11
+  <b>Parallel Execution</b>
+  Multiple XML handlers run
+  concurrently using
+  thread pool (size=8)
+
+  Performance:
+  150 files in ~38 minutes
+  vs 300 minutes sequential
+end note
+
+note right of UC12
+  <b>SAX Parser</b>
+  Event-driven parsing for
+  memory efficiency with
+  large XML files (>100MB)
+
+  Supports:
+  • Huawei eNodeB (4G)
+  • Huawei gNodeB (5G)
+  • Huawei RNC (3G)
+  • Huawei BSC (2G)
+  • Ericsson DRA
+end note
+
+note right of UC20
+  <b>Bulk Loading</b>
+  Uses COPY or batch INSERT
+  for high performance
+
+  Typical load:
+  • 50 CSV files
+  • ~10M records
+  • ~5 minutes
+end note
+
+note right of UC8
+  <b>Auto Counter Discovery</b>
+  Automatically detect and
+  catalog new metrics from
+  vendor XML files
+
+  Creates metadata for:
+  • Metric names
+  • Data types
+  • Table mappings
+end note
+
+legend bottom
+  <b>Actor Descriptions:</b>
+  • <b>Transfer Module:</b> Triggers parse after file download
+  • <b>Scheduler:</b> Triggers scheduled/manual parses
+  • <b>Database Administrator:</b> Manages tables and procedures
+  • <b>Data Analyst:</b> Consumes parsed data and reports
+  • <b>Monitoring System:</b> Tracks metrics and alerts
+
+  <b>Key Use Cases:</b>
+  • <b>UC1-UC4:</b> Engine initialization and setup
+  • <b>UC5-UC8:</b> Metadata management and auto-discovery
+  • <b>UC9-UC15:</b> XML parsing with parallel handlers
+  • <b>UC16-UC18:</b> Content date analysis
+  • <b>UC19-UC21:</b> Bulk data loading with cleanup
+  • <b>UC22-UC25:</b> Post-processing and aggregations
+  • <b>UC26-UC29:</b> Monitoring and reporting
+
+  <b>Vendor Support:</b>
+  • Huawei: eNodeB, gNodeB, RNC, BSC, CS
+  • Ericsson: DRA
+  • File Types: PM (Performance), CM (Config), Conf
+end legend
+
+@enduml
