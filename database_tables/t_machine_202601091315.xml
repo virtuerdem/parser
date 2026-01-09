@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_machine>
+  <DATA_RECORD>
+    <id>1</id>
+    <machine_name>etl-ttg</machine_name>
+    <ip>192.168.0.180</ip>
+    <user_name>ttg</user_name>
+    <user_pass>ttgttg</user_pass>
+    <is_active>true</is_active>
+    <created_time>2025-03-18 15:49:22.483 +0300</created_time>
+    <created_by>system</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_machine>
