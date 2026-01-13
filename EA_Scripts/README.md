@@ -63,8 +63,8 @@ Bu klasör, ParseFlow diagramlarını EA 16.1'e import etmek için JavaScript sc
 **Konum:** `Parser Module > Parse Flow Diagrams > ParseFlow - Activity Diagram`
 
 **İçerik:**
-- ✅ Initial Node (Start)
-- ✅ Activity Nodes:
+- ✅ 10 Action Nodes:
+  - Start
   - startEngine
   - preparePaths
   - getTables
@@ -73,7 +73,7 @@ Bu klasör, ParseFlow diagramlarını EA 16.1'e import etmek için JavaScript sc
   - Content Date Discovery
   - Bulk Data Loading
   - Post Processing
-- ✅ Final Node (End)
+  - End
 
 **PlantUML Kaynak:** `ParseFlow_ActivityDiagram.puml`
 

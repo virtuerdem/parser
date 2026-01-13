@@ -129,12 +129,9 @@ function createActivityDiagram(parentPackage) {
 function addActivityElements(diagram, parentPackage) {
     var elements = parentPackage.Elements;
 
-    // Initial Node
-    var initialNode = elements.AddNew("Start", "InitialNode");
-    initialNode.Update();
-
     // Activities
     var activities = [
+        "Start",
         "startEngine",
         "preparePaths",
         "getTables",
@@ -142,22 +139,20 @@ function addActivityElements(diagram, parentPackage) {
         "Auto Counter Discovery",
         "Content Date Discovery",
         "Bulk Data Loading",
-        "Post Processing"
+        "Post Processing",
+        "End"
     ];
 
+    // Her activity'i oluştur ve diyagrama ekle
     for (var i = 0; i < activities.length; i++) {
-        var activity = elements.AddNew(activities[i], "Activity");
+        var activity = elements.AddNew(activities[i], "Action");
         activity.Update();
 
         // Diyagrama ekle
-        var diagramObject = diagram.DiagramObjects.AddNew("", "");
+        var diagramObject = diagram.DiagramObjects.AddNew("l=" + (100 + i * 50) + ";t=" + (50 + i * 80) + ";", "");
         diagramObject.ElementID = activity.ElementID;
         diagramObject.Update();
     }
-
-    // Final Node
-    var finalNode = elements.AddNew("End", "ActivityFinal");
-    finalNode.Update();
 
     elements.Refresh();
 }
