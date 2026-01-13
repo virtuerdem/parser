@@ -143,13 +143,22 @@ function addActivityElements(diagram, parentPackage) {
         "End"
     ];
 
-    // Her activity'i oluştur ve diyagrama ekle
+    // Her activity'i oluştur ve diyagrama ekle (dikey düzen)
+    var startX = 200;  // Sol marjin
+    var startY = 50;   // Üst marjin
+    var nodeWidth = 180;
+    var nodeHeight = 60;
+    var verticalGap = 120;  // Node'lar arası dikey boşluk
+
     for (var i = 0; i < activities.length; i++) {
         var activity = elements.AddNew(activities[i], "Action");
         activity.Update();
 
-        // Diyagrama ekle
-        var diagramObject = diagram.DiagramObjects.AddNew("l=" + (100 + i * 50) + ";t=" + (50 + i * 80) + ";", "");
+        // Diyagrama ekle - dikey sıralama
+        var yPos = startY + (i * verticalGap);
+        var positionString = "l=" + startX + ";t=" + yPos + ";r=" + (startX + nodeWidth) + ";b=" + (yPos + nodeHeight) + ";";
+
+        var diagramObject = diagram.DiagramObjects.AddNew(positionString, "");
         diagramObject.ElementID = activity.ElementID;
         diagramObject.Update();
     }
@@ -208,13 +217,22 @@ function addSequenceElements(diagram, parentPackage) {
         {name: "LoaderFactory", type: "Object"}
     ];
 
-    var yPos = 50;
+    // Lifeline'ları yatay sırada yerleştir
+    var startX = 50;
+    var startY = 50;
+    var lifelineWidth = 120;
+    var lifelineHeight = 80;
+    var horizontalGap = 150;  // Lifeline'lar arası yatay boşluk
+
     for (var i = 0; i < lifelines.length; i++) {
         var lifeline = elements.AddNew(lifelines[i].name, lifelines[i].type);
         lifeline.Update();
 
-        // Diyagrama ekle
-        var diagramObject = diagram.DiagramObjects.AddNew("l=" + (50 + i * 100) + ";t=" + yPos + ";", "");
+        // Diyagrama ekle - yatay sıralama
+        var xPos = startX + (i * horizontalGap);
+        var positionString = "l=" + xPos + ";t=" + startY + ";r=" + (xPos + lifelineWidth) + ";b=" + (startY + lifelineHeight) + ";";
+
+        var diagramObject = diagram.DiagramObjects.AddNew(positionString, "");
         diagramObject.ElementID = lifeline.ElementID;
         diagramObject.Update();
     }
@@ -261,7 +279,7 @@ function createUseCaseDiagram(parentPackage) {
 function addUseCaseElements(diagram, parentPackage) {
     var elements = parentPackage.Elements;
 
-    // Actors
+    // Actors - sol tarafta dikey sıralama
     var actors = [
         "Transfer Module",
         "Scheduler",
@@ -270,17 +288,26 @@ function addUseCaseElements(diagram, parentPackage) {
         "Monitoring System"
     ];
 
+    var actorX = 50;
+    var actorStartY = 100;
+    var actorWidth = 100;
+    var actorHeight = 80;
+    var actorGap = 120;
+
     for (var i = 0; i < actors.length; i++) {
         var actor = elements.AddNew(actors[i], "Actor");
         actor.Update();
 
         // Diyagrama ekle (sol tarafta)
-        var diagramObject = diagram.DiagramObjects.AddNew("l=50;t=" + (50 + i * 100) + ";", "");
+        var yPos = actorStartY + (i * actorGap);
+        var positionString = "l=" + actorX + ";t=" + yPos + ";r=" + (actorX + actorWidth) + ";b=" + (yPos + actorHeight) + ";";
+
+        var diagramObject = diagram.DiagramObjects.AddNew(positionString, "");
         diagramObject.ElementID = actor.ElementID;
         diagramObject.Update();
     }
 
-    // Use Cases
+    // Use Cases - sağ tarafta dikey sıralama
     var useCases = [
         "Initialize Parse Engine",
         "Parse XML Files",
@@ -291,12 +318,21 @@ function addUseCaseElements(diagram, parentPackage) {
         "Handle Errors"
     ];
 
+    var useCaseX = 400;
+    var useCaseStartY = 80;
+    var useCaseWidth = 180;
+    var useCaseHeight = 70;
+    var useCaseGap = 100;
+
     for (var i = 0; i < useCases.length; i++) {
         var useCase = elements.AddNew(useCases[i], "UseCase");
         useCase.Update();
 
-        // Diyagrama ekle (orta)
-        var diagramObject = diagram.DiagramObjects.AddNew("l=300;t=" + (50 + i * 80) + ";", "");
+        // Diyagrama ekle (sağ tarafta)
+        var yPos = useCaseStartY + (i * useCaseGap);
+        var positionString = "l=" + useCaseX + ";t=" + yPos + ";r=" + (useCaseX + useCaseWidth) + ";b=" + (yPos + useCaseHeight) + ";";
+
+        var diagramObject = diagram.DiagramObjects.AddNew(positionString, "");
         diagramObject.ElementID = useCase.ElementID;
         diagramObject.Update();
     }
