@@ -17,12 +17,11 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
     private final Map<String, Long> nodeIds;
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
     private final HashMap<String, String> measInfoKeyValue = new HashMap<>();
-    private final HashMap<String, String> indexKey = new HashMap<>();
     private final HashMap<String, String> keyValue = new HashMap<>();
-    private String tagValue;
-    private String index;
     private String measInfo;
-    private boolean dateSet = false;
+    private String tagValue;
+    private int moIndex = 0;
+    private String attrName;
 
     public HwBscCmXmlParseHandler(ApplicationContext applicationContext,
                                   ParseHandlerRecord handlerRecord,
@@ -53,8 +52,17 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
         tagValue = "";
         switch (qName) {
             case "MO":
+                if (moIndex == 1) {
+                    write();
+                    autoCounterDefine(null, null, measInfo, keyValue.keySet());
+                    clear();
+                }
+                measInfo = attributes.getValue("className");
+                measInfoKeyValue.put("etlApp.constant.MO.fdn", attributes.getValue("fdn"));
+                moIndex++;
                 break;
             case "attr":
+                attrName = attributes.getValue("name");
                 break;
         }
     }
@@ -68,8 +76,12 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName) {
             case "attr":
+                measInfoKeyValue.put(attrName, tagValue);
                 break;
             case "MO":
+                write();
+                autoCounterDefine(null, null, measInfo, keyValue.keySet());
+                clear();
                 break;
         }
     }
@@ -77,7 +89,6 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
     @Override
     public void postHandler() {
         keyValue.clear();
-        indexKey.clear();
         measInfoKeyValue.clear();
         headerKeyValue.clear();
         nodeIds.clear();
@@ -101,6 +112,11 @@ public class HwBscCmXmlParseHandler extends ParseXmlHandler {
             keyValue.put("etlApp.info.uniqueRowHashCode", "");
             keyValue.put("etlApp.info.uniqueRowCode", "");
         }
+    }
+
+    private void clear() {
+        keyValue.clear();
+        measInfoKeyValue.clear();
     }
 
 }

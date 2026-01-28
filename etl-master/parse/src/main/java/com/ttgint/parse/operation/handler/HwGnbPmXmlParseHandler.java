@@ -8,9 +8,9 @@ import org.springframework.context.ApplicationContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Slf4j
 public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
@@ -20,9 +20,9 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
     private final HashMap<String, String> measInfoKeyValue = new HashMap<>();
     private final HashMap<String, String> indexKey = new HashMap<>();
     private final HashMap<String, String> keyValue = new HashMap<>();
-    private String tagValue;
     private String measInfo;
     private String measInfoType;
+    private String tagValue;
     private boolean dateSet = false;
 
     public HwGnbPmXmlParseHandler(ApplicationContext applicationContext,
@@ -128,23 +128,48 @@ public class HwGnbPmXmlParseHandler extends ParseXmlHandler {
     private void measObjLdnSplitter(String measObjLdn) {
         if (measObjLdn != null) {
             keyValue.put("etlApp.constant.measValue.measObjLdn", measObjLdn);
-            measInfoType = measObjLdn.split("\\/", 2)[1].split("\\:", 2)[0];
-            Arrays.stream(measObjLdn.replace("/", ",").replace(":", ",").split("\\,"))
-                    .filter(value -> value.contains("="))
-                    .forEach(value -> {
-                        try {
-                            keyValue.put("etlApp.measObjLdn." + value.split("\\=", 2)[0].trim(),
-                                    value.split("\\=", 2)[1].trim());
-                        } catch (Exception e) {
-                        }
-                    });
+            measInfoType = measObjLdn.split("/", 2)[1].split(":", 2)[0];
+            Map<Integer, String> maps = new TreeMap<>();
+            int index = 0;
+            for (String meas : measObjLdn.split("/", 2)[1].split("/")) {
+                if (meas.contains(":")) {
+                    index++;
+                    if (maps.containsKey(index)) {
+                        maps.put(index, maps.get(index) + meas);
+                    } else {
+                        maps.put(index, meas);
+                    }
+                } else if (maps.containsKey(index)) {
+                    maps.put(index, maps.get(index) + "/" + meas);
+                } else {
+                    maps.put(index + 1, meas + "/");
+                }
+            }
+
+            for (String part : maps.values()) {
+                for (String val : part.split(":", 2)[1].split(",")) {
+                    if (val.contains("=")) {
+                        keyValue.put("etlApp.measObjLdn." +
+                                        part.split(":", 2)[0].trim() + ":" + val.split("=")[0].trim(),
+                                val.split("=", 2)[1].trim()
+                        );
+                    } else {
+                        keyValue.put("etlApp.measObjLdn." +
+                                        part.split(":", 2)[0].trim(),
+                                val
+                        );
+                    }
+                }
+            }
+            maps.clear();
         }
     }
 
     private void write() {
         keyValue.putAll(headerKeyValue);
         keyValue.putAll(measInfoKeyValue);
-        ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(measInfo);
+        ParseMapRecord parseMap
+                = getParseMapper().getMapByObjectTypeObjectKey(measInfoType, measInfo);
         if (parseMap != null) {
             keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));

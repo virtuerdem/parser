@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_manager>
+  <DATA_RECORD>
+    <id>1</id>
+    <manager_code>etlManager1</manager_code>
+    <manager_name>etlManager1</manager_name>
+    <machine_id>1</machine_id>
+    <port></port>
+    <manager_role>SLAVE</manager_role>
+    <heartbeat_time></heartbeat_time>
+    <check_time></check_time>
+    <uptime></uptime>
+    <load_average1></load_average1>
+    <load_average5></load_average5>
+    <load_average15></load_average15>
+    <cpu_usage></cpu_usage>
+    <memory_usage></memory_usage>
+    <swap_usage></swap_usage>
+    <disk_usage></disk_usage>
+    <is_active_monitoring>false</is_active_monitoring>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_manager>

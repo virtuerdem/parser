@@ -1,0 +1,515 @@
+@startuml ParseFlow_SequenceDiagram
+title Parse Flow - Sequence Diagram (Detailed)
+
+actor "Transfer Module\nor Scheduler" as Trigger
+participant "ParseBaseEngine" as Engine
+participant "Repository" as Repo
+database "Database" as DB
+participant "FileLib" as FileLib
+participant "ExecutorService\n(ThreadPool)" as Pool
+participant "ParseHandler1\n(Thread)" as H1
+participant "ParseHandler2\n(Thread)" as H2
+participant "ParseHandler3\n(Thread)" as H3
+participant "SAXParser" as SAX
+participant "Writer" as Writer
+participant "LoaderFactory" as Loader
+
+== Phase 1: Engine Initialization ==
+
+Trigger -> Engine: startEngine(ParseEngineRecord)
+activate Engine
+
+note over Trigger, Engine
+  <b>ParseConstructor reads configuration tables</b>
+end note
+
+Engine -> Repo: findById(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_flow\nWHERE id = ?
+activate DB
+DB --> Repo: Flow record
+deactivate DB
+Repo --> Engine: Flow
+deactivate Repo
+
+Engine -> Repo: findById(branchId)
+activate Repo
+Repo -> DB: SELECT * FROM t_branch\nWHERE id = ?
+activate DB
+DB --> Repo: Branch record
+deactivate DB
+Repo --> Engine: Branch
+deactivate Repo
+
+Engine -> Repo: findByFlowId(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_parse_engine\nWHERE flow_id = ?
+activate DB
+DB --> Repo: ParseEngine record
+deactivate DB
+Repo --> Engine: ParseEngine
+deactivate Repo
+
+Engine -> Repo: findById(componentId)
+activate Repo
+Repo -> DB: SELECT * FROM t_parse_component\nWHERE id = ?
+activate DB
+DB --> Repo: ParseComponent record
+deactivate DB
+Repo --> Engine: ParseComponent
+deactivate Repo
+
+Engine -> Engine: preparePaths()
+note right
+  Create flow directories:
+  - /raw/
+  - /result/
+  - /error/
+end note
+
+alt isActiveFetchTables = true
+  Engine -> Repo: fetchTables()
+  activate Repo
+  Repo -> DB: Generate metadata tables\nfrom schema (t_all_table, t_all_column)
+  activate DB
+  DB --> Repo: metadata created
+  deactivate DB
+  Repo --> Engine: success
+  deactivate Repo
+end
+
+note over Engine, Repo
+  <b>ParseMapper loads table/column metadata</b>
+end note
+
+Engine -> Repo: getTables(flowId)
+activate Repo
+Repo -> DB: SELECT * FROM t_parse_table\nWHERE flow_id = ? AND is_active = true
+activate DB
+DB --> Repo: table definitions
+deactivate DB
+Repo -> DB: SELECT * FROM t_parse_column\nWHERE flow_id = ? AND is_active = true
+activate DB
+DB --> Repo: column definitions
+deactivate DB
+Repo --> Engine: Map<tableName, ParseMapRecord>
+deactivate Repo
+
+note right of Engine
+  ParseMapRecord contains:
+  - Table name (t_pm_cell_huawei)
+  - Object key (Cell, Sector)
+  - Column list with XML paths
+  - Data types & mappings
+end note
+
+alt isActivePreParse = true
+  Engine -> Engine: preEngine()
+  note right
+    Vendor-specific
+    pre-processing
+  end note
+end
+
+== Phase 2: Parse Phase (Main Processing) ==
+
+alt isActiveOnParse = true
+
+  Engine -> Repo: getNetworkNodesByBranchId(branchId)
+  activate Repo
+  Repo -> DB: SELECT node_id, node_name\nFROM t_network_node\nWHERE branch_id = ? AND is_active = true
+  activate DB
+  DB --> Repo: node list
+  deactivate DB
+  Repo --> Engine: Map<nodeName, nodeId>
+  deactivate Repo
+
+  note right of Engine
+    Example nodes:
+    - eNodeB_001 → 12345
+    - eNodeB_002 → 12346
+    - gNodeB_001 → 12347
+  end note
+
+  Engine -> FileLib: readFilesInWalkingPathByPostfix(rawPath, ".xml")
+  activate FileLib
+  FileLib --> Engine: List<File> (150 files)
+  deactivate FileLib
+
+  Engine -> Pool: Create ExecutorService (threadPoolSize=8)
+  activate Pool
+
+  loop for each XML file [1..150]
+    Engine -> Pool: submit(new ParseHandler(file, nodeIds))
+    note right
+      Non-blocking submit
+      Handlers execute immediately
+      in parallel
+    end note
+  end
+
+  note over Engine, Pool
+    <b>PARALLELIZATION POINT</b>
+    All 150 handlers now run concurrently
+    Limited to 8 threads by pool
+  end note
+
+  par Handler 1 Execution
+    Pool -> H1: run()
+    activate H1
+
+    H1 -> H1: preHandler()
+    note right
+      Extract from filename:
+      A20240708.0000+0300_eNodeB_001.xml
+
+      - fragmentDate: 2024-07-08 00:00
+      - nodeName: eNodeB_001
+      - nodeId: 12345 (from map)
+    end note
+
+    H1 -> SAX: Create SAXParser
+    activate SAX
+    H1 -> SAX: parse(xmlFile)
+
+    loop XML parsing (SAX events)
+      SAX -> H1: startElement("measCollec")
+      H1 -> H1: Store beginTime
+
+      SAX -> H1: startElement("measInfo")
+      H1 -> H1: Store measInfoId
+
+      SAX -> H1: startElement("granPeriod")
+      H1 -> H1: Store duration, endTime
+
+      SAX -> H1: characters("measTypes")
+      H1 -> H1: Parse metric names
+      note right
+        Example:
+        "RSRP RSRQ Throughput PRB_Usage"
+        → indexKey: [0→RSRP, 1→RSRQ, ...]
+      end note
+
+      SAX -> H1: startElement("measValue")
+      H1 -> H1: Parse measObjLdn
+      note right
+        measObjLdn:
+        "PLMN:001-01/eNodeB:1/Cell:1"
+
+        Extract:
+        - PLMN: 001-01
+        - eNodeB: 1
+        - Cell: 1
+      end note
+
+      SAX -> H1: characters("measResults")
+      H1 -> H1: Parse metric values
+      note right
+        "75 82 1024000 45"
+        → keyValue:
+        RSRP=75, RSRQ=82,
+        Throughput=1024000,
+        PRB_Usage=45
+      end note
+
+      SAX -> H1: endElement("measValue")
+      H1 -> Writer: write(tableName, csvLine)
+      activate Writer
+      Writer -> Writer: Buffer to CSV file
+      note right
+        Output:
+        t_pm_cell-20240708000000.csv
+
+        Line:
+        12345,001-01,1,1,75,82,...
+      end note
+      Writer --> H1: buffered
+      deactivate Writer
+
+      alt autoCounter enabled
+        H1 -> H1: autoCounterDefine(counterNames)
+        note right
+          Store metric definitions
+          for metadata generation
+        end note
+      end
+    end
+
+    SAX --> H1: parsing complete
+    deactivate SAX
+
+    H1 -> H1: postHandler()
+    note right
+      Cleanup:
+      - Clear maps
+      - Release resources
+    end note
+
+    H1 -> Engine: (handler completes)
+    deactivate H1
+
+  else Handler 2 Execution
+    Pool -> H2: run()
+    activate H2
+    H2 -> H2: preHandler()
+    H2 -> SAX: parse(xmlFile)
+    activate SAX
+    SAX -> H2: SAX events...
+    H2 -> Writer: write(csvLine)
+    SAX --> H2: complete
+    deactivate SAX
+    H2 -> H2: postHandler()
+    H2 -> Engine: (completes)
+    deactivate H2
+
+  else Handler 3 Execution
+    Pool -> H3: run()
+    activate H3
+    H3 -> H3: preHandler()
+    H3 -> SAX: parse(xmlFile)
+    activate SAX
+    SAX -> H3: SAX events...
+    H3 -> Writer: write(csvLine)
+    SAX --> H3: complete
+    deactivate SAX
+    H3 -> H3: postHandler()
+    H3 -> Engine: (completes)
+    deactivate H3
+  end
+
+  note over Engine, H3
+    <b>SYNCHRONIZATION POINT</b>
+    All handlers completed
+  end note
+
+  Engine -> Pool: shutdown()
+  Engine -> Pool: awaitTermination()
+  note right
+    Wait for all threads
+    to finish
+  end note
+  Pool --> Engine: all threads terminated
+  deactivate Pool
+
+  Engine -> Writer: closeAllStreams()
+  activate Writer
+  Writer -> Writer: Flush all CSV buffers
+  Writer -> Writer: Close file handles
+  Writer --> Engine: all streams closed
+  deactivate Writer
+
+  note right of Engine
+    Result:
+    150 XML files →
+    ~50 CSV files (grouped by table)
+
+    Example:
+    - t_pm_cell-20240708.csv
+    - t_pm_sector-20240708.csv
+    - t_cm_enodeb-20240708.csv
+  end note
+
+end
+
+alt isActivePostParse = true
+  Engine -> Engine: postEngine()
+  note right
+    Vendor-specific
+    post-processing
+  end note
+end
+
+alt isActiveAutoCounter = true
+  note over Engine, Repo
+    <b>Save auto-discovered counter definitions</b>
+  end note
+  Engine -> Repo: save(autoCounterDefinitions)
+  activate Repo
+  Repo -> DB: SELECT * FROM t_all_counter\nWHERE flow_id = ?
+  activate DB
+  DB --> Repo: existing counters
+  deactivate DB
+  Repo -> DB: INSERT INTO t_all_counter\n(flow_id, node_group_type, counter_group_type,\ncounter_group_key, counter_key, counter_name)\nVALUES (?, ?, ?, ?, ?, ?)
+  activate DB
+  note right
+    Only insert new counters
+    that don't exist yet
+  end note
+  DB --> Repo: ~1000 new counters saved
+  deactivate DB
+  Repo --> Engine: success
+  deactivate Repo
+  Engine -> Engine: autoCounterDefine.clear()
+end
+
+== Phase 3: Content Date Discovery ==
+
+alt isActiveDiscoverContentDate = true
+  Engine -> FileLib: readFilesInCurrentPathByPostfix(resultPath, ".csv")
+  activate FileLib
+  FileLib --> Engine: List<File> (50 CSV files)
+  deactivate FileLib
+
+  Engine -> Pool: Create ExecutorService (threadPoolSize=8)
+  activate Pool
+
+  par Parallel Content Date Discovery
+    loop for each CSV file
+      Engine -> Pool: execute(ContentDateReader(csvFile))
+    end
+  end
+
+  Pool -> Pool: Analyze CSV files
+  note right
+    Extract min/max dates
+    from timestamp columns
+  end note
+
+  note over Pool, Repo
+    <b>Save content date results</b>
+  end note
+
+  Pool -> Repo: saveAll(contentDateResults)
+  activate Repo
+  Repo -> DB: INSERT INTO t_content_date_result\n(flow_id, flow_process_code, file_name,\nfragment_date, min_date, max_date)\nVALUES (?, ?, ?, ?, ?, ?)
+  activate DB
+  DB --> Repo: ~50 records saved
+  deactivate DB
+  Repo --> Pool: saved
+  deactivate Repo
+
+  Pool --> Engine: date ranges discovered
+  deactivate Pool
+
+  Engine -> Engine: printDates()
+  note right
+    Log discovered date ranges
+    for monitoring
+  end note
+end
+
+== Phase 4: Data Loading ==
+
+alt isActiveCleanDuplicateBefore = true
+  Engine -> Engine: cleanDuplicateBeforeLoader()
+  note right
+    Remove duplicate CSV records
+    before DB load
+  end note
+end
+
+Engine -> FileLib: readFilesInCurrentPathByPostfix(resultPath, ".csv")
+activate FileLib
+FileLib --> Engine: List<File> (50 CSV files)
+deactivate FileLib
+
+Engine -> Pool: Create ExecutorService (threadPoolSize=8)
+activate Pool
+
+par Parallel Data Loading
+  loop for each CSV file
+    Engine -> Loader: load(csvFile, tableMetadata)
+    activate Loader
+    Loader -> DB: COPY table FROM csv\n(or bulk INSERT)
+    activate DB
+    note right
+      Bulk load methods:
+      - PostgreSQL: COPY
+      - Oracle: SQLLDR
+      - MSSQL: BULK INSERT
+    end note
+    DB --> Loader: rows inserted
+    deactivate DB
+
+    note over Loader, Repo
+      <b>Save loader result</b>
+    end note
+
+    Loader -> Repo: save(loaderResult)
+    activate Repo
+    Repo -> DB: INSERT INTO t_loader_result\n(flow_id, flow_process_code, file_name,\ntable_name, row_count, status,\nerror_message, duration_ms)\nVALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    activate DB
+    note right
+      Status: SUCCESS or FAILED
+      duration_ms: load time
+    end note
+    DB --> Repo: result saved
+    deactivate DB
+    Repo --> Loader: success
+    deactivate Repo
+
+    Loader --> Engine: load complete
+    deactivate Loader
+  end
+end
+
+Pool --> Engine: all loads complete
+deactivate Pool
+
+note right of Engine
+  Loading stats:
+  - 50 CSV files
+  - ~10M records
+  - Duration: ~5 minutes
+  - Results logged in t_loader_result
+end note
+
+alt isActiveCleanDuplicateAfter = true
+  Engine -> Engine: cleanDuplicateAfterLoader()
+  Engine -> DB: DELETE FROM table\nWHERE duplicate conditions
+  activate DB
+  DB --> Engine: duplicates removed
+  deactivate DB
+end
+
+== Phase 5: Post-Loading Operations ==
+
+alt isActiveCallProcedure = true
+  Engine -> Engine: callProcedure()
+  Engine -> DB: CALL sp_process_data()
+  activate DB
+  note right
+    Stored procedures for:
+    - Data transformations
+    - Business logic
+  end note
+  DB --> Engine: procedure completed
+  deactivate DB
+end
+
+alt isActiveCallAggregate = true
+  Engine -> Engine: callAggregate()
+  Engine -> DB: Execute aggregation queries
+  activate DB
+  note right
+    Calculate KPIs:
+    - Hourly averages
+    - Daily sums
+    - Cell-level aggregates
+  end note
+  DB --> Engine: aggregations done
+  deactivate DB
+end
+
+alt isActiveCallExport = true
+  Engine -> Engine: callExport()
+  note right
+    Export processed data
+    to external systems
+  end note
+end
+
+Engine --> Trigger: Parse completed successfully
+deactivate Engine
+
+note over Trigger, Loader
+  <b>Summary:</b>
+  • Duration: ~45 minutes (150 files)
+  • XML parsed: 150 files (2.2 GB compressed)
+  • CSV generated: 50 files (~500 MB)
+  • DB records: ~10 million
+  • Parallel threads: 8 concurrent
+  • Success rate: 99%+
+end note
+
+@enduml

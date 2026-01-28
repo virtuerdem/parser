@@ -2,7 +2,6 @@ package com.ttgint.parse.operation.engine;
 
 import com.ttgint.library.enums.ProgressType;
 import com.ttgint.library.record.ParseHandlerRecord;
-import com.ttgint.library.repository.NetworkNodeRepository;
 import com.ttgint.parse.base.ParseBaseEngine;
 import com.ttgint.parse.base.ParseBaseHandler;
 import com.ttgint.parse.operation.handler.HwGnbPmXmlParseHandler;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,20 +19,14 @@ import java.util.concurrent.Executors;
 @Component("HW_GNB_PM_XML_PARSE")
 public class HwGnbPmXmlParseEngine extends ParseBaseEngine {
 
-    private final NetworkNodeRepository networkNodeRepository;
-
-    public HwGnbPmXmlParseEngine(ApplicationContext applicationContext,
-                                 NetworkNodeRepository networkNodeRepository) {
+    public HwGnbPmXmlParseEngine(ApplicationContext applicationContext) {
         super(applicationContext);
-        this.networkNodeRepository = networkNodeRepository;
     }
 
     @Override
     protected void onEngine() {
-        Map<String, Long> nodeIds = new HashMap<>();
-        networkNodeRepository
-                .findByBranchIdAndIsActive(engineRecord.getBranchId(), true)
-                .forEach(e -> nodeIds.put(e.getNodeName(), e.getNodeId()));
+        Map<String, Long> nodeIds = getNetworkNodesByBranchId();
+        log.info("* HwGnbPmXmlParseEngine onEngine activeNodeSize: {}", nodeIds.size());
 
         ArrayList<File> files
                 = new ArrayList<>(fileLib.readFilesInWalkingPathByPostfix(engineRecord.getRawPath(), ".xml"));

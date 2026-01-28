@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_all_table>
+  <DATA_RECORD>
+    <id>6</id>
+    <flow_id>111</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00111000001</table_name>
+    <table_name_alias></table_name_alias>
+    <object_key>117440512</object_key>
+    <table_description></table_description>
+    <tablespace_name></tablespace_name>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>true</need_refresh>
+    <is_generated>false</is_generated>
+    <is_failed>false</is_failed>
+    <is_active>true</is_active>
+    <created_time>2025-12-16 16:04:17.576 +0300</created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+    <object_key2></object_key2>
+    <table_name_lookup></table_name_lookup>
+  </DATA_RECORD>
+</t_all_table>

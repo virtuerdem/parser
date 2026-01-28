@@ -1,0 +1,1317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_flow>
+  <DATA_RECORD>
+    <id>126</id>
+    <branch_id>116</branch_id>
+    <flow_code>VF_TR_D_HW_RNC-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW3G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>127</id>
+    <branch_id>116</branch_id>
+    <flow_code>VF_TR_D_HW_RNC-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW3G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>128</id>
+    <branch_id>116</branch_id>
+    <flow_code>VF_TR_D_HW_RNC-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW3G-CONF CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>129</id>
+    <branch_id>117</branch_id>
+    <flow_code>VF_TR_D_HW_ENB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW4G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>130</id>
+    <branch_id>117</branch_id>
+    <flow_code>VF_TR_D_HW_ENB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW4G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>131</id>
+    <branch_id>117</branch_id>
+    <flow_code>VF_TR_D_HW_ENB-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW4G-CONF CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>132</id>
+    <branch_id>118</branch_id>
+    <flow_code>VF_TR_D_HW_GNB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW5G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>133</id>
+    <branch_id>118</branch_id>
+    <flow_code>VF_TR_D_HW_GNB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW5G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>135</id>
+    <branch_id>119</branch_id>
+    <flow_code>VF_TR_D_HW_RI_REPORT-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE RANINFO CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>136</id>
+    <branch_id>120</branch_id>
+    <flow_code>VF_TR_D_HW_RI_TRX2G-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE RANINFO CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>137</id>
+    <branch_id>121</branch_id>
+    <flow_code>VF_TR_D_HW_RI_TRX4G-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE RANINFO CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>138</id>
+    <branch_id>122</branch_id>
+    <flow_code>VF_TR_D_HW_MW-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE MW PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>139</id>
+    <branch_id>123</branch_id>
+    <flow_code>VF_TR_D_HW_MW_REPORT-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE MW PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>111</id>
+    <branch_id>111</branch_id>
+    <flow_code>VF_TR_D_HW_CS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HWCS PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>114</id>
+    <branch_id>112</branch_id>
+    <flow_code>VF_TR_D_HW_IMS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE IMS PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>120</id>
+    <branch_id>114</branch_id>
+    <flow_code>VF_TR_D_HW_BSC-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW2G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>121</id>
+    <branch_id>114</branch_id>
+    <flow_code>VF_TR_D_HW_BSC-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW2G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>122</id>
+    <branch_id>114</branch_id>
+    <flow_code>VF_TR_D_HW_BSC-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW2G-CONF CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>123</id>
+    <branch_id>115</branch_id>
+    <flow_code>VF_TR_D_HW_NB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW3G-LOCALCELL PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>125</id>
+    <branch_id>115</branch_id>
+    <flow_code>VF_TR_D_HW_NB-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HW3G-SITECONFIG CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>112</id>
+    <branch_id>111</branch_id>
+    <flow_code>VF_TR_D_HW_CS-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-118</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>113</id>
+    <branch_id>111</branch_id>
+    <flow_code>VF_TR_D_HW_CS-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-119</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>115</id>
+    <branch_id>112</branch_id>
+    <flow_code>VF_TR_D_HW_IMS-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-121</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>116</id>
+    <branch_id>112</branch_id>
+    <flow_code>VF_TR_D_HW_IMS-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-122</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>117</id>
+    <branch_id>113</branch_id>
+    <flow_code>VF_TR_D_HW_BTS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-123</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>118</id>
+    <branch_id>113</branch_id>
+    <flow_code>VF_TR_D_HW_BTS-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-124</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>119</id>
+    <branch_id>113</branch_id>
+    <flow_code>VF_TR_D_HW_BTS-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-125</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>124</id>
+    <branch_id>115</branch_id>
+    <flow_code>VF_TR_D_HW_NB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-131</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>134</id>
+    <branch_id>118</branch_id>
+    <flow_code>VF_TR_D_HW_GNB-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-141</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>148</id>
+    <branch_id>132</branch_id>
+    <flow_code>VF_TR_D_ER_CS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-111</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>150</id>
+    <branch_id>134</branch_id>
+    <flow_code>VF_TR_D_ER_GGSN-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-113</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>151</id>
+    <branch_id>135</branch_id>
+    <flow_code>VF_TR_D_ER_SGSN-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-114</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>156</id>
+    <branch_id>139</branch_id>
+    <flow_code>VF_TR_D_UL_GNB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-144</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>157</id>
+    <branch_id>139</branch_id>
+    <flow_code>VF_TR_D_UL_GNB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-145</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>166</id>
+    <branch_id>146</branch_id>
+    <flow_code>VF_NC_D_HW_CS-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-118</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>167</id>
+    <branch_id>147</branch_id>
+    <flow_code>VF_NC_D_HW_BTS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-123</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>168</id>
+    <branch_id>147</branch_id>
+    <flow_code>VF_NC_D_HW_BTS-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>false</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-124</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>172</id>
+    <branch_id>149</branch_id>
+    <flow_code>VF_NC_D_HW_NB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-130</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>173</id>
+    <branch_id>149</branch_id>
+    <flow_code>VF_NC_D_HW_NB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>componentId-131</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>141</id>
+    <branch_id>125</branch_id>
+    <flow_code>VF_TR_D_HW_LOGS_NE-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE CONFLOGS CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>142</id>
+    <branch_id>126</branch_id>
+    <flow_code>VF_TR_D_HW_LOGS_USER-CONF</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE CONFLOGS CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>143</id>
+    <branch_id>127</branch_id>
+    <flow_code>VF_TR_D_HW_WDM-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE WDM PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>144</id>
+    <branch_id>128</branch_id>
+    <flow_code>VF_TR_D_HW_ABID-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE ABID CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>145</id>
+    <branch_id>129</branch_id>
+    <flow_code>VF_TR_D_HW_FTTS-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE FTTS CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>146</id>
+    <branch_id>130</branch_id>
+    <flow_code>VF_TR_D_HW_RAN-FM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HWU2020-ALARM PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>147</id>
+    <branch_id>131</branch_id>
+    <flow_code>VF_TR_D_HW_TOPO-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE PSCORE CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>149</id>
+    <branch_id>133</branch_id>
+    <flow_code>VF_TR_D_ER_DRA-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE DRA PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>152</id>
+    <branch_id>136</branch_id>
+    <flow_code>VF_TR_D_ER_STP-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE STP PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>153</id>
+    <branch_id>137</branch_id>
+    <flow_code>VF_TR_D_NK_CS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE NCORE PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>154</id>
+    <branch_id>138</branch_id>
+    <flow_code>VF_TR_D_UL_ENB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE ULAK4G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>155</id>
+    <branch_id>138</branch_id>
+    <flow_code>VF_TR_D_UL_ENB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE ULAK4G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>158</id>
+    <branch_id>140</branch_id>
+    <flow_code>VF_TR_D_DF_CLI-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE DEFNE_CLI PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>159</id>
+    <branch_id>141</branch_id>
+    <flow_code>VF_TR_D_HPE_ON-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HP CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>160</id>
+    <branch_id>142</branch_id>
+    <flow_code>VF_TR_D_HPE_ON_KPI-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HP-KPI CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>161</id>
+    <branch_id>143</branch_id>
+    <flow_code>VF_TR_D_OTH_TWAMP-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE TWAMP PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>162</id>
+    <branch_id>143</branch_id>
+    <flow_code>VF_TR_D_OTH_TWAMP-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE TWAMP CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>163</id>
+    <branch_id>144</branch_id>
+    <flow_code>VF_TR_D_OTH_TWAMP_NNI-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE TWAMP PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>164</id>
+    <branch_id>145</branch_id>
+    <flow_code>VF_TR_D_OTH_VAS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE VAS PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>165</id>
+    <branch_id>146</branch_id>
+    <flow_code>VF_NC_D_HW_CS-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HWCS PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>169</id>
+    <branch_id>148</branch_id>
+    <flow_code>VF_NC_D_HW_BSC-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW2G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>170</id>
+    <branch_id>148</branch_id>
+    <flow_code>VF_NC_D_HW_BSC-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW2G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>171</id>
+    <branch_id>149</branch_id>
+    <flow_code>VF_NC_D_HW_NB_CSV-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW3Gcsv PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>174</id>
+    <branch_id>150</branch_id>
+    <flow_code>VF_NC_D_HW_RNC-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW3G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>175</id>
+    <branch_id>150</branch_id>
+    <flow_code>VF_NC_D_HW_RNC-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW3G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>176</id>
+    <branch_id>151</branch_id>
+    <flow_code>VF_NC_D_HW_ENB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW4G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>177</id>
+    <branch_id>151</branch_id>
+    <flow_code>VF_NC_D_HW_ENB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW4G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>140</id>
+    <branch_id>124</branch_id>
+    <flow_code>VF_TR_D_HW_U2000-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>false</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>VODAFONE HWU2000 PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>178</id>
+    <branch_id>152</branch_id>
+    <flow_code>VF_NC_D_HW_GNB-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW5G PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>179</id>
+    <branch_id>152</branch_id>
+    <flow_code>VF_NC_D_HW_GNB-CM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HW5G CM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>180</id>
+    <branch_id>153</branch_id>
+    <flow_code>VF_NC_D_HW_MW-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM MW PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>183</id>
+    <branch_id>156</branch_id>
+    <flow_code>VF_NC_D_OTH_TWAMP-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM TWAMP PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>181</id>
+    <branch_id>154</branch_id>
+    <flow_code>VF_NC_D_HW_MW_REPORT-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM MW PM</extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>182</id>
+    <branch_id>155</branch_id>
+    <flow_code>VF_NC_D_HW_U2000-PM</flow_code>
+    <root_manager_id>2</root_manager_id>
+    <active_manager_id>2</active_manager_id>
+    <depend_flow_id></depend_flow_id>
+    <flow_status>STOPPED</flow_status>
+    <flow_cron>0 * * * * *</flow_cron>
+    <flow_info></flow_info>
+    <is_movable>true</is_movable>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by>true</created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info>KKTC-TELSIM HWU2000 PM</extra_info>
+  </DATA_RECORD>
+</t_flow>

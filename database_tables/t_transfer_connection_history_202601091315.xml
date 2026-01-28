@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_transfer_connection_history>
+  <DATA_RECORD>
+    <id>1</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,664</connection_id>
+    <connection_history_code>20250723114233001664</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:34.133 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:34.182 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:34.332 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:34.372 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>2</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,665</connection_id>
+    <connection_history_code>20250723114233001665</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:34.878 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:34.908 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:35.045 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:35.075 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>3</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,666</connection_id>
+    <connection_history_code>20250723114233001666</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:35.658 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:35.726 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:35.878 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:35.909 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>4</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,667</connection_id>
+    <connection_history_code>20250723114233001667</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:36.429 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:36.459 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:36.600 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:36.631 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>5</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,668</connection_id>
+    <connection_history_code>20250723114233001668</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:37.209 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:37.276 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:37.417 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:37.450 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>6</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,669</connection_id>
+    <connection_history_code>20250723114233001669</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:37.984 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:38.052 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:38.192 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:38.234 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>7</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,670</connection_id>
+    <connection_history_code>20250723114233001670</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:38.697 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:38.727 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:38.866 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:38.912 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>8</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,671</connection_id>
+    <connection_history_code>20250723114233001671</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:39.471 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:39.501 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:39.641 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:39.682 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>9</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,672</connection_id>
+    <connection_history_code>20250723114233001672</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:40.238 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:40.305 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:40.444 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:40.488 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>10</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,673</connection_id>
+    <connection_history_code>20250723114233001673</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:40.992 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:41.021 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:41.161 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:41.205 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>11</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,674</connection_id>
+    <connection_history_code>20250723114233001674</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:41.693 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:41.722 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:41.859 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:41.903 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>12</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,675</connection_id>
+    <connection_history_code>20250723114233001675</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:42.413 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:42.442 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:42.582 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:42.625 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>13</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,676</connection_id>
+    <connection_history_code>20250723114233001676</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:43.128 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:43.157 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:43.298 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:43.341 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>14</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,677</connection_id>
+    <connection_history_code>20250723114233001677</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:43.916 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:43.983 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:44.114 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:44.156 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>15</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,678</connection_id>
+    <connection_history_code>20250723114233001678</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:44.696 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:44.762 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:44.906 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:44.950 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>16</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,679</connection_id>
+    <connection_history_code>20250723114233001679</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:45.452 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:45.480 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:45.618 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:45.659 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>17</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,680</connection_id>
+    <connection_history_code>20250723114233001680</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:46.170 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:46.199 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:46.335 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:46.377 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>18</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,681</connection_id>
+    <connection_history_code>20250723114233001681</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:46.878 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:46.907 +0300</read_start_time>
+    <read_file_count>904</read_file_count>
+    <read_file_size>26,632,557</read_file_size>
+    <read_end_time>2025-07-23 11:42:51.836 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:51.896 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>19</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,682</connection_id>
+    <connection_history_code>20250723114233001682</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:52.408 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:52.437 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:52.607 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:52.651 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>20</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,683</connection_id>
+    <connection_history_code>20250723114233001683</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:53.176 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:53.205 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:53.459 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:53.556 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>21</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,684</connection_id>
+    <connection_history_code>20250723114233001684</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:54.060 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:54.090 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:54.230 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:54.272 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>22</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,685</connection_id>
+    <connection_history_code>20250723114233001685</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:54.783 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:54.813 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:54.948 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:54.990 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>23</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,686</connection_id>
+    <connection_history_code>20250723114233001686</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:55.496 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:55.525 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:42:55.658 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:42:55.702 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>24</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,687</connection_id>
+    <connection_history_code>20250723114233001687</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:42:56.232 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:42:56.259 +0300</read_start_time>
+    <read_file_count>506</read_file_count>
+    <read_file_size>670,447,611</read_file_size>
+    <read_end_time>2025-07-23 11:43:00.277 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 11:43:01.689 +0300</transfer_start_time>
+    <transfer_file_count>36</transfer_file_count>
+    <transfer_file_size>734,839</transfer_file_size>
+    <transfer_end_time>2025-07-23 11:43:11.275 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:11.338 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>25</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,688</connection_id>
+    <connection_history_code>20250723114233001688</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:11.809 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:11.839 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:43:11.975 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:12.019 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>26</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,689</connection_id>
+    <connection_history_code>20250723114233001689</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:12.551 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:12.619 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:43:12.757 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:12.801 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>27</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,690</connection_id>
+    <connection_history_code>20250723114233001690</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:13.267 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:13.296 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:43:13.435 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:13.478 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>28</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,691</connection_id>
+    <connection_history_code>20250723114233001691</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:13.984 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:14.011 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:43:14.143 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:14.187 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>29</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,692</connection_id>
+    <connection_history_code>20250723114233001692</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:14.706 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:14.761 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:43:14.901 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:14.944 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>30</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,693</connection_id>
+    <connection_history_code>20250723114233001693</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:15.454 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:15.482 +0300</read_start_time>
+    <read_file_count>479</read_file_count>
+    <read_file_size>372,523,249</read_file_size>
+    <read_end_time>2025-07-23 11:43:18.797 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 11:43:19.583 +0300</transfer_start_time>
+    <transfer_file_count>17</transfer_file_count>
+    <transfer_file_size>736,296</transfer_file_size>
+    <transfer_end_time>2025-07-23 11:43:24.383 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:24.444 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>31</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,694</connection_id>
+    <connection_history_code>20250723114233001694</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:24.908 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:24.936 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:43:25.096 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:25.139 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>32</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,695</connection_id>
+    <connection_history_code>20250723114233001695</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:25.632 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:25.663 +0300</read_start_time>
+    <read_file_count>52</read_file_count>
+    <read_file_size>661,216</read_file_size>
+    <read_end_time>2025-07-23 11:43:26.462 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 11:43:27.371 +0300</transfer_start_time>
+    <transfer_file_count>18</transfer_file_count>
+    <transfer_file_size>628,713</transfer_file_size>
+    <transfer_end_time>2025-07-23 11:43:32.117 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 11:43:32.231 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>33</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,696</connection_id>
+    <connection_history_code>20250723114233001696</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:43:32.762 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:43:32.829 +0300</read_start_time>
+    <read_file_count>679</read_file_count>
+    <read_file_size>401,420,487</read_file_size>
+    <read_end_time>2025-07-23 11:43:38.764 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 11:43:42.602 +0300</transfer_start_time>
+    <transfer_file_count>125</transfer_file_count>
+    <transfer_file_size>3,438,171</transfer_file_size>
+    <transfer_end_time>2025-07-23 11:44:14.588 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:14.653 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>34</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,697</connection_id>
+    <connection_history_code>20250723114233001697</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:15.123 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:15.153 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:15.378 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:15.473 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>35</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,698</connection_id>
+    <connection_history_code>20250723114233001698</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:15.939 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:15.967 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:16.116 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:16.157 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>36</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,699</connection_id>
+    <connection_history_code>20250723114233001699</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:16.612 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:16.641 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:16.782 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:16.822 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>37</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,700</connection_id>
+    <connection_history_code>20250723114233001700</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:17.318 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:17.346 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:17.485 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:17.531 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>38</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,701</connection_id>
+    <connection_history_code>20250723114233001701</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:18.098 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:18.165 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:18.298 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:18.340 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>39</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,702</connection_id>
+    <connection_history_code>20250723114233001702</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:18.847 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:18.876 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:19.016 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:19.059 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>40</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,703</connection_id>
+    <connection_history_code>20250723114233001703</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:19.500 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:19.529 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:19.666 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:19.709 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>41</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,704</connection_id>
+    <connection_history_code>20250723114233001704</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:20.163 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:20.192 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:20.327 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:20.370 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>42</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,705</connection_id>
+    <connection_history_code>20250723114233001705</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:20.886 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:20.914 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:21.052 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:21.096 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>43</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,706</connection_id>
+    <connection_history_code>20250723114233001706</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:21.606 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:21.673 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:21.833 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:21.876 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>44</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,707</connection_id>
+    <connection_history_code>20250723114233001707</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:22.379 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:22.407 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:22.547 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:22.591 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>45</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,708</connection_id>
+    <connection_history_code>20250723114233001708</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:23.105 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:23.172 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:23.306 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:23.350 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>46</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,709</connection_id>
+    <connection_history_code>20250723114233001709</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:23.790 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:23.819 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:23.960 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:24.002 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>47</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,710</connection_id>
+    <connection_history_code>20250723114233001710</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:24.447 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:24.475 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:24.613 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:24.654 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>48</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,711</connection_id>
+    <connection_history_code>20250723114233001711</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:25.109 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:25.138 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:25.281 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:25.321 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>49</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,712</connection_id>
+    <connection_history_code>20250723114233001712</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:25.812 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:25.840 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:25.976 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:26.018 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>50</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,713</connection_id>
+    <connection_history_code>20250723114233001713</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:26.590 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:26.658 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:26.820 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:26.863 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>51</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,714</connection_id>
+    <connection_history_code>20250723114233001714</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:27.303 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:27.331 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:27.463 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:27.505 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>52</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,715</connection_id>
+    <connection_history_code>20250723114233001715</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:28.025 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:28.053 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:28.187 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:28.229 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>53</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,716</connection_id>
+    <connection_history_code>20250723114233001716</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:28.737 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:28.765 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 11:44:28.899 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 11:44:28.943 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>54</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,717</connection_id>
+    <connection_history_code>20250723114233001717</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 11:44:29.515 +0300</connection_start_time>
+    <read_start_time>2025-07-23 11:44:29.582 +0300</read_start_time>
+    <read_file_count>1,272</read_file_count>
+    <read_file_size>751,598,752</read_file_size>
+    <read_end_time>2025-07-23 11:44:40.363 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 11:44:43.504 +0300</transfer_start_time>
+    <transfer_file_count>96</transfer_file_count>
+    <transfer_file_size>34,270,246</transfer_file_size>
+    <transfer_end_time>2025-07-23 11:45:21.666 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 11:45:21.726 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>55</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,111</connection_id>
+    <connection_history_code>20250723125305001111</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:53:05.985 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:53:06.034 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 12:53:06.178 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 12:53:06.221 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>56</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,112</connection_id>
+    <connection_history_code>20250723125305001112</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:53:06.777 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:53:06.809 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 12:53:06.950 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 12:53:06.981 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>57</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,113</connection_id>
+    <connection_history_code>20250723125305001113</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:53:07.605 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:53:07.673 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 12:53:07.809 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 12:53:07.841 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>58</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,114</connection_id>
+    <connection_history_code>20250723125305001114</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:53:08.495 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:53:08.563 +0300</read_start_time>
+    <read_file_count>0</read_file_count>
+    <read_file_size>0</read_file_size>
+    <read_end_time>2025-07-23 12:53:08.698 +0300</read_end_time>
+    <transfer_start_time></transfer_start_time>
+    <transfer_file_count>0</transfer_file_count>
+    <transfer_file_size>0</transfer_file_size>
+    <transfer_end_time></transfer_end_time>
+    <connection_end_time>2025-07-23 12:53:08.730 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>59</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,115</connection_id>
+    <connection_history_code>20250723125305001115</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:53:09.314 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:53:09.382 +0300</read_start_time>
+    <read_file_count>17</read_file_count>
+    <read_file_size>841,983</read_file_size>
+    <read_end_time>2025-07-23 12:53:09.819 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 12:53:10.631 +0300</transfer_start_time>
+    <transfer_file_count>17</transfer_file_count>
+    <transfer_file_size>841,983</transfer_file_size>
+    <transfer_end_time>2025-07-23 12:53:14.610 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 12:53:14.656 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>60</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,116</connection_id>
+    <connection_history_code>20250723125305001116</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:53:15.156 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:53:15.209 +0300</read_start_time>
+    <read_file_count>945</read_file_count>
+    <read_file_size>57,482,406</read_file_size>
+    <read_end_time>2025-07-23 12:53:19.809 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 12:53:47.012 +0300</transfer_start_time>
+    <transfer_file_count>945</transfer_file_count>
+    <transfer_file_size>57,482,406</transfer_file_size>
+    <transfer_end_time>2025-07-23 12:57:39.672 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 12:57:39.717 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>61</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,117</connection_id>
+    <connection_history_code>20250723125305001117</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 12:57:40.155 +0300</connection_start_time>
+    <read_start_time>2025-07-23 12:57:40.185 +0300</read_start_time>
+    <read_file_count>665</read_file_count>
+    <read_file_size>77,666,832</read_file_size>
+    <read_end_time>2025-07-23 12:57:43.953 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 12:58:02.725 +0300</transfer_start_time>
+    <transfer_file_count>665</transfer_file_count>
+    <transfer_file_size>77,666,832</transfer_file_size>
+    <transfer_end_time>2025-07-23 13:01:08.309 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 13:01:08.355 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>62</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20250723125304000111</flow_process_code>
+    <connection_id>1,118</connection_id>
+    <connection_history_code>20250723125305001118</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 13:01:08.915 +0300</connection_start_time>
+    <read_start_time>2025-07-23 13:01:08.946 +0300</read_start_time>
+    <read_file_count>1,050</read_file_count>
+    <read_file_size>63,773,041</read_file_size>
+    <read_end_time>2025-07-23 13:01:13.790 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 13:01:43.774 +0300</transfer_start_time>
+    <transfer_file_count>1,050</transfer_file_count>
+    <transfer_file_size>63,773,041</transfer_file_size>
+    <transfer_end_time>2025-07-23 13:05:43.922 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 13:05:43.968 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>63</id>
+    <flow_id>165</flow_id>
+    <flow_process_code>20250723130936000165</flow_process_code>
+    <connection_id>2,108</connection_id>
+    <connection_history_code>20250723130936002108</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 13:09:37.256 +0300</connection_start_time>
+    <read_start_time>2025-07-23 13:09:37.304 +0300</read_start_time>
+    <read_file_count>5,521</read_file_count>
+    <read_file_size>287,869,452</read_file_size>
+    <read_end_time>2025-07-23 13:09:55.976 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 13:12:32.606 +0300</transfer_start_time>
+    <transfer_file_count>5,521</transfer_file_count>
+    <transfer_file_size>287,869,452</transfer_file_size>
+    <transfer_end_time>2025-07-23 13:31:24.453 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 13:31:24.496 +0300</connection_end_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>64</id>
+    <flow_id>165</flow_id>
+    <flow_process_code>20250723135119000165</flow_process_code>
+    <connection_id>2,108</connection_id>
+    <connection_history_code>20250723135119002108</connection_history_code>
+    <is_connected>true</is_connected>
+    <connection_start_time>2025-07-23 13:51:20.206 +0300</connection_start_time>
+    <read_start_time>2025-07-23 13:51:20.258 +0300</read_start_time>
+    <read_file_count>5,521</read_file_count>
+    <read_file_size>287,869,452</read_file_size>
+    <read_end_time>2025-07-23 13:51:38.584 +0300</read_end_time>
+    <transfer_start_time>2025-07-23 13:53:55.982 +0300</transfer_start_time>
+    <transfer_file_count>4,836</transfer_file_count>
+    <transfer_file_size>49,114,160</transfer_file_size>
+    <transfer_end_time>2025-07-23 14:11:11.557 +0300</transfer_end_time>
+    <connection_end_time>2025-07-23 14:11:11.602 +0300</connection_end_time>
+  </DATA_RECORD>
+</t_transfer_connection_history>
