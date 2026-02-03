@@ -1,0 +1,98 @@
+@startuml Parser_XLS_Format_Flow
+!theme plain
+title XLS Format Processing Flow (Legacy Excel)
+
+start
+:XLS Input File;
+note right : (.xls, .gz, .zip, .tar.gz)
+note right : Legacy Excel Format
+
+if (Compressed?) then (Yes)
+  :DecompressFactory.decompress();
+else (No)
+  :File Ready;
+endif
+
+:Engine Selection;
+note right
+  DefaultXlsEngine
+  (Apache POI Legacy)
+end note
+
+:FileLib.readFilesInWalkingPathByPostfix();
+note right
+  Scan rawPath
+  Filter .xls files
+end note
+
+:ThreadPool Dispatch;
+note right
+  onParseThreadCount threads
+  Parallel processing
+end note
+
+:Apache POI HSSFWorkbook;
+note right
+  new HSSFWorkbook(file)
+  Legacy Excel support
+  (older format than XLSX)
+end note
+
+:Iterate Sheets;
+note right
+  workbook.getSheetAt(i)
+  For each sheet
+end note
+
+:Iterate Rows;
+note right
+  sheet.rowIterator()
+  For each row
+end note
+
+:Iterate Cells;
+note right
+  row.getCell(j)
+  Extract cell values
+  (String, Numeric, Date)
+end note
+
+:ParseMapper.mapping();
+note right
+  Column Index → Column value
+  Cell value extraction
+end note
+
+:Build HashMap;
+note right
+  HashMap<String, String>
+  columnKey → cell value
+end note
+
+:prepareRecord();
+note right
+  Delimiter-separated String
+  value1,value2,value3...
+end note
+
+:syncWriteIntoFile();
+note right
+  Write to CSV
+  Append mode
+end note
+
+:CSV File Ready;
+note right
+  Intermediate CSV
+  Format standardization
+end note
+
+:LoaderFactory Selection;
+
+:Bulk Database Insert;
+
+:Database Table Updated ✓;
+
+stop
+
+@enduml

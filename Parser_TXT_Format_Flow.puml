@@ -1,0 +1,99 @@
+@startuml Parser_TXT_Format_Flow
+!theme plain
+title TXT Format Processing Flow
+
+start
+:TXT Input File;
+note right : (.txt, .gz, .zip, .tar.gz)
+
+if (Compressed?) then (Yes)
+  :DecompressFactory.decompress();
+else (No)
+  :File Ready;
+endif
+
+:Engine Selection;
+note right
+  DefaultTextEngine
+  (BufferedReader)
+end note
+
+:FileLib.readFilesInWalkingPathByPostfix();
+note right
+  Scan rawPath
+  Filter .txt files
+end note
+
+:ThreadPool Dispatch;
+note right
+  onParseThreadCount threads
+  Parallel processing
+end note
+
+:BufferedReader Initialization;
+note right
+  Files.readAllLines()
+  or BufferedReader
+  Line-by-line reading
+end note
+
+:Read Line;
+note right
+  readLine()
+  Get entire line as String
+end note
+
+:Custom Format Parsing;
+note right
+  Regex pattern matching
+  Custom delimiter parsing
+  Fixed-width columns
+  Or format-specific logic
+end note
+
+:Extract Field Values;
+note right
+  Parse line content
+  Based on format rules
+  Split by pattern
+end note
+
+:ParseMapper.mapping();
+note right
+  Extracted field → Column value
+  Text format transformation
+end note
+
+:Build HashMap;
+note right
+  HashMap<String, String>
+  fieldKey → parsed value
+end note
+
+:prepareRecord();
+note right
+  Delimiter-separated String
+  value1,value2,value3...
+end note
+
+:syncWriteIntoFile();
+note right
+  Write to CSV
+  Append mode
+end note
+
+:CSV File Ready;
+note right
+  Standard CSV format
+  Ready for database load
+end note
+
+:LoaderFactory Selection;
+
+:Bulk Database Insert;
+
+:Database Table Updated ✓;
+
+stop
+
+@enduml

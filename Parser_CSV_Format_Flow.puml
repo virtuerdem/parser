@@ -1,0 +1,100 @@
+@startuml Parser_CSV_Format_Flow
+!theme plain
+title CSV Format Processing Flow
+
+start
+:CSV Input File;
+note right : (.csv, .gz, .zip)
+
+if (Compressed?) then (Yes)
+  :DecompressFactory.decompress();
+else (No)
+  :File Ready;
+endif
+
+:Engine Selection;
+note right
+  DefaultCsvEngine
+  (opencsv library)
+end note
+
+:FileLib.readFilesInWalkingPathByPostfix();
+note right
+  Scan rawPath
+  Filter .csv files
+end note
+
+:ThreadPool Dispatch;
+note right
+  onParseThreadCount threads
+  Parallel processing
+end note
+
+:CSVReader Initialization;
+note right
+  opencsv.CSVReader
+  delimiter = ',' (default)
+  or configurable delimiter
+end note
+
+:Line-by-Line Reading;
+note right
+  readNextLine()
+  Read each line sequentially
+end note
+
+if (Header Row?) then (Yes)
+  :Parse Header;
+  note right
+    First line
+    Column names
+  end note
+else (No)
+  :Start from Row 1;
+endif
+
+:Split by Delimiter;
+note right
+  line.split(delimiter)
+  Extract field values
+end note
+
+:ParseMapper.mapping();
+note right
+  Field Index → Column value
+  Map CSV field to column
+end note
+
+:Build HashMap;
+note right
+  HashMap<String, String>
+  fieldKey → CSV field value
+end note
+
+:prepareRecord();
+note right
+  Delimiter-separated String
+  (Mostly redundant for CSV input)
+end note
+
+:syncWriteIntoFile();
+note right
+  Write to Output CSV
+  Format normalization
+end note
+
+:Output CSV Ready;
+note right
+  Normalized CSV format
+  Standardized delimiters
+end note
+
+:LoaderFactory Selection;
+
+:Bulk Database Insert;
+
+:Database Table Updated ✓;
+
+stop
+
+@enduml

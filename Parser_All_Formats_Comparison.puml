@@ -1,0 +1,128 @@
+@startuml Parser_All_Formats_Comparison
+!theme plain
+title ETL Parser - All File Formats Processing Comparison
+
+== COMMON PIPELINE START ==
+
+start
+:File Input;
+note right
+  .xml, .xlsx, .xls
+  .csv, .txt
+  (.gz, .zip, .tar.gz)
+end note
+
+:Decompress Check;
+
+== FORMAT-SPECIFIC PROCESSING ==
+
+split
+  :XML Format;
+  :SAX Parser;
+  note right
+    Event-based
+    30+ Vendor Engines
+    XML Validation
+  end note
+  :SAX Events → HashMap;
+split again
+  :XLSX Format;
+  :Apache POI XSSFWorkbook;
+  note right
+    Modern Excel
+    Sheet → Row → Cell
+  end note
+  :Workbook → HashMap;
+split again
+  :XLS Format;
+  :Apache POI HSSFWorkbook;
+  note right
+    Legacy Excel
+    Sheet → Row → Cell
+  end note
+  :Workbook → HashMap;
+split again
+  :CSV Format;
+  :opencsv CSVReader;
+  note right
+    Delimiter parsing
+    Line-by-line
+  end note
+  :CSV Lines → HashMap;
+split again
+  :TXT Format;
+  :BufferedReader;
+  note right
+    Custom format
+    Regex/Pattern
+    Custom parsing
+  end note
+  :Text Lines → HashMap;
+end split
+
+== COMMON PIPELINE CONVERGENCE ==
+
+:ParseMapper.mapping();
+note right
+  Format-agnostic mapping
+  Data transformation
+  Column value extraction
+end note
+
+:Build HashMap<String, String>;
+note right
+  Unified data structure
+  All formats converge here
+  objectKey → value pairs
+end note
+
+:ThreadPool Processing;
+note right
+  Parallel thread handling
+  onParseThreadCount
+  Batch processing
+end note
+
+:prepareRecord();
+note right
+  Delimiter-separated string
+  resultFileDelimiter
+  Standardized format
+end note
+
+:syncWriteIntoFile();
+note right
+  CSV Output
+  {tableName}-{objectKey}.csv
+  Append mode
+end note
+
+:CSV Intermediate File;
+note right
+  All formats → CSV
+  Standard interchange format
+  Ready for database load
+end note
+
+:LoaderFactory Selection;
+note right
+  Determine database type:
+  - ORACLE
+  - MSSQL
+  - POSTGRESQL
+  Based on loaderTarget
+end note
+
+:Bulk Database Insert;
+note right
+  Oracle: SQLLDR
+  MSSQL: Native BCP
+  PostgreSQL: COPY command
+  Batch loading
+end note
+
+:Database Table Updated ✓;
+
+stop
+
+@enduml

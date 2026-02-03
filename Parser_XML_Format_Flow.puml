@@ -1,0 +1,108 @@
+@startuml Parser_XML_Format_Flow
+!theme plain
+title XML Format Processing Flow
+
+start
+:XML Input File;
+note right : (.xml, .gz, .tar.gz, .zip)
+
+if (Compressed?) then (Yes)
+  :DecompressFactory.decompress();
+  note right
+    GzDecompress
+    ZipDecompress
+    TarGzDecompress
+  end note
+else (No)
+  :File Ready;
+endif
+
+:Engine Selection;
+note right
+  DefaultXmlEngine
+  + 30+ Vendor-Specific
+  (HwEnb*, HwGnb*, etc)
+end note
+
+:FileLib.readFilesInWalkingPathByPostfix();
+note right
+  Scan rawPath
+  Filter .xml files
+end note
+
+:ThreadPool Dispatch;
+note right
+  onParseThreadCount threads
+  Parallel processing
+end note
+
+:Create SAX Parser;
+note right
+  DefaultXmlHandler
+  extends DefaultHandler
+end note
+
+if (XML Validation Enabled?) then (Yes)
+  :XmlValidation.validate();
+else (No)
+  :Skip Validation;
+endif
+
+:SAX Event Handling;
+note right
+  - startElement()
+  - characters()
+  - endElement()
+  Event-based parsing
+end note
+
+:ParseMapper.mapping();
+note right
+  XML path → Column value
+  Transform XML structure
+end note
+
+:Build HashMap;
+note right
+  HashMap<String, String>
+  objectKey → parsed value
+end note
+
+:prepareRecord();
+note right
+  Delimiter-separated String
+  field1,field2,field3...
+  Uses resultFileDelimiter
+end note
+
+:syncWriteIntoFile();
+note right
+  Write to CSV
+  {tableName}-{objectKey}.csv
+  Append to existing file
+end note
+
+:CSV File Ready;
+note right
+  /raw/PARSE_HW_ENB_PM/
+  tableName-objectKey.csv
+end note
+
+:LoaderFactory Selection;
+note right
+  Oracle/MSSQL/PostgreSQL
+  Based on loaderTarget
+end note
+
+:Bulk Database Insert;
+note right
+  ORACLE: SQLLDR
+  MSSQL: BCP
+  PostgreSQL: COPY
+end note
+
+:Database Table Updated ✓;
+
+stop
+
+@enduml

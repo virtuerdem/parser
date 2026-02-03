@@ -1,0 +1,100 @@
+@startuml Parser_XLSX_Format_Flow
+!theme plain
+title XLSX Format Processing Flow
+
+start
+:XLSX Input File;
+note right : (.xlsx, .gz, .zip, .tar.gz)
+
+if (Compressed?) then (Yes)
+  :DecompressFactory.decompress();
+else (No)
+  :File Ready;
+endif
+
+:Engine Selection;
+note right
+  DefaultXlsxEngine
+  (Apache POI Modern)
+end note
+
+:FileLib.readFilesInWalkingPathByPostfix();
+note right
+  Scan rawPath
+  Filter .xlsx files
+end note
+
+:ThreadPool Dispatch;
+note right
+  onParseThreadCount threads
+  Parallel processing
+end note
+
+:Apache POI XSSFWorkbook;
+note right
+  new XSSFWorkbook(file)
+  Load Excel workbook
+end note
+
+:Iterate Sheets;
+note right
+  workbook.getSheetAt(i)
+  For each sheet in workbook
+end note
+
+:Iterate Rows;
+note right
+  sheet.iterator()
+  For each row in sheet
+end note
+
+:Iterate Cells;
+note right
+  row.getCell(j)
+  Extract cell values
+  (String, Numeric, Date, etc)
+end note
+
+:ParseMapper.mapping();
+note right
+  Column Index → Column value
+  Cell value transformation
+end note
+
+:Build HashMap;
+note right
+  HashMap<String, String>
+  columnKey → cell value
+end note
+
+:prepareRecord();
+note right
+  Delimiter-separated String
+  value1,value2,value3...
+end note
+
+:syncWriteIntoFile();
+note right
+  Write to CSV
+  Append mode
+end note
+
+:CSV File Ready;
+note right
+  Intermediate CSV format
+  Ready for loading
+end note
+
+:LoaderFactory Selection;
+note right
+  Choose database type
+  Oracle/MSSQL/PostgreSQL
+end note
+
+:Bulk Database Insert;
+
+:Database Table Updated ✓;
+
+stop
+
+@enduml
