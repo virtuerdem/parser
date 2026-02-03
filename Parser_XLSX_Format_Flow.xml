@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-02-03" agent="Claude" version="24.0" type="device">
+  <diagram id="xlsx-format-flow" name="XLSX Format Flow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- BAŞLANGIC -->
+        <mxCell id="start" value="XLSX Dosyası&#xa;(Excel file)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d4e6f1;strokeColor=#2c3e50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="30" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- DECOMPRESS KONTROL -->
+        <mxCell id="decompress-check" value="Sıkıştırılı mı?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#922b1a;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="120" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- DECOMPRESS -->
+        <mxCell id="decompress" value="DecompressFactory.decompress()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5b7b1;strokeColor=#78281f;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="50" y="130" width="230" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ENGINE SEÇIMI -->
+        <mxCell id="engine-select" value="Engine Seçimi&#xa;DefaultXlsxEngine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f4e6;strokeColor=#186a3b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="250" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- FILE DISCOVERY -->
+        <mxCell id="file-discovery" value="FileLib.readFilesInWalkingPathByPostfix()&#xa;rawPath'den .xlsx dosyaları bul" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f4e6;strokeColor=#186a3b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="350" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- THREAD POOL -->
+        <mxCell id="thread-pool" value="ThreadPool'a HandlerTask Gönder&#xa;(onParseThreadCount)&#xa;N = parallel thread sayısı" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ebf5fb;strokeColor=#154360;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="450" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- APACHE POI WORKBOOK -->
+        <mxCell id="poi-workbook" value="Apache POI Workbook Aç&#xa;XSSFWorkbook wb = new XSSFWorkbook(file)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef9e7;strokeColor=#7d6608;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="560" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- SHEET ITERATION -->
+        <mxCell id="sheet-iteration" value="Her Sheet'i Iterate Et&#xa;workbook.getSheetAt(i)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef9e7;strokeColor=#7d6608;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="670" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ROW ITERATION -->
+        <mxCell id="row-iteration" value="Her Row'u Iterate Et&#xa;sheet.iterator()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef9e7;strokeColor=#7d6608;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="770" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- CELL EXTRACTION -->
+        <mxCell id="cell-extraction" value="Cell Value Extraction&#xa;row.getCell(i).getStringCellValue()&#xa;row.getCell(i).getNumericCellValue()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ebf5fb;strokeColor:#154360;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="870" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- DATA MAPPING -->
+        <mxCell id="data-mapping" value="Data Mapping&#xa;ParseMapper.mapping()&#xa;Column Index → Column value" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ebf5fb;strokeColor=#154360;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="980" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- KEY-VALUE HASHMAP -->
+        <mxCell id="hashmap" value="HashMap&lt;String, String&gt;&#xa;columnKey → value pairs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f4e6;strokeColor=#186a3b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1090" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- PREPARE RECORD -->
+        <mxCell id="prepare-record" value="prepareRecord()&#xa;Delimiter-separated string" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fadbd8;strokeColor=#922b1a;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1190" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- CSV FILE WRITE -->
+        <mxCell id="csv-write" value="syncWriteIntoFile()&#xa;{tableName}-{objectKey}.csv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d7bde2;strokeColor=#512e5f;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1290" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- CSV READY -->
+        <mxCell id="csv-ready" value="CSV Dosyası Hazır" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d7bde2;strokeColor=#512e5f;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1390" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- LOADER -->
+        <mxCell id="loader" value="Loader" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a9dfbf;strokeColor=#186a3b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1490" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- DATABASE -->
+        <mxCell id="end" value="Database ✓" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d4e6f1;strokeColor=#2c3e50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1590" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- EDGES -->
+        <mxCell id="e1" edge="1" parent="1" source="start" target="decompress-check">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e2" edge="1" parent="1" source="decompress-check" target="decompress">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="sourcePoint" x="350" y="160"/>
+            <mxPoint as="targetPoint" x="165" y="160"/>
+          </mxGeometry>
+          <mxEdgeStyle>orthogonalEdgeStyle;rounded=0</mxEdgeStyle>
+        </mxCell>
+
+        <mxCell id="e3" edge="1" parent="1" source="decompress" target="engine-select">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="targetPoint" x="450" y="280"/>
+          </mxGeometry>
+          <mxEdgeStyle>orthogonalEdgeStyle;rounded=0</mxEdgeStyle>
+        </mxCell>
+
+        <mxCell id="e4" edge="1" parent="1" source="decompress-check" target="engine-select">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="sourcePoint" x="550" y="160"/>
+            <mxPoint as="targetPoint" x="450" y="280"/>
+          </mxGeometry>
+          <mxEdgeStyle>orthogonalEdgeStyle;rounded=0</mxEdgeStyle>
+        </mxCell>
+
+        <mxCell id="e5" edge="1" parent="1" source="engine-select" target="file-discovery">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e6" edge="1" parent="1" source="file-discovery" target="thread-pool">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e7" edge="1" parent="1" source="thread-pool" target="poi-workbook">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e8" edge="1" parent="1" source="poi-workbook" target="sheet-iteration">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e9" edge="1" parent="1" source="sheet-iteration" target="row-iteration">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e10" edge="1" parent="1" source="row-iteration" target="cell-extraction">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e11" edge="1" parent="1" source="cell-extraction" target="data-mapping">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e12" edge="1" parent="1" source="data-mapping" target="hashmap">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e13" edge="1" parent="1" source="hashmap" target="prepare-record">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e14" edge="1" parent="1" source="prepare-record" target="csv-write">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e15" edge="1" parent="1" source="csv-write" target="csv-ready">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e16" edge="1" parent="1" source="csv-ready" target="loader">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e17" edge="1" parent="1" source="loader" target="end">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
