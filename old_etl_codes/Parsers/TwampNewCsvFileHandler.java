@@ -1,0 +1,89 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ttgint.parserEngine.Northi.Vodafone.Parsers;
+
+import com.ttgint.parserEngine.common.AbsParserEngine;
+import com.ttgint.parserEngine.common.RawTableObject;
+import com.ttgint.parserEngine.common.TableWatcher;
+import com.ttgint.parserEngine.commonLibrary.CommonLibrary;
+import com.ttgint.parserEngine.exceptions.FileHandlerException;
+import com.ttgint.parserEngine.parserHandler.CsvFileHandler;
+import com.ttgint.parserEngine.systemProperties.OperationSystemEnum;
+import com.ttgint.parserEngine.systemProperties.ProgressTypeEnum;
+import java.io.File;
+
+/**
+ *
+ * @author ibrahimegerci
+ */
+public class TwampNewCsvFileHandler extends CsvFileHandler {
+
+    private RawTableObject tableObject;
+    private String tableColumnNames = "";
+    private String outputFileName = "";
+    private String fileHeaderNames = "";
+    private int rowCount = 0;
+    private int datePosition = 0;
+
+    public TwampNewCsvFileHandler(File currentFileProgress, OperationSystemEnum operationSystem, ProgressTypeEnum progType) {
+        super(currentFileProgress, operationSystem, progType);
+    }
+
+    @Override
+    public void onStartParseOperation() {
+        this.tableObject = TableWatcher.getInstance().getTableObjectFromFunctionSubsetName(currentFileProgress.getName().split("\\_")[1]);
+        this.tableColumnNames = tableObject.getFullColumnOrderUsingCounterNameFil(AbsParserEngine.resultParameter);
+        this.outputFileName = AbsParserEngine.LOCALFILEPATH + tableObject.getTableName() + AbsParserEngine.integratedFileExtension;
+    }
+
+    @Override
+    public void lineProgress(String[] line) {
+        rowCount++;
+        try {
+            //clean data                
+            for (int i = 0; i < line.length; i++) {
+                line[i] = line[i].replace("\t", " ").replace("\n", " ").trim();
+            }
+
+            if (rowCount == 1) { //header
+                //position setter
+                for (int i = 0; i < line.length; i++) {
+                    switch (line[i]) {
+                        case "TimeGroup":
+                            datePosition = i;
+                            break;
+                    }
+                }
+
+                //prepare header
+                fileHeaderNames = CommonLibrary.joinString(line, AbsParserEngine.resultParameter);
+            } else if (rowCount > 1 && tableObject != null) { //values
+                //data formatter
+                line[datePosition] = line[datePosition].replace("T", "").substring(0, 12);
+
+                //prepare record
+                String record = CommonLibrary.joinString(line, AbsParserEngine.resultParameter);
+                for (int i = 0; i < fileHeaderNames.split("\\" + AbsParserEngine.resultParameter).length - record.split("\\" + AbsParserEngine.resultParameter).length; i++) {
+                    record = record + AbsParserEngine.resultParameter;
+                }
+                record = CommonLibrary.get_RecordValue(fileHeaderNames.toUpperCase(), record, tableColumnNames.toUpperCase(), "0", AbsParserEngine.resultParameter, AbsParserEngine.resultParameter) + "\n";
+                writeIntoFilesWithController(outputFileName, record);
+            }
+        } catch (Exception e) {
+            System.err.println("*Parse Error " + e.toString() + " for " + currentFileProgress.getName() + " at " + rowCount + " value: " + CommonLibrary.joinString(line, AbsParserEngine.resultParameter));
+        }
+    }
+
+    @Override
+    public void onstopParseOperation() {
+        try {
+            deleteFile(currentFileProgress);
+        } catch (FileHandlerException ex) {
+            System.err.println("* " + currentFileProgress.getName() + " Delete error! " + ex.toString());
+        }
+    }
+
+}

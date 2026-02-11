@@ -5,36 +5,39 @@
  */
 package com.ttgint.parserEngine.Northi.Vodafone.Parsers;
 
+import java.io.File;
+import com.ttgint.parserEngine.commonLibrary.CommonLibrary;
 import com.ttgint.parserEngine.common.AbsParserEngine;
 import com.ttgint.parserEngine.common.RawTableObject;
 import com.ttgint.parserEngine.common.TableWatcher;
-import com.ttgint.parserEngine.commonLibrary.CommonLibrary;
 import com.ttgint.parserEngine.exceptions.FileHandlerException;
 import com.ttgint.parserEngine.parserHandler.CsvFileHandler;
 import com.ttgint.parserEngine.systemProperties.OperationSystemEnum;
 import com.ttgint.parserEngine.systemProperties.ProgressTypeEnum;
-import java.io.File;
 
 /**
  *
  * @author ibrahimegerci
  */
-public class TwampNewCsvFileHandler extends CsvFileHandler {
+public class RanInfoNewCsvParser extends CsvFileHandler {
 
+    private String tableName;
+    private String fileContentDataDate;
     private RawTableObject tableObject;
     private String tableColumnNames = "";
     private String outputFileName = "";
     private String fileHeaderNames = "";
     private int rowCount = 0;
-    private int datePosition = 0;
 
-    public TwampNewCsvFileHandler(File currentFileProgress, OperationSystemEnum operationSystem, ProgressTypeEnum progType) {
+    public RanInfoNewCsvParser(File currentFileProgress, String tableName, String fileContentDataDate, OperationSystemEnum operationSystem, ProgressTypeEnum progType) {
         super(currentFileProgress, operationSystem, progType);
+        this.tableName = tableName;
+        this.fileContentDataDate = fileContentDataDate;
     }
 
     @Override
     public void onStartParseOperation() {
-        this.tableObject = TableWatcher.getInstance().getTableObjectFromFunctionSubsetName(currentFileProgress.getName().split("\\_")[1]);
+        this.tableObject = TableWatcher.getInstance().getTableObjectFromTableName(tableName);
         this.tableColumnNames = tableObject.getFullColumnOrderUsingCounterNameFil(AbsParserEngine.resultParameter);
         this.outputFileName = AbsParserEngine.LOCALFILEPATH + tableObject.getTableName() + AbsParserEngine.integratedFileExtension;
     }
@@ -43,33 +46,22 @@ public class TwampNewCsvFileHandler extends CsvFileHandler {
     public void lineProgress(String[] line) {
         rowCount++;
         try {
-            //clean data                
-            for (int i = 0; i < line.length; i++) {
-                line[i] = line[i].replace("\t", " ").replace("\n", " ").trim();
+            if (rowCount > 1) { //clean data                
+                for (int i = 0; i < line.length; i++) {
+                    line[i] = line[i].replace("\t", " ").replace("\n", " ").trim();
+                }
             }
 
-            if (rowCount == 1) { //header
-                //position setter
-                for (int i = 0; i < line.length; i++) {
-                    switch (line[i]) {
-                        case "TimeGroup":
-                            datePosition = i;
-                            break;
-                    }
-                }
-
+            if (rowCount == 2) { //header
                 //prepare header
-                fileHeaderNames = CommonLibrary.joinString(line, AbsParserEngine.resultParameter);
-            } else if (rowCount > 1 && tableObject != null) { //values
-                //data formatter
-                line[datePosition] = line[datePosition].replace("T", "").substring(0, 12);
-
+                fileHeaderNames = "DATA_DATE" + AbsParserEngine.resultParameter + CommonLibrary.joinString(line, AbsParserEngine.resultParameter);
+            } else if (rowCount > 2 && tableObject != null) { //values
                 //prepare record
-                String record = CommonLibrary.joinString(line, AbsParserEngine.resultParameter);
+                String record = fileContentDataDate + AbsParserEngine.resultParameter + CommonLibrary.joinString(line, AbsParserEngine.resultParameter);
                 for (int i = 0; i < fileHeaderNames.split("\\" + AbsParserEngine.resultParameter).length - record.split("\\" + AbsParserEngine.resultParameter).length; i++) {
                     record = record + AbsParserEngine.resultParameter;
                 }
-                record = CommonLibrary.get_RecordValue(fileHeaderNames.toUpperCase(), record, tableColumnNames.toUpperCase(), "0", AbsParserEngine.resultParameter, AbsParserEngine.resultParameter) + "\n";
+                record = CommonLibrary.get_RecordValue(fileHeaderNames, record, tableColumnNames, "", AbsParserEngine.resultParameter, AbsParserEngine.resultParameter) + "\n";
                 writeIntoFilesWithController(outputFileName, record);
             }
         } catch (Exception e) {
@@ -87,5 +79,3 @@ public class TwampNewCsvFileHandler extends CsvFileHandler {
     }
 
 }
-
-
