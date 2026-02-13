@@ -1,20 +1,29 @@
 package com.ttgint.parse.base;
 
+import com.ttgint.library.decompress.DecompressFactory;
 import com.ttgint.library.loader.LoaderFactory;
 import com.ttgint.library.metadata.GenerateMetadata;
-import com.ttgint.library.record.ContentDateReaderRecord;
-import com.ttgint.library.record.GenerateMetadataRecord;
-import com.ttgint.library.record.LoaderFileRecord;
-import com.ttgint.library.record.ParseEngineRecord;
+import com.ttgint.library.model.NetworkItem;
+import com.ttgint.library.model.NetworkNode;
+import com.ttgint.library.record.*;
+import com.ttgint.library.repository.NetworkItemRepository;
+import com.ttgint.library.repository.NetworkNodeRepository;
 import com.ttgint.library.util.*;
+import com.ttgint.library.validation.XmlValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ParseBaseEngine {
@@ -26,6 +35,9 @@ public class ParseBaseEngine {
     protected final Writer writer;
     protected final ContentDate contentDate;
 
+    protected final NetworkNodeRepository networkNodeRepository;
+    protected final NetworkItemRepository networkItemRepository;
+
     protected ParseEngineRecord engineRecord;
 
     public ParseBaseEngine(ApplicationContext applicationContext) {
@@ -35,6 +47,9 @@ public class ParseBaseEngine {
         this.autoCounterDefine = applicationContext.getBean(AutoCounterDefine.class);
         this.writer = applicationContext.getBean(Writer.class);
         this.contentDate = applicationContext.getBean(ContentDate.class);
+
+        this.networkNodeRepository = applicationContext.getBean(NetworkNodeRepository.class);
+        this.networkItemRepository = applicationContext.getBean(NetworkItemRepository.class);
     }
 
     public void startEngine(ParseEngineRecord record) {
@@ -69,15 +84,29 @@ public class ParseBaseEngine {
             contentDate.printDates();
         }
 
-        cleanDuplicateBeforeLoader();
+        if (record.getIsActiveCleanDuplicateApp()) {
+            cleanDuplicateApp();
+        }
 
-        loader();
+        if (record.getIsActiveLoader()) {
+            loader();
+        }
 
-        cleanDuplicateAfterLoader();
-        callProcedure();
-        callAggregate();
-        callExport();
+        if (record.getIsActiveCleanDuplicateProc()) {
+            cleanDuplicateProc();
+        }
 
+        if (record.getIsActiveCallProcedure()) {
+            callProcedure();
+        }
+
+        if (record.getIsActiveCallAggregate()) {
+            callAggregate();
+        }
+
+        if (record.getIsActiveCallExport()) {
+            callExport();
+        }
     }
 
     private void preparePaths() {
@@ -98,6 +127,51 @@ public class ParseBaseEngine {
 
     protected void preEngine() {
         log.info("* ParseBaseEngine preEngine");
+    }
+
+    protected OffsetDateTime getDecompressRecordTime(String offsetDateTime, String dateTimeFormatter) {
+        return OffsetDateTime.parse(offsetDateTime, DateTimeFormatter.ofPattern(dateTimeFormatter));
+    }
+
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
+        return null;
+    }
+
+    protected DecompressRecord getDecompressRecord(File file) {
+        return DecompressRecord.getRecord(engineRecord,
+                file,
+                getDecompressRecordTime(file.getName()),
+                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
+                null,
+                file.getName());
+    }
+
+    protected List<File> getDecompressedFiles(File file) {
+        return new DecompressFactory(applicationContext, getDecompressRecord(file)).getDecompress().getDecompressedFiles();
+    }
+
+    protected File getValidatedFile(File file) {
+        if (engineRecord.getValidation() != null && engineRecord.getValidation() && file.getName().endsWith(".xml")) {
+            return new XmlValidation(file.getAbsolutePath()).getValidatedFile();
+        } else {
+            return file;
+        }
+    }
+
+    protected List<File> prepareFile(File file) {
+        if (engineRecord.getHavePrepareFileFeature() != null && engineRecord.getHavePrepareFileFeature()) {
+            List<File> preparedFiles = new ArrayList<>();
+            if (engineRecord.getDecompress() != null && engineRecord.getDecompress()) {
+                for (File f : getDecompressedFiles(file)) {
+                    preparedFiles.add(getValidatedFile(f));
+                }
+            } else {
+                preparedFiles.add(getValidatedFile(file));
+            }
+            return preparedFiles;
+        } else {
+            return Collections.singletonList(file);
+        }
     }
 
     protected void onEngine() {
@@ -130,8 +204,8 @@ public class ParseBaseEngine {
         shutdownExecutorService(executor);
     }
 
-    protected void cleanDuplicateBeforeLoader() {
-        log.info("* ParseBaseEngine cleanDuplicateBeforeLoader");
+    protected void cleanDuplicateApp() {
+        log.info("* ParseBaseEngine cleanDuplicateApp");
     }
 
     protected void loader() {
@@ -158,9 +232,8 @@ public class ParseBaseEngine {
         shutdownExecutorService(executor);
     }
 
-
-    protected void cleanDuplicateAfterLoader() {
-        log.info("* ParseBaseEngine cleanDuplicateAfterLoader");
+    protected void cleanDuplicateProc() {
+        log.info("* ParseBaseEngine cleanDuplicateProc");
     }
 
     protected void callProcedure() {
@@ -183,6 +256,34 @@ public class ParseBaseEngine {
             }
         } catch (Exception exception) {
         }
+    }
+
+    protected Map<String, Long> getNetworkNodesByFlowId() {
+        return networkNodeRepository
+                .findByFlowIdAndIsActive(engineRecord.getFlowId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkNode::getNodeName, NetworkNode::getNodeId));
+    }
+
+    protected Map<String, Long> getNetworkNodesByBranchId() {
+        return networkNodeRepository
+                .findByBranchIdAndIsActive(engineRecord.getBranchId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkNode::getNodeName, NetworkNode::getNodeId));
+    }
+
+    protected Map<String, Long> getNetworkItemsByFlowId() {
+        return networkItemRepository
+                .findByFlowIdAndIsActive(engineRecord.getFlowId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkItem::getItemName, NetworkItem::getItemId));
+    }
+
+    protected Map<String, Long> getNetworkItemsByBranchId() {
+        return networkItemRepository
+                .findByBranchIdAndIsActive(engineRecord.getBranchId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkItem::getItemName, NetworkItem::getItemId));
     }
 
 }

@@ -8,6 +8,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.springframework.context.ApplicationContext;
 
 import java.io.*;
+import java.util.List;
 
 @Slf4j
 public class TgzDecompress extends Decompress {
@@ -17,33 +18,24 @@ public class TgzDecompress extends Decompress {
     }
 
     @Override
-    protected void decompress() {
-        try (TarArchiveInputStream in =
-                     new TarArchiveInputStream(
-                             new GzipCompressorInputStream(
-                                     new BufferedInputStream(
-                                             new FileInputStream(decompressRecord.getSourceFile()))))) {
+    protected List<File> decompress() {
+        try (FileInputStream fileInputStream = new FileInputStream(decompressRecord.getSourceFile());
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+             GzipCompressorInputStream gzipCompressorInputStream = new GzipCompressorInputStream(bufferedInputStream);
+             TarArchiveInputStream tarArchiveInputStream = new TarArchiveInputStream(gzipCompressorInputStream)) {
             TarArchiveEntry entry;
-            while ((entry = in.getNextEntry()) != null) {
+            while ((entry = tarArchiveInputStream.getNextEntry()) != null) {
                 if (!entry.isDirectory()) {
-                    File targetFile = new File(
-                            (decompressRecord.getTargetPath() + "/" +
-                                    (decompressRecord.getFileId() != null
-                                            && !decompressRecord.getSourceFile().getName().contains("^^") ?
-                                            decompressRecord.getFileId() + "^^" : "") +
-                                    (decompressRecord.getFileNamePrefix() != null ?
-                                            decompressRecord.getFileNamePrefix() + ";;" : "") +
-                                    entry.getName())
-                                    .replace("//", "/"));
-                    try (BufferedOutputStream out =
-                                 new BufferedOutputStream(
-                                         new FileOutputStream(targetFile))) {
+                    File targetFile = getTargetFile(entry.getName());
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+                         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream)) {
                         int len;
                         byte[] buffer = new byte[1024];
-                        while ((len = in.read(buffer)) > 0) {
-                            out.write(buffer, 0, len);
+                        while ((len = tarArchiveInputStream.read(buffer)) > 0) {
+                            bufferedOutputStream.write(buffer, 0, len);
                         }
 
+                        fileList.add(targetFile);
                         insertResult(targetFile);
                     } catch (Exception exception) {
                         insertError("TGZ001", targetFile.getName(), exception.getMessage());
@@ -55,6 +47,7 @@ public class TgzDecompress extends Decompress {
             insertError("TGZ002", null, exception.getMessage());
         }
         deleteFile(decompressRecord.getSourceFile());
+        return fileList;
     }
 
 }

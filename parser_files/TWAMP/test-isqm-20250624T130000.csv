@@ -1,0 +1,1 @@
+TimeGroup,VpnName,SrcProbeName,SrcProbeIp,DestIp,DestName,TestId,TestName,AlarmPolicyName,ScenarioName,DelayAverage,JitterAverage,PacketLossAverage,ReorderingRatio,MetricSampleCount,JitterAlarmThreshold,PacketLossAlarmThreshold,DelayAlarmThreshold,UploadRate,DownloadRate,AVAILABILITY

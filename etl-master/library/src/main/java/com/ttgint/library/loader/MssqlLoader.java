@@ -14,11 +14,7 @@ public class MssqlLoader extends Loader { // todo
     }
 
     @Override
-    public void beforeLoader() {
-    }
-
-    @Override
-    public void loader() {
+    public void loader() throws Exception {
     }
 
     @Override

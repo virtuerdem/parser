@@ -8,17 +8,22 @@ import org.springframework.context.ApplicationContext;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashMap;
 
 @Slf4j
 public class OracleLoader extends Loader {
+
+    private final HashMap<String, Long> badFileContentDateMap = new HashMap<>();
 
     public OracleLoader(ApplicationContext applicationContext, LoaderFileRecord loaderFileRecord) {
         super(applicationContext, loaderFileRecord);
     }
 
     @Override
-    public void loader() {
+    public void loader() throws Exception {
         File logFile
                 = prepareFile(getLoaderFileRecord().getLoaderEnvironment().getLocalLogFolder(), ".log");
         File ctlFile
@@ -26,36 +31,59 @@ public class OracleLoader extends Loader {
         File badFile
                 = prepareFile(getLoaderFileRecord().getLoaderEnvironment().getLocalBadFolder(), ".bad");
 
-        long rowCount
-                = getLoaderFileRecord().getContentDates().stream().mapToLong(ContentDateResultRecord::getRowCount).sum();
-
         prepareCtlFile(ctlFile, badFile.getAbsolutePath());
-        sqlLdr(ctlFile, logFile, 1000000, (rowCount == 0 ? 1000 : rowCount));
+        sqlLdr(ctlFile, logFile, getLoaderFileRecord().getLoaderEnvironment().getSqlLdrErrorLimit());
         checkLogFile(logFile);
+        if (badFile.exists()) {
+            checkBadFile(badFile);
+        }
+    }
+
+    @Override
+    public void insertResult(OffsetDateTime fragmentDate,
+                             Long totalRowCount,
+                             Long loadedRowCount,
+                             Long failedRowCount) {
+        long failedCount = badFileContentDateMap
+                .getOrDefault(
+                        fragmentDate.format(
+                                DateTimeFormatter.ofPattern(
+                                        dbDateFormatToJavaDateFormat(
+                                                getLoaderFileRecord().getFragmentDateFormat()
+                                        )
+                                )
+                        ),
+                        0L);
+        super.insertResult(fragmentDate, totalRowCount, totalRowCount - failedCount, failedCount);
+    }
+
+    @Override
+    public void afterLoader() {
+        super.afterLoader();
+        badFileContentDateMap.clear();
     }
 
     @Override
     public void afterLoaderFailure() throws IOException {
         super.afterLoaderFailure();
         if (getLoadedCount() == 0) {
-            Files.delete(
+            Files.deleteIfExists(
                     prepareFile(getLoaderFileRecord().getLoaderEnvironment().getLocalBadFolder(), ".bad")
                             .toPath()
             );
         }
     }
 
-    public void prepareCtlFile(File ctlFile, String badFilePath) {
+    private void prepareCtlFile(File ctlFile, String badFilePath) {
         try (FileOutputStream output = new FileOutputStream(ctlFile)) {
             output.write(sqlLdrCtlFilePattern(badFilePath).getBytes());
         } catch (Exception exception) {
-            log.error(exception.getMessage(), exception);
+            log.error("! OracleLoader prepareCtlFile fileName: {}", ctlFile.getName(), exception);
         }
     }
 
-    public String sqlLdrCtlFilePattern(String badFileAbsolutePath) {
-        String pattern
-                = " load data" +
+    private String sqlLdrCtlFilePattern(String badFileAbsolutePath) {
+        return " load data" +
                 "\n" +
                 " infile '" + getLoaderFileRecord().getFile().getAbsolutePath() + "'" +
                 "\n" +
@@ -77,10 +105,9 @@ public class OracleLoader extends Loader {
                 sqlLdrColumnPattern() +
                 "\n" +
                 " )";
-        return pattern;
     }
 
-    public String sqlLdrColumnPattern() {
+    private String sqlLdrColumnPattern() {
         StringBuilder builder = new StringBuilder();
         getLoaderFileRecord().getColumnRecord().stream()
                 .sorted(Comparator.comparingInt(SqlLdrColumnPatternRecord::getColumnOrderId))
@@ -116,7 +143,7 @@ public class OracleLoader extends Loader {
         return builder.delete(builder.length() - 2, builder.length()).toString();
     }
 
-    public void sqlLdr(File ctlFile, File logFile, long nRows, long errors) {
+    private void sqlLdr(File ctlFile, File logFile, long errors) throws Exception {
         try {
             String sqlLdr
                     = getLoaderFileRecord().getLoaderEnvironment().getSqlLdrPath() +
@@ -126,7 +153,7 @@ public class OracleLoader extends Loader {
                     "/" +
                     getLoaderFileRecord().getLoaderEnvironment().getUserPass() +
                     "@" +
-                    getLoaderFileRecord().getLoaderEnvironment().getUrl().split("\\@")[1].split("\\?")[0] +
+                    getLoaderFileRecord().getLoaderEnvironment().getUrl().split("@")[1].split("\\?")[0] +
                     "'" +
                     " control=" +
                     "'" +
@@ -138,23 +165,24 @@ public class OracleLoader extends Loader {
                     "'" +
                     " direct=true" +
                     " rows=" +
-                    nRows +
+                    1000000 +
                     " errors=" +
                     errors;
 
-            Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec(sqlLdr);
-
+            Process proc = new ProcessBuilder(sqlLdr.split(" ")).start();
             proc.waitFor();
             proc.destroy();
         } catch (Exception exception) {
-            log.error("! OracleLoader {} for {}", exception.getMessage(), getLoaderFileRecord().getFile().getName());
+            Thread.currentThread().interrupt();
+            log.error("! OracleLoader sqlLdr fileName: {}", getLoaderFileRecord().getFile().getName(), exception);
+            throw exception;
         }
     }
 
-    public void checkLogFile(File logFile) {
-        long loadedCount = -1;
-        long errorCount
+    private void checkLogFile(File logFile) {
+        long loadedCount = 0;
+        long errorCount = 0;
+        long rowCount
                 = getLoaderFileRecord().getContentDates().stream().mapToLong(ContentDateResultRecord::getRowCount)
                 .sum();
         try (FileInputStream fileInputStream = new FileInputStream(logFile);
@@ -182,9 +210,38 @@ public class OracleLoader extends Loader {
                 }
             }
         } catch (Exception e) {
+            errorCount = (errorCount == 0 ? rowCount : errorCount);
         }
         setLoadedCount(loadedCount);
-        setErrorCount(errorCount);
+        setErrorCount((loadedCount < 0 ? rowCount : errorCount));
     }
 
+    private void checkBadFile(File badFile) throws Exception {
+        StringBuilder delimiter = new StringBuilder().append("\\").append(getLoaderFileRecord().getFileDelimiter());
+        try (FileReader fileReader = new FileReader(badFile);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String dateValue = line.split(delimiter.toString())[getLoaderFileRecord().getFragmentDateIndex() - 1];
+                if (!badFileContentDateMap.containsKey(dateValue)) {
+                    badFileContentDateMap.put(dateValue, 1L);
+                } else {
+                    badFileContentDateMap.put(dateValue, badFileContentDateMap.get(dateValue) + 1L);
+                }
+            }
+        } catch (Exception exception) {
+            log.error("! OracleLoader readBadFile fileName: {}", badFile.getName(), exception);
+            throw exception;
+        }
+    }
+
+    private String dbDateFormatToJavaDateFormat(String dateFormat) {
+        return dateFormat.toUpperCase()
+                .replace("YYYY", "yyyy")
+                .replace("DD", "dd")
+                .replace("HH12", "hh")
+                .replace("HH24", "HH")
+                .replace("MI", "mm")
+                .replace("SS", "ss");
+    }
 }

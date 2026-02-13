@@ -13,4 +13,8 @@ public interface ParseTableRepository extends JpaRepository<ParseTable, Long> {
 
     List<ParseTable> findAllByFlowIdAndIsActive(Long flowId, Boolean isActive);
 
+    List<ParseTable> findAllByAllTableId(Long allTableId);
+
+    List<ParseTable> findAllByAllTableIdAndObjectKey(Long allTableId, String objectKey);
+
 }

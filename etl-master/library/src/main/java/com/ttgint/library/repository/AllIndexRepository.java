@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public interface AllIndexRepository extends JpaRepository<AllIndex, Long> {
 
+    List<AllIndex> findAllByAllTableId(Long allTableId);
+
     List<AllIndex> findAllByFlowIdAndIsActiveAndNeedRefreshAndIsGeneratedAndIsFailed(Long flowId,
                                                                                      Boolean isActive,
                                                                                      Boolean needRefresh,

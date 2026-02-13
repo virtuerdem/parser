@@ -13,4 +13,6 @@ public interface AllCounterRepository extends JpaRepository<AllCounter, Long> {
 
     List<AllCounter> findByFlowId(Long flowId);
 
+    List<AllCounter> findByFlowIdAndCounterGroupKey(Long flowId, String counterGroupKey);
+
 }

@@ -35,16 +35,16 @@ public class HwBscPmXmlParseHandler extends ParseXmlHandler {
     @Override
     public void preHandler() {
         if (getHandlerRecord().getFile().getName().contains("^^")) {
-            headerKeyValue.put("etlApp.info.fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
+            headerKeyValue.put("etlApp.info_fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
         }
-        headerKeyValue.put("etlApp.constant.fragmentDate",
+        headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(getHandlerRecord().getFile().getName().split("A")[1].substring(0, 18),
                         "yyyyMMdd.HHmmZ", "yyyy-MM-dd HH:mmZ"));
-        headerKeyValue.put("etlApp.constant.nodeName",
+        headerKeyValue.put("etlApp.constant_nodeName",
                 getHandlerRecord().getFile().getName().split("\\_", 2)[1].split("\\.")[0]);
-        if (nodeIds.containsKey(headerKeyValue.get("etlApp.constant.nodeName"))) {
-            headerKeyValue.put("etlApp.constant.nodeId",
-                    String.valueOf(nodeIds.get(headerKeyValue.get("etlApp.constant.nodeName"))));
+        if (nodeIds.containsKey(headerKeyValue.get("etlApp.constant_nodeName"))) {
+            headerKeyValue.put("etlApp.constant_nodeId",
+                    String.valueOf(nodeIds.get(headerKeyValue.get("etlApp.constant_nodeName"))));
         }
     }
 
@@ -54,7 +54,7 @@ public class HwBscPmXmlParseHandler extends ParseXmlHandler {
         switch (qName) {
             case "measCollec":
                 if (!dateSet) {
-                    headerKeyValue.put("etlApp.constant.measCollec.beginTime",
+                    headerKeyValue.put("etlApp.constant.measCollec_beginTime",
                             stringDateFormatter(attributes.getValue("beginTime").replace("T", " "),
                                     "yyyy-MM-dd HH:mm:ssXXX", "yyyy-MM-dd HH:mmZ"));
                     dateSet = true;
@@ -64,8 +64,8 @@ public class HwBscPmXmlParseHandler extends ParseXmlHandler {
                 measInfo = attributes.getValue("measInfoId");
                 break;
             case "granPeriod":
-                measInfoKeyValue.put("etlApp.constant.granPeriod.duration", attributes.getValue("duration"));
-                measInfoKeyValue.put("etlApp.constant.granPeriod.endTime",
+                measInfoKeyValue.put("etlApp.constant.granPeriod_duration", attributes.getValue("duration"));
+                measInfoKeyValue.put("etlApp.constant.granPeriod_endTime",
                         stringDateFormatter(attributes.getValue("endTime").replace("T", " "),
                                 "yyyy-MM-dd HH:mm:ssXXX", "yyyy-MM-dd HH:mmZ"));
                 break;
@@ -127,7 +127,7 @@ public class HwBscPmXmlParseHandler extends ParseXmlHandler {
 
     private void measObjLdnSplitter(String measObjLdn) {
         if (measObjLdn != null) {
-            keyValue.put("etlApp.constant.measValue.measObjLdn", measObjLdn);
+            keyValue.put("etlApp.constant.measValue_measObjLdn", measObjLdn);
             measInfoType = measObjLdn.split("/", 2)[1].split(":", 2)[0];
             Map<Integer, String> maps = new TreeMap<>();
             int index = 0;
@@ -149,12 +149,12 @@ public class HwBscPmXmlParseHandler extends ParseXmlHandler {
             for (String part : maps.values()) {
                 for (String val : part.split(":", 2)[1].split(",")) {
                     if (val.contains("=")) {
-                        keyValue.put("etlApp.measObjLdn." +
+                        keyValue.put("etlApp.measObjLdn_" +
                                         part.split(":", 2)[0].trim() + ":" + val.split("=")[0].trim(),
                                 val.split("=", 2)[1].trim()
                         );
                     } else {
-                        keyValue.put("etlApp.measObjLdn." +
+                        keyValue.put("etlApp.measObjLdn_" +
                                         part.split(":", 2)[0].trim(),
                                 val
                         );
@@ -175,8 +175,8 @@ public class HwBscPmXmlParseHandler extends ParseXmlHandler {
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {
-            keyValue.put("etlApp.info.uniqueRowHashCode", "");
-            keyValue.put("etlApp.info.uniqueRowCode", "");
+            keyValue.put("etlApp.info_uniqueRowHashCode", "");
+            keyValue.put("etlApp.info_uniqueRowCode", "");
         }
     }
 

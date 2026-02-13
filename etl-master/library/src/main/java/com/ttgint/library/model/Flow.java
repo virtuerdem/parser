@@ -24,14 +24,14 @@ public class Flow implements Serializable {
     private Long id;
     private Long branchId;
     private String flowCode;
-    @Enumerated(EnumType.STRING)
-    private FlowStatus flowStatus;
     private Long rootManagerId;
     private Long activeManagerId;
-    private Boolean isMovable;
+    private Long dependFlowId;
+    @Enumerated(EnumType.STRING)
+    private FlowStatus flowStatus;
     private String flowCron;
     private String flowInfo;
-    private Long dependFlowId;
+    private Boolean isMovable;
 
     private Boolean isActive;
     private OffsetDateTime createdTime;

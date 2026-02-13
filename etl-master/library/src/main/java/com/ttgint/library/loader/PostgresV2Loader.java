@@ -24,7 +24,7 @@ public class PostgresV2Loader extends Loader {
     }
 
     @Override
-    public void loader() {
+    public void loader() throws Exception {
         try (Connection conn
                      = dataSource.getConnection();
              FileReader fileReader
@@ -50,10 +50,11 @@ public class PostgresV2Loader extends Loader {
             setLoadedCount(loadedCount);
             setErrorCount(0L);
         } catch (Exception exception) {
-            setLoadedCount(-1L);
+            setLoadedCount(0L);
             setErrorCount(getLoaderFileRecord().getContentDates().stream()
                     .mapToLong(ContentDateResultRecord::getRowCount).sum());
             log.error("! PostgresV2Loader exception for {} {}", getLoaderFileRecord().getFile().getName(), exception.getMessage());
+            throw exception;
         }
     }
 

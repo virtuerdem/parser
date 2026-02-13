@@ -1,8 +1,5 @@
 package com.ttgint.library.exception;
 
-import lombok.Data;
-
-@Data
 public class EtlException extends RuntimeException {
 
     private final String code;

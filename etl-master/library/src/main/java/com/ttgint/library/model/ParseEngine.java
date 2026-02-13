@@ -23,18 +23,38 @@ public class ParseEngine implements Serializable {
     private Long parseComponentId;
 
     private Boolean isActiveFetchTables;
+
     private Boolean isActivePreParse;
     private Integer preParseThreadCount;
+
+    private Boolean havePrepareFileFeature;
+    private Boolean decompress;
+    private Boolean needDecompressResult;
+    private Boolean validation;
+
     private Boolean isActiveOnParse;
     private Integer onParseThreadCount;
+
     private Boolean isActivePostParse;
     private Integer postParseThreadCount;
+
     private Boolean isActiveAutoCounter;
+
     private Boolean isActiveDiscoverContentDate;
     private Integer discoverContentDateThreadCount;
     private Boolean needContentDateResult;
+
+    private Boolean isActiveCleanDuplicateApp;
+
+    private Boolean isActiveLoader;
     private Integer loaderThreadCount;
     private Boolean needLoaderResult;
+
+    private Boolean isActiveCleanDuplicateProc;
+
+    private Boolean isActiveCallProcedure;
+    private Boolean isActiveCallAggregate;
+    private Boolean isActiveCallExport;
 
     private String resultFileExtension;
 

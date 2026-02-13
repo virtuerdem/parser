@@ -24,7 +24,7 @@ public class AutoCounterDefine {
         this.allCounterRepository = allCounterRepository;
     }
 
-    public void collect(CounterDefineRecord record) {
+    public synchronized void collect(CounterDefineRecord record) {
         records.add(record);
     }
 
@@ -41,28 +41,51 @@ public class AutoCounterDefine {
     }
 
     public void save(ParseEngineRecord engineRecord) {
-        List<String> savedCounters
-                = allCounterRepository.findByFlowId(engineRecord.getFlowId())
+        List<AllCounter> savedCounters = allCounterRepository.findByFlowId(engineRecord.getFlowId());
+
+        List<String> savedCounterKeys
+                = savedCounters
                 .stream()
-                .map(e -> e.getNodeGroupType() + "|"
+                .map(e -> e.getElementType() + "|"
                         + e.getCounterGroupType() + "|"
                         + e.getCounterGroupKey() + "|"
                         + e.getCounterKey()).toList();
         log.info("* AutoCounterDefine savedCounterSize: {}", savedCounters.size());
 
-        List<AllCounter> allCounterList
+        List<AllCounter> newCounters
                 = getAll()
                 .stream()
                 .filter(e ->
-                        !savedCounters.contains(e.getNodeGroupType() + "|"
+                        !savedCounterKeys.contains(e.getElementType() + "|"
                                 + e.getCounterGroupType() + "|"
                                 + e.getCounterGroupKey() + "|"
                                 + e.getCounterKey()))
                 .map(e -> AllCounter.getRecord(engineRecord, e))
                 .toList();
-        log.info("* AutoCounterDefine newCounterSize: {}", allCounterList.size());
+        log.info("* AutoCounterDefine newCounterSize: {}", newCounters.size());
+        allCounterRepository.saveAll(newCounters);
 
-        allCounterRepository.saveAll(allCounterList);
+        List<String> newCounterKeys
+                = getAll()
+                .stream()
+                .map(e -> e.getElementType() + "|"
+                        + e.getCounterGroupType() + "|"
+                        + e.getCounterGroupKey() + "|"
+                        + e.getCounterKey()).toList();
+
+        List<AllCounter> oldCounters
+                = savedCounters
+                .stream()
+                .filter(AllCounter::getIsActive)
+                .filter(e ->
+                        !newCounterKeys.contains(e.getElementType() + "|"
+                                + e.getCounterGroupType() + "|"
+                                + e.getCounterGroupKey() + "|"
+                                + e.getCounterKey()))
+                .peek(e -> e.setIsActive(false))
+                .toList();
+        log.info("* AutoCounterDefine oldCounterSize: {}", oldCounters.size());
+        allCounterRepository.saveAll(oldCounters);
     }
 
 }

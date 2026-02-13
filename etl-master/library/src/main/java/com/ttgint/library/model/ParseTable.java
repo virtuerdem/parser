@@ -1,5 +1,6 @@
 package com.ttgint.library.model;
 
+import com.ttgint.library.record.MetadataDefineParseTableReqRec;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,26 +21,16 @@ public class ParseTable implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "t_parse_table_seq_id")
     private Long id;
     private Long flowId;
-    private Long allTableId;
 
+    private Long allTableId;
     private String schemaName;
     private String tableName;
 
-    private String objectType;
     private String objectKey;
-    private String objectKeyLookup;
-    private String objectKeyDescription;
-
-    private Integer dateColumnIndex;
-    private String dateColumnName;
-    private String resultFileDelimiter;
-
-    private String nodeType;
-    private String subNodeType;
+    private String objectType;
     private String elementType;
-    private String subElementType;
+    private String nodeType;
     private String itemType;
-    private String subItemType;
     private String tableType;
     private String subTableType;
     private String networkType;
@@ -51,6 +42,9 @@ public class ParseTable implements Serializable {
     private String tableGroup;
     private String dataGroup;
 
+    private Integer dateColumnIndex;
+    private String dateColumnName;
+    private String resultFileDelimiter;
     private String loaderTarget;
 
     private Boolean isActive;
@@ -59,5 +53,36 @@ public class ParseTable implements Serializable {
     private OffsetDateTime updatedTime;
     private String updatedBy;
     private String extraInfo;
+
+    public ParseTable(MetadataDefineParseTableReqRec record) {
+        this.flowId = record.getFlowId();
+        this.allTableId = record.getAllTableId();
+        this.schemaName = record.getSchemaName();
+        this.tableName = record.getTableName();
+
+        this.objectKey = record.getObjectKey();
+        this.objectType = record.getObjectType();
+        this.elementType = record.getElementType();
+        this.nodeType = record.getNodeType();
+        this.itemType = record.getItemType();
+        this.tableType = record.getTableType();
+        this.subTableType = record.getSubTableType();
+        this.networkType = record.getNetworkType();
+        this.subNetworkType = record.getSubNetworkType();
+
+        this.groupType = record.getGroupType();
+        this.dataType = record.getDataType();
+        this.dataSource = record.getDataSource();
+        this.tableGroup = record.getTableGroup();
+        this.dataGroup = record.getDataGroup();
+
+        this.dateColumnIndex = record.getDateColumnIndex();
+        this.dateColumnName = record.getDateColumnName();
+        this.resultFileDelimiter = record.getResultFileDelimiter();
+        this.loaderTarget = record.getLoaderTarget();
+
+        this.isActive = true;
+        this.createdTime = OffsetDateTime.now();
+    }
 
 }

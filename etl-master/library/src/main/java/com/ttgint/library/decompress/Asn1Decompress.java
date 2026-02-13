@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 public class Asn1Decompress extends Decompress {
@@ -17,13 +19,15 @@ public class Asn1Decompress extends Decompress {
     }
 
     @Override
-    protected void decompress() {
+    protected List<File> decompress() {
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            Process proc = Runtime.getRuntime()
-                    .exec("perl Asn1Decoder.pl " + decompressRecord.getSourceFile().getAbsolutePath());
-            try (BufferedReader reader =
-                         new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
+            Process proc = new ProcessBuilder(
+                    ("perl Asn1Decoder.pl " + decompressRecord.getSourceFile().getAbsolutePath()).split(" "))
+                    .start();
+
+            try (InputStreamReader inputStreamReader = new InputStreamReader(proc.getInputStream());
+                 BufferedReader reader = new BufferedReader(inputStreamReader)) {
                 String line = "";
                 while ((line = reader.readLine()) != null) {
                     stringBuilder.append(" ").append(line);
@@ -36,16 +40,19 @@ public class Asn1Decompress extends Decompress {
                 throw new Exception();
             }
 
-            Arrays.stream(new File(decompressRecord.getSourceFile().getParent()).listFiles())
+            Arrays.stream(Objects.requireNonNull(new File(decompressRecord.getSourceFile().getParent()).listFiles()))
                     .filter(e -> e.isFile()
                             && !e.getName().equals(".")
                             && !e.getName().equals("..")
                             && e.getName().endsWith(".csv")
                             && e.getName().startsWith(decompressRecord.getSourceFile().getName().replace(".asn1", "")))
-                    .forEach(this::insertResult);
+                    .forEach(e -> {
+                        fileList.add(e);
+                        this.insertResult(e);
+                    });
         } catch (Exception exception) {
             insertError("ASN1001", null, stringBuilder.toString());
-            Arrays.stream(new File(decompressRecord.getSourceFile().getParent()).listFiles())
+            Arrays.stream(Objects.requireNonNull(new File(decompressRecord.getSourceFile().getParent()).listFiles()))
                     .filter(e -> e.isFile()
                             && !e.getName().equals(".")
                             && !e.getName().equals("..")
@@ -54,6 +61,7 @@ public class Asn1Decompress extends Decompress {
                     .forEach(this::deleteFile);
         }
         deleteFile(decompressRecord.getSourceFile());
+        return fileList;
     }
 
 }

@@ -15,17 +15,13 @@ import java.util.List;
 @Repository
 public interface AllPartitionRepository extends JpaRepository<AllPartition, Long> {
 
+    List<AllPartition> findAllByAllTableId(Long allTableId);
+
     List<AllPartition> findAllByFlowIdAndIsActiveAndNeedRefreshAndIsGeneratedAndIsFailed(Long flowId,
                                                                                          Boolean isActive,
                                                                                          Boolean needRefresh,
                                                                                          Boolean isGenerated,
                                                                                          Boolean isFailed);
-
-    AllPartition findByFlowIdAndIsActiveAndNeedRefreshAndIsGeneratedAndIsFailed(Long flowId,
-                                                                                Boolean isActive,
-                                                                                Boolean needRefresh,
-                                                                                Boolean isGenerated,
-                                                                                Boolean isFailed);
 
     @Modifying
     @Query("update AllPartition a " +

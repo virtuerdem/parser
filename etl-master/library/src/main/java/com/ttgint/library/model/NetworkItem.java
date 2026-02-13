@@ -45,6 +45,7 @@ public class NetworkItem implements Serializable {
     private String sourceFileFormat;
     private Integer sourceTimePeriod;
     private String sourceStartsWith;
+    private String sourceContains;
     private String sourceEndsWith;
     private OffsetDateTime sourceLastModifiedTime;
 
@@ -54,6 +55,7 @@ public class NetworkItem implements Serializable {
     private String primarySourceFileFormat;
     private Integer primarySourceTimePeriod;
     private String primarySourceStartsWith;
+    private String primarySourceContains;
     private String primarySourceEndsWith;
     private OffsetDateTime primarySourceLastModifiedTime;
 
@@ -63,6 +65,7 @@ public class NetworkItem implements Serializable {
     private String secondarySourceFileFormat;
     private Integer secondarySourceTimePeriod;
     private String secondarySourceStartsWith;
+    private String secondarySourceContains;
     private String secondarySourceEndsWith;
     private OffsetDateTime secondarySourceLastModifiedTime;
 

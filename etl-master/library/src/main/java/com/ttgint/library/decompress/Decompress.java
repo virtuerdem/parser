@@ -11,6 +11,8 @@ import org.springframework.context.ApplicationContext;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public abstract class Decompress implements Runnable {
@@ -18,6 +20,8 @@ public abstract class Decompress implements Runnable {
     private final DecompressResultRepository decompressResultRepository;
     private final DecompressErrorRepository decompressErrorRepository;
     protected final DecompressRecord decompressRecord;
+
+    protected final List<File> fileList = new ArrayList<>();
 
     public Decompress(ApplicationContext applicationContext, DecompressRecord decompressRecord) {
         this.decompressResultRepository = applicationContext.getBean(DecompressResultRepository.class);
@@ -30,7 +34,24 @@ public abstract class Decompress implements Runnable {
         decompress();
     }
 
-    protected abstract void decompress();
+    public List<File> getDecompressedFiles() {
+        decompress();
+        return fileList;
+    }
+
+    protected abstract List<File> decompress();
+
+    protected File getTargetFile(String fileName) {
+        return new File(
+                (decompressRecord.getTargetPath() + "/" +
+                        (decompressRecord.getFileId() != null
+                                && !decompressRecord.getSourceFile().getName().contains("^^") ?
+                                decompressRecord.getFileId() + "^^" : "") +
+                        (decompressRecord.getFileNamePrefix() != null ?
+                                decompressRecord.getFileNamePrefix() + ";;" : "") +
+                        fileName)
+                        .replace("//", "/"));
+    }
 
     protected void deleteFile(File file) {
         try {

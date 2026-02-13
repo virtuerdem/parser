@@ -1,7 +1,6 @@
 package com.ttgint.library.record;
 
 import com.ttgint.library.model.AllColumn;
-import com.ttgint.library.model.AllIndex;
 import com.ttgint.library.model.AllPartition;
 import com.ttgint.library.model.AllTable;
 import lombok.AllArgsConstructor;
@@ -10,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @EqualsAndHashCode
@@ -23,8 +23,7 @@ public class GenerateTableRecord {
     private List<GenerateColumnRecord> columns;
 
     private GeneratePartitionRecord partition;
-
-    private List<GenerateIndexRecord> indexes;
+    //private List<GenerateIndexRecord> indexes;
 
     public static GenerateTableRecord getRecord(AllTable table, List<AllColumn> columns) {
         GenerateTableRecord record = new GenerateTableRecord();
@@ -37,14 +36,9 @@ public class GenerateTableRecord {
 
     public static GenerateTableRecord getRecord(AllTable table,
                                                 List<AllColumn> columns,
-                                                List<AllIndex> indexes,
-                                                AllPartition partition) {
+                                                Optional<AllPartition> partition) {
         GenerateTableRecord record = getRecord(table, columns);
-        if (partition != null) {
-            record.setPartition(GeneratePartitionRecord.getRecord(partition));
-        }
-        record.setIndexes(GenerateIndexRecord.getRecords(indexes));
-
+        partition.ifPresent(e -> record.setPartition(GeneratePartitionRecord.getRecord(e)));
         return record;
     }
 }

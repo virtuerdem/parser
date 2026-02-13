@@ -44,8 +44,6 @@ public class ParseColumnRecord {
         record.setColumnName(column.getColumnName());
 
         record.setObjectKey(column.getObjectKey());
-        record.setObjectKeyLookup(column.getObjectKeyLookup());
-        record.setObjectKeyDescription(column.getObjectKeyDescription());
 
         record.setModelType(column.getModelType());
         record.setColumnOrderId(column.getColumnOrderId());
@@ -57,8 +55,6 @@ public class ParseColumnRecord {
         record.setColumnDefaultValue(column.getColumnDefaultValue());
         record.setIsColumnGen(column.getIsColumnGen());
         record.setColumnGenFormula(column.getColumnGenFormula());
-        record.setIsColumnAgg(column.getIsColumnAgg());
-        record.setColumnAggFormula(column.getColumnAggFormula());
 
         return record;
     }

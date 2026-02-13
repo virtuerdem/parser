@@ -33,17 +33,17 @@ public class HwCsCmXmlParseHandler extends ParseXmlHandler {
     @Override
     public void preHandler() {
         if (getHandlerRecord().getFile().getName().contains("^^")) {
-            headerKeyValue.put("etlApp.info.fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
+            headerKeyValue.put("etlApp.info_fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
         }
-        headerKeyValue.put("etlApp.constant.fragmentDate",
+        headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(getHandlerRecord().getFile().getName()
                                 .split("_")[getHandlerRecord().getFile().getName().split("_").length - 1]
                                 .substring(0, 10) + "+03:00",
                         "yyyyMMddHHXXX", "yyyy-MM-dd HH:mmZ"));
-        headerKeyValue.put("etlApp.constant.nodeName", getNodeName(getHandlerRecord().getFile().getName()));
-        if (nodeIds.containsKey(headerKeyValue.get("etlApp.constant.nodeName"))) {
-            headerKeyValue.put("etlApp.constant.nodeId",
-                    nodeIds.get(headerKeyValue.get("etlApp.constant.nodeName")).toString());
+        headerKeyValue.put("etlApp.constant_nodeName", getNodeName(getHandlerRecord().getFile().getName()));
+        if (nodeIds.containsKey(headerKeyValue.get("etlApp.constant_nodeName"))) {
+            headerKeyValue.put("etlApp.constant_nodeId",
+                    nodeIds.get(headerKeyValue.get("etlApp.constant_nodeName")).toString());
         }
     }
 
@@ -109,8 +109,8 @@ public class HwCsCmXmlParseHandler extends ParseXmlHandler {
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {
-            keyValue.put("etlApp.info.uniqueRowHashCode", "");
-            keyValue.put("etlApp.info.uniqueRowCode", "");
+            keyValue.put("etlApp.info_uniqueRowHashCode", "");
+            keyValue.put("etlApp.info_uniqueRowCode", "");
         }
     }
 

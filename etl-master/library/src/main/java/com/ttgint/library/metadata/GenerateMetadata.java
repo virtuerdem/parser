@@ -44,9 +44,9 @@ public class GenerateMetadata {
         List<AllTable> nonExistsTables = getNonExistsTables(metadataRecord.getFlowId());
         List<AllColumn> definedColumns = getDefinedColumns(metadataRecord.getFlowId());
         List<AllIndex> definedIndexes = getDefinedIndexes(metadataRecord.getFlowId());
-        AllPartition definedPartition = getDefinedPartition(metadataRecord.getFlowId());
+        List<AllPartition> definedPartitions = getDefinedPartitions(metadataRecord.getFlowId());
 
-        generateTables(nonExistsTables, definedColumns, definedIndexes, definedPartition);
+        generateTables(nonExistsTables, definedColumns, definedIndexes, definedPartitions);
         generateColumns(getNonExistsColumns(nonExistsTables, definedColumns));
     }
 
@@ -62,11 +62,6 @@ public class GenerateMetadata {
 
     public List<AllPartition> getDefinedPartitions(Long flowId) {
         return allPartitionRepository.findAllByFlowIdAndIsActiveAndNeedRefreshAndIsGeneratedAndIsFailed(
-                flowId, true, true, false, false);
-    }
-
-    public AllPartition getDefinedPartition(Long flowId) {
-        return allPartitionRepository.findByFlowIdAndIsActiveAndNeedRefreshAndIsGeneratedAndIsFailed(
                 flowId, true, true, false, false);
     }
 
@@ -127,7 +122,7 @@ public class GenerateMetadata {
     public void generateTables(List<AllTable> nonExistsTables,
                                List<AllColumn> definedColumns,
                                List<AllIndex> definedIndexes,
-                               AllPartition definedPartition) {
+                               List<AllPartition> definedPartitions) {
         HashMap<String, List<AllColumn>> tableColumns = new HashMap<>();
         for (AllColumn each : definedColumns) {
             if (tableColumns.containsKey((each.getSchemaName().trim() + "." + each.getTableName().trim()).toLowerCase())) {
@@ -140,15 +135,30 @@ public class GenerateMetadata {
         }
 
         for (AllTable each : nonExistsTables) {
-            boolean status = generateTable(
-                    GenerateTableRecord.getRecord(
-                            each,
-                            tableColumns.get((each.getSchemaName().trim() + "." + each.getTableName().trim()).toLowerCase()),
-                            definedIndexes,
-                            definedPartition
-                    )
-            );
-            updateStatus(each.getId(), each.getSchemaName(), each.getTableName(), status);
+            GenerateTableRecord table = GenerateTableRecord.getRecord(each,
+                    tableColumns.get((each.getSchemaName().trim() + "." + each.getTableName().trim()).toLowerCase()),
+                    definedPartitions.stream()
+                            .filter(e -> e.getAllTableId().equals(each.getId()) && e.getIsRangePartitioned()).findAny());
+
+            boolean statusTable = generateTable(table);
+            updateTableStatus(each.getId(), statusTable);
+            updateColumnsStatus(each.getId(), statusTable);
+
+            if (statusTable) {
+                definedPartitions.stream()
+                        .filter(e -> e.getAllTableId().equals(each.getId()) && e.getIsRangePartitioned())
+                        .forEach(e -> {
+                            boolean statusPartition = generatePartition(GeneratePartitionRecord.getRecord(e));
+                            updatePartitionStatus(e.getId(), statusPartition);
+                        });
+
+                definedIndexes.stream()
+                        .filter(e -> e.getAllTableId().equals(each.getId()))
+                        .forEach(e -> {
+                            boolean statusIndex = generateIndex(GenerateIndexRecord.getRecord(e));
+                            updateIndexStatus(e.getId(), statusIndex);
+                        });
+            }
         }
     }
 
@@ -184,6 +194,10 @@ public class GenerateMetadata {
 
     public void updateTableStatus(Long id, Boolean status) {
         allTableRepository.updateTableStatusById(id, OffsetDateTime.now(), false, status, !status);
+    }
+
+    public void updateColumnsStatus(Long allTableId, Boolean status) {
+        allColumnRepository.updateColumnStatusByAllTableId(allTableId, OffsetDateTime.now(), false, status, !status);
     }
 
     public void updateColumnsStatus(String schemaName, String tableName, Boolean status) {
