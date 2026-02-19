@@ -91,7 +91,6 @@ public class HwBscConfXmlParseHandler extends ParseXmlHandler {
     public void postHandler() {
         keyValue.clear();
         headerKeyValue.clear();
-        nodeIds.clear();
     }
 
     public String getNodeName(String fileName) {
@@ -104,7 +103,8 @@ public class HwBscConfXmlParseHandler extends ParseXmlHandler {
         keyValue.putAll(headerKeyValue);
         ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(measInfo);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {

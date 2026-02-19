@@ -49,12 +49,16 @@ public class ParseEngineRecord {
     private Boolean needContentDateResult;
 
     private Boolean isActiveCleanDuplicateApp;
+    private String cleanDuplicateAppVersion;
+    private Integer cleanDuplicateAppThreadCount;
 
     private Boolean isActiveLoader;
     private Integer loaderThreadCount;
     private Boolean needLoaderResult;
 
     private Boolean isActiveCleanDuplicateProc;
+    private String cleanDuplicateProcVersion;
+    private Integer cleanDuplicateProcThreadCount;
 
     private Boolean isActiveCallProcedure;
     private Boolean isActiveCallAggregate;
@@ -101,12 +105,16 @@ public class ParseEngineRecord {
         record.setNeedContentDateResult(engine.getNeedContentDateResult());
 
         record.setIsActiveCleanDuplicateApp(engine.getIsActiveCleanDuplicateApp());
+        record.setCleanDuplicateAppVersion(engine.getCleanDuplicateAppVersion());
+        record.setCleanDuplicateAppThreadCount(engine.getCleanDuplicateAppThreadCount());
 
         record.setIsActiveLoader(engine.getIsActiveLoader());
         record.setLoaderThreadCount(engine.getLoaderThreadCount());
         record.setNeedLoaderResult(engine.getNeedLoaderResult());
 
         record.setIsActiveCleanDuplicateProc(engine.getIsActiveCleanDuplicateProc());
+        record.setCleanDuplicateProcVersion(engine.getCleanDuplicateProcVersion());
+        record.setCleanDuplicateProcThreadCount(engine.getCleanDuplicateProcThreadCount());
 
         record.setIsActiveCallProcedure(engine.getIsActiveCallProcedure());
         record.setIsActiveCallAggregate(engine.getIsActiveCallAggregate());

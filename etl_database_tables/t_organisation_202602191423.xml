@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_organisation>
+  <DATA_RECORD>
+    <id>11</id>
+    <organisation_code>D</organisation_code>
+    <organisation_name>DEFAULT</organisation_name>
+    <organisation_region>DEFAULT</organisation_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_organisation>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_company>
+  <DATA_RECORD>
+    <id>11</id>
+    <company_code>TC</company_code>
+    <company_name>TURKCELL</company_name>
+    <company_region>TURKEY</company_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>12</id>
+    <company_code>TT</company_code>
+    <company_name>TURKTELEKOM</company_name>
+    <company_region>TURKEY</company_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>13</id>
+    <company_code>VF</company_code>
+    <company_name>VODAFONE</company_name>
+    <company_region>TURKEY</company_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>14</id>
+    <company_code>TE</company_code>
+    <company_name>TELSIM</company_name>
+    <company_region>NORTHERN CYPRUS</company_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>15</id>
+    <company_code>KC</company_code>
+    <company_name>KKTCELL</company_name>
+    <company_region>NORTHERN CYPRUS</company_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>16</id>
+    <company_code>MC</company_code>
+    <company_name>MCKS</company_name>
+    <company_region>NORTHERN CYPRUS</company_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_company>

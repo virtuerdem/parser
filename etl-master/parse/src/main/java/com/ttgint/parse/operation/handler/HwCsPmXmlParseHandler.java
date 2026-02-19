@@ -100,7 +100,9 @@ public class HwCsPmXmlParseHandler extends ParseXmlHandler {
                 int valIndex = 0;
                 for (String tagSplit : tagValue.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")) {
                     keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(),
-                            ((tagSplit.startsWith("\"") && tagSplit.endsWith("\"")) ? tagSplit.substring(1, tagSplit.length() - 1) : tagSplit));
+                            ((tagSplit.startsWith("\"") && tagSplit.endsWith("\""))
+                                    ? tagSplit.substring(1, tagSplit.length() - 1)
+                                    : tagSplit.replace("NIL", "")));
                     valIndex++;
                 }
                 break;
@@ -128,7 +130,6 @@ public class HwCsPmXmlParseHandler extends ParseXmlHandler {
         indexKey.clear();
         measInfoKeyValue.clear();
         headerKeyValue.clear();
-        nodeIds.clear();
     }
 
     private void measObjLdnSplitter(String measObjLdn) {
@@ -177,7 +178,8 @@ public class HwCsPmXmlParseHandler extends ParseXmlHandler {
         ParseMapRecord parseMap
                 = getParseMapper().getMapByElementTypeObjectTypeObjectKey(elementType, measInfoType, measInfo);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {

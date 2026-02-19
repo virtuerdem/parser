@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -95,7 +94,7 @@ public class HwEnbPmXmlParseHandler extends ParseXmlHandler {
             case "measResults":
                 int valIndex = 0;
                 for (String tagSplit : tagValue.split("\\ ")) {
-                    keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(), tagSplit);
+                    keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(), tagSplit.replace("NIL", ""));
                     valIndex++;
                 }
                 break;
@@ -123,7 +122,6 @@ public class HwEnbPmXmlParseHandler extends ParseXmlHandler {
         indexKey.clear();
         measInfoKeyValue.clear();
         headerKeyValue.clear();
-        nodeIds.clear();
     }
 
     private void measObjLdnSplitter(String measObjLdn) {
@@ -172,7 +170,8 @@ public class HwEnbPmXmlParseHandler extends ParseXmlHandler {
         ParseMapRecord parseMap
                 = getParseMapper().getMapByObjectTypeObjectKey(measInfoType, measInfo);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {

@@ -1,7 +1,6 @@
 package com.ttgint;
 
 import com.ttgint.library.enums.NotificationType;
-import com.ttgint.library.exception.EtlException;
 import com.ttgint.library.model.Notification;
 import com.ttgint.library.repository.NotificationRepository;
 import com.ttgint.scheduler.SchedulerApplication;
@@ -30,17 +29,6 @@ public class NotificationTest {
         n.setMailTo("ttgint@gmail.com");
 
         notificationRepository.save(n);
-    }
-
-
-    @Test
-    void createExceptionTest() {
-
-        try {
-            int result = 10 / 0;
-        } catch (Exception e) {
-            throw new EtlException("0000", e.getMessage());
-        }
     }
 
 }

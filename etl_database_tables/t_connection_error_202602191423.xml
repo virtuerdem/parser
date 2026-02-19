@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_connection_error>
+  <DATA_RECORD>
+    <id>1</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,682</connection_id>
+    <connection_history_code>20250723114233001682</connection_history_code>
+    <error_code>SFTP003-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.12/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:42:52.451 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>2</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,682</connection_id>
+    <connection_history_code>20250723114233001682</connection_history_code>
+    <error_code>SFTP004-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.12/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:42:52.546 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>3</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,683</connection_id>
+    <connection_history_code>20250723114233001683</connection_history_code>
+    <error_code>SFTP003-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.13/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:42:53.219 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>4</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,683</connection_id>
+    <connection_history_code>20250723114233001683</connection_history_code>
+    <error_code>SFTP004-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.13/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:42:53.307 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>5</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,694</connection_id>
+    <connection_history_code>20250723114233001694</connection_history_code>
+    <error_code>SFTP003-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.19/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:43:24.951 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>6</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,694</connection_id>
+    <connection_history_code>20250723114233001694</connection_history_code>
+    <error_code>SFTP004-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.19/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:43:25.030 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>7</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,697</connection_id>
+    <connection_history_code>20250723114233001697</connection_history_code>
+    <error_code>SFTP003-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.8/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:44:15.167 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>8</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,697</connection_id>
+    <connection_history_code>20250723114233001697</connection_history_code>
+    <error_code>SFTP004-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.8/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:44:15.243 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>9</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,698</connection_id>
+    <connection_history_code>20250723114233001698</connection_history_code>
+    <error_code>SFTP003-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.9/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:44:15.980 +0300</error_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>10</id>
+    <flow_id>132</flow_id>
+    <flow_process_code>20250723114232000132</flow_process_code>
+    <connection_id>1,698</connection_id>
+    <connection_history_code>20250723114233001698</connection_history_code>
+    <error_code>SFTP004-2</error_code>
+    <error_source>/etl/vodafone/10.122.210.9/opt/oss/server/var/fileint/pmneexport/</error_source>
+    <error_message>No such file</error_message>
+    <error_detail></error_detail>
+    <error_time>2025-07-23 11:44:16.055 +0300</error_time>
+  </DATA_RECORD>
+</t_connection_error>

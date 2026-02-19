@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_all_table>
+  <DATA_RECORD>
+    <id>5</id>
+    <flow_id>111</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00111n000002</table_name>
+    <tablespace_name></tablespace_name>
+    <table_name_alias>t111n2</table_name_alias>
+    <table_name_lookup></table_name_lookup>
+    <table_description></table_description>
+    <object_key>1929379844</object_key>
+    <object_key2></object_key2>
+    <object_type>Pod Id</object_type>
+    <element_type>UNC</element_type>
+    <node_type></node_type>
+    <item_type></item_type>
+    <table_type></table_type>
+    <sub_table_type></sub_table_type>
+    <network_type></network_type>
+    <sub_network_type></sub_network_type>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>false</need_refresh>
+    <is_generated>true</is_generated>
+    <is_failed>false</is_failed>
+    <is_active>true</is_active>
+    <created_time>2026-02-04 00:10:36.988 +0300</created_time>
+    <created_by></created_by>
+    <updated_time>2026-02-04 01:40:00.877 +0300</updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>6</id>
+    <flow_id>111</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00111n000003</table_name>
+    <tablespace_name></tablespace_name>
+    <table_name_alias>t111n3</table_name_alias>
+    <table_name_lookup></table_name_lookup>
+    <table_description></table_description>
+    <object_key>117440512</object_key>
+    <object_key2></object_key2>
+    <object_type>UsnFunction</object_type>
+    <element_type>UNC</element_type>
+    <node_type></node_type>
+    <item_type></item_type>
+    <table_type></table_type>
+    <sub_table_type></sub_table_type>
+    <network_type></network_type>
+    <sub_network_type></sub_network_type>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>false</need_refresh>
+    <is_generated>true</is_generated>
+    <is_failed>false</is_failed>
+    <is_active>true</is_active>
+    <created_time>2026-02-04 01:28:26.619 +0300</created_time>
+    <created_by></created_by>
+    <updated_time>2026-02-04 01:40:01.248 +0300</updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>7</id>
+    <flow_id>111</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00111n000004</table_name>
+    <tablespace_name></tablespace_name>
+    <table_name_alias>t111n4</table_name_alias>
+    <table_name_lookup></table_name_lookup>
+    <table_description></table_description>
+    <object_key>1929379843</object_key>
+    <object_key2></object_key2>
+    <object_type>pod name</object_type>
+    <element_type>UDG</element_type>
+    <node_type></node_type>
+    <item_type></item_type>
+    <table_type></table_type>
+    <sub_table_type></sub_table_type>
+    <network_type></network_type>
+    <sub_network_type></sub_network_type>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>false</need_refresh>
+    <is_generated>true</is_generated>
+    <is_failed>false</is_failed>
+    <is_active>true</is_active>
+    <created_time>2026-02-06 14:21:24.469 +0300</created_time>
+    <created_by></created_by>
+    <updated_time>2026-02-06 14:29:22.293 +0300</updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>8</id>
+    <flow_id>111</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00111n000005</table_name>
+    <tablespace_name></tablespace_name>
+    <table_name_alias>t111n5</table_name_alias>
+    <table_name_lookup></table_name_lookup>
+    <table_description></table_description>
+    <object_key>1929379843</object_key>
+    <object_key2></object_key2>
+    <object_type>Pod Id</object_type>
+    <element_type>UNC</element_type>
+    <node_type></node_type>
+    <item_type></item_type>
+    <table_type></table_type>
+    <sub_table_type></sub_table_type>
+    <network_type></network_type>
+    <sub_network_type></sub_network_type>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>false</need_refresh>
+    <is_generated>true</is_generated>
+    <is_failed>false</is_failed>
+    <is_active>true</is_active>
+    <created_time>2026-02-06 14:28:08.275 +0300</created_time>
+    <created_by></created_by>
+    <updated_time>2026-02-06 14:29:22.711 +0300</updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>4</id>
+    <flow_id>111</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00111n000001</table_name>
+    <tablespace_name></tablespace_name>
+    <table_name_alias>t111n1</table_name_alias>
+    <table_name_lookup></table_name_lookup>
+    <table_description></table_description>
+    <object_key>1929379844</object_key>
+    <object_key2></object_key2>
+    <object_type>pod name</object_type>
+    <element_type>UDG</element_type>
+    <node_type></node_type>
+    <item_type></item_type>
+    <table_type></table_type>
+    <sub_table_type></sub_table_type>
+    <network_type></network_type>
+    <sub_network_type></sub_network_type>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>false</need_refresh>
+    <is_generated>true</is_generated>
+    <is_failed>false</is_failed>
+    <is_active>true</is_active>
+    <created_time>2026-02-04 00:10:18.992 +0300</created_time>
+    <created_by></created_by>
+    <updated_time>2026-02-05 22:49:20.017 +0300</updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>9</id>
+    <flow_id>162</flow_id>
+    <db_catalog></db_catalog>
+    <schema_name>pm</schema_name>
+    <table_name>t00162n000001</table_name>
+    <tablespace_name></tablespace_name>
+    <table_name_alias>t162n1</table_name_alias>
+    <table_name_lookup></table_name_lookup>
+    <table_description></table_description>
+    <object_key>huawei_intf_s1_x2</object_key>
+    <object_key2></object_key2>
+    <object_type></object_type>
+    <element_type></element_type>
+    <node_type></node_type>
+    <item_type></item_type>
+    <table_type></table_type>
+    <sub_table_type></sub_table_type>
+    <network_type></network_type>
+    <sub_network_type></sub_network_type>
+    <data_type></data_type>
+    <data_interval></data_interval>
+    <time_period>1</time_period>
+    <time_delay></time_delay>
+    <need_refresh>false</need_refresh>
+    <is_generated>false</is_generated>
+    <is_failed>true</is_failed>
+    <is_active>true</is_active>
+    <created_time>2026-02-19 13:44:09.944 +0300</created_time>
+    <created_by></created_by>
+    <updated_time>2026-02-19 13:54:25.287 +0300</updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_all_table>

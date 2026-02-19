@@ -140,7 +140,6 @@ public class ErDraPmXmlParseHandler extends ParseXmlHandler {
         indexKey.clear();
         measInfoKeyValue.clear();
         headerKeyValue.clear();
-        nodeIds.clear();
     }
 
     private void measObjLdnSplitter(String measObjLdn) {
@@ -162,7 +161,8 @@ public class ErDraPmXmlParseHandler extends ParseXmlHandler {
         keyValue.putAll(measInfoKeyValue);
         ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(measInfo);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {

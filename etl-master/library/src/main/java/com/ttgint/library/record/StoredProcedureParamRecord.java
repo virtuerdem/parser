@@ -15,6 +15,6 @@ public class StoredProcedureParamRecord {
 
     Class classType;
     ParameterMode parameterMode;
-    String parameter;
+    Object parameter;
 
 }

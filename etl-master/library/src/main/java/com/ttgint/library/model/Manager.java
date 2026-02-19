@@ -24,6 +24,7 @@ public class Manager implements Serializable {
     private Long machineId;
     private Integer port;
 
+    private String managerOs;
     private String managerRole;
     private OffsetDateTime heartbeatTime;
     private OffsetDateTime checkTime;

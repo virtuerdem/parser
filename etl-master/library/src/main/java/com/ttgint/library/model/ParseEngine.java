@@ -45,12 +45,16 @@ public class ParseEngine implements Serializable {
     private Boolean needContentDateResult;
 
     private Boolean isActiveCleanDuplicateApp;
+    private String cleanDuplicateAppVersion;
+    private Integer cleanDuplicateAppThreadCount;
 
     private Boolean isActiveLoader;
     private Integer loaderThreadCount;
     private Boolean needLoaderResult;
 
     private Boolean isActiveCleanDuplicateProc;
+    private String cleanDuplicateProcVersion;
+    private Integer cleanDuplicateProcThreadCount;
 
     private Boolean isActiveCallProcedure;
     private Boolean isActiveCallAggregate;

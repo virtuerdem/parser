@@ -94,7 +94,7 @@ public class HwRncPmXmlParseHandler extends ParseXmlHandler {
             case "measResults":
                 int valIndex = 0;
                 for (String tagSplit : tagValue.split("\\ ")) {
-                    keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(), tagSplit);
+                    keyValue.put(indexKey.get(String.valueOf(valIndex)).trim(), tagSplit.replace("NIL", ""));
                     valIndex++;
                 }
                 break;
@@ -122,7 +122,6 @@ public class HwRncPmXmlParseHandler extends ParseXmlHandler {
         indexKey.clear();
         measInfoKeyValue.clear();
         headerKeyValue.clear();
-        nodeIds.clear();
     }
 
     private void measObjLdnSplitter(String measObjLdn) {
@@ -171,7 +170,8 @@ public class HwRncPmXmlParseHandler extends ParseXmlHandler {
         ParseMapRecord parseMap
                 = getParseMapper().getMapByObjectTypeObjectKey(measInfoType, measInfo);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {

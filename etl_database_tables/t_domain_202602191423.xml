@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_domain>
+  <DATA_RECORD>
+    <id>11</id>
+    <domain_code>TR</domain_code>
+    <domain_name>TURKEY</domain_name>
+    <domain_region>TURKEY</domain_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>12</id>
+    <domain_code>NC</domain_code>
+    <domain_name>NORTHERN CYPRUS</domain_name>
+    <domain_region>NORTHERN CYPRUS</domain_region>
+    <is_active>true</is_active>
+    <created_time></created_time>
+    <created_by></created_by>
+    <updated_time></updated_time>
+    <updated_by></updated_by>
+    <extra_info></extra_info>
+  </DATA_RECORD>
+</t_domain>

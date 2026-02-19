@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t_clean_duplicate_app_history>
+  <DATA_RECORD>
+    <id>112</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260216230727000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-16 23:09:57.555 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>113</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260216230727000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-16 23:09:57.716 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>114</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260216230727000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-16 23:09:57.777 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>115</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260216230727000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-16 23:09:57.915 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>116</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260216230727000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-16 23:09:58.084 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>117</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217103844000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 10:41:02.656 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>118</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217103844000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 10:41:02.811 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>119</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217103844000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 10:41:02.838 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>120</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217103844000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 10:41:02.946 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>121</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217103844000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 10:41:03.049 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>122</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217110400000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:06:15.596 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>123</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217110400000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:06:15.725 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>124</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217110400000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:06:15.746 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>125</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217110400000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:06:15.838 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>126</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217110400000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:06:15.947 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>127</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217112433000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:27:53.134 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>128</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217112433000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:27:53.297 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>129</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217112433000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:27:53.319 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>130</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217112433000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:27:53.436 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>131</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217112433000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:27:53.557 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>132</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217114538000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:47:58.744 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>133</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217114538000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:47:58.859 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>134</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217114538000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:47:58.867 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>135</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217114538000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:47:58.956 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>136</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217114538000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:47:59.042 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>137</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217115543000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:58:13.050 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>138</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217115543000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:58:13.194 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>139</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217115543000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:58:13.218 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>140</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217115543000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:58:13.317 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>141</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217115543000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 11:58:13.444 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>142</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120427000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:07:08.166 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>143</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120427000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:07:08.307 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>144</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120427000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:07:08.333 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>145</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120427000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:07:08.432 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>146</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120427000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:07:08.532 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>147</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120832000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:11:14.442 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>148</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120832000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:11:14.680 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>149</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120832000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:11:14.854 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>150</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120832000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:11:14.959 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>151</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217120832000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:11:15.064 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>152</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217121629000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:19:05.445 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>153</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217121629000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:19:05.577 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>154</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217121629000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:19:05.600 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>155</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217121629000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:19:05.699 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>156</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217121629000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:19:05.854 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>157</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217122629000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:29:04.236 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>158</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217122629000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:29:04.365 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>159</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217122629000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:29:04.394 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>160</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217122629000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:29:04.488 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>161</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217122629000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 12:29:04.610 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>162</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217135552000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 13:58:19.209 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>163</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217135552000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 13:58:19.359 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>164</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217135552000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 13:58:19.377 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>165</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217135552000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 13:58:19.481 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>166</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217135552000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 13:58:19.602 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>167</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217140427000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:06:49.389 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>168</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217140427000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:06:49.534 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>169</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217140427000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:06:49.563 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>170</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217140427000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:06:49.681 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>171</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217140427000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:06:49.816 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>172</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217142929000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:31:38.659 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>173</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217142929000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:31:38.793 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>174</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217142929000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:31:38.821 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>175</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217142929000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:31:38.941 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>176</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217142929000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:31:39.054 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>177</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143325000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:36:03.404 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>178</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143325000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:36:03.508 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>179</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143325000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:36:03.537 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>180</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143325000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:36:03.614 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>181</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143325000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:36:03.705 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>182</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143749000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:40:32.976 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>183</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143749000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:40:33.150 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>184</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143749000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:40:33.183 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>185</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143749000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:40:33.304 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>186</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217143749000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:40:33.453 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>187</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144245000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:45:21.811 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>188</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144245000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:45:21.924 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>189</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144245000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:45:21.950 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>190</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144245000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:45:22.050 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>191</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144245000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:45:22.172 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>192</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144726000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:50:01.462 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>193</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144726000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:50:01.601 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>194</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144726000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:50:01.651 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>195</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144726000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:50:01.746 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>196</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217144726000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v1</clean_duplicate_version>
+    <created_time>2026-02-17 14:50:01.853 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>197</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217145153000111</flow_process_code>
+    <file_name>t00111n000003-117440512.unl</file_name>
+    <total_row_count>420</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v5</clean_duplicate_version>
+    <created_time>2026-02-17 14:54:52.254 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>198</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217145153000111</flow_process_code>
+    <file_name>t00111n000001-1929379844.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v5</clean_duplicate_version>
+    <created_time>2026-02-17 14:54:52.417 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>199</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217145153000111</flow_process_code>
+    <file_name>t00111n000004-1929379843.unl</file_name>
+    <total_row_count>85,190</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v5</clean_duplicate_version>
+    <created_time>2026-02-17 14:54:52.443 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>200</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217145153000111</flow_process_code>
+    <file_name>t00111n000002-1929379844.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v5</clean_duplicate_version>
+    <created_time>2026-02-17 14:54:52.449 +0300</created_time>
+  </DATA_RECORD>
+  <DATA_RECORD>
+    <id>201</id>
+    <flow_id>111</flow_id>
+    <flow_process_code>20260217145153000111</flow_process_code>
+    <file_name>t00111n000005-1929379843.unl</file_name>
+    <total_row_count>103,635</total_row_count>
+    <deleted_row_count>0</deleted_row_count>
+    <clean_duplicate_version>v5</clean_duplicate_version>
+    <created_time>2026-02-17 14:54:52.471 +0300</created_time>
+  </DATA_RECORD>
+</t_clean_duplicate_app_history>

@@ -86,7 +86,7 @@ public abstract class ParseBaseHandler extends DefaultHandler implements ParseHa
     }
 
     @Override
-    public HashMap<String, String> prepareUniqueCodes(ParseMapRecord parseMap, HashMap<String, String> keyValue) {
+    public HashMap<String, String> prepareUniqueRowHashCode(ParseMapRecord parseMap, HashMap<String, String> keyValue) {
         StringBuilder values = new StringBuilder();
         keyValue.keySet()
                 .stream()
@@ -97,8 +97,12 @@ public abstract class ParseBaseHandler extends DefaultHandler implements ParseHa
 
         HashMap<String, String> result = new HashMap<>();
         result.put("etlApp.info_uniqueRowHashCode", String.valueOf(LongHashFunction.xx().hashChars(values.toString())));
-        result.put("etlApp.info_uniqueRowCode", UUID.randomUUID().toString());
         return result;
+    }
+
+    @Override
+    public void prepareUniqueRowCode(HashMap<String, String> keyValue) {
+        keyValue.put("etlApp.info_uniqueRowCode", UUID.randomUUID().toString());
     }
 
     @Override
@@ -144,9 +148,9 @@ public abstract class ParseBaseHandler extends DefaultHandler implements ParseHa
                 .forEach(c ->
                         stringBuilder
                                 .append(parseMap.getParseTable().getResultFileDelimiter())
-                                .append(keyValue.getOrDefault(c.getObjectKey(),
-                                                (c.getIsDefaultValue() ? c.getColumnDefaultValue() : "")
-                                        )
+                                .append(Optional.ofNullable(keyValue.get(c.getObjectKey()))
+                                        .filter(v -> !v.isEmpty())
+                                        .orElse(c.getIsDefaultValue() ? c.getColumnDefaultValue() : "")
                                 )
                 );
         return stringBuilder.substring(1);
