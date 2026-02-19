@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Component("OTH_TWAMP_PM_CSV_PARSE")
+@Component("OTH_TWAMP_PM_PARSE")
 public class OthTwampPmCsvParseEngine extends ParseBaseEngine {
 
     public OthTwampPmCsvParseEngine(ApplicationContext applicationContext) {
