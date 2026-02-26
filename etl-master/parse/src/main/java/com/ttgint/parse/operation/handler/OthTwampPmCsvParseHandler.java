@@ -30,11 +30,21 @@ public class OthTwampPmCsvParseHandler extends ParseCsvHandler {
 
     @Override
     public void preHandler() {
-        String baseName = getHandlerRecord().getFile().getName().replace(".csv", "");
+        String fileName = getHandlerRecord().getFile().getName();
+
+        // Transfer'dan gelen dosyalarda fileId^^ prefix'i var, onu kaldır
+        if (fileName.contains("^^")) {
+            fileName = fileName.split("\\^\\^")[1];
+        }
+
+        String baseName = fileName.replace(".csv", "");
         // dosya adi: test-20250624T123000  veya  test-dns-20250624T123000
         String timestamp = baseName.replaceAll(".*-(\\d{8}T\\d{6})$", "$1");
         scenarioType = baseName.replace("-" + timestamp, "");
         fragmentDate = parseTimestamp(timestamp);
+
+        log.info("* OthTwampPmCsvParseHandler preHandler - scenarioType: {}, fragmentDate: {}",
+                scenarioType, fragmentDate);
     }
 
     @Override
@@ -67,6 +77,9 @@ public class OthTwampPmCsvParseHandler extends ParseCsvHandler {
             keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
+        } else if (lineIndex == 1) {
+            // Sadece ilk data satırında uyar (spam önlemek için)
+            log.warn("! OthTwampPmCsvParseHandler parseMap not found for scenarioType: {}", scenarioType);
         }
     }
 
