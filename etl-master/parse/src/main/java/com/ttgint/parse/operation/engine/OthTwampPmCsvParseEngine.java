@@ -38,6 +38,8 @@ public class OthTwampPmCsvParseEngine extends ParseBaseEngine {
                         ParseHandlerRecord.getRecord(engineRecord, file, ProgressType.PRODUCT));
                 executor.execute(handler);
             } catch (Exception exception) {
+                log.error("! OthTwampPmCsvParseEngine handler creation/execution failed for file: {}",
+                        file.getName(), exception);
             }
         });
         shutdownExecutorService(executor);
