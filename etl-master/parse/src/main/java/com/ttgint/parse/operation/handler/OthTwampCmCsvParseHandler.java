@@ -26,57 +26,47 @@ public class OthTwampCmCsvParseHandler extends ParseCsvHandler {
 
     @Override
     public void preHandler() {
-        String fileName = getHandlerRecord().getFile().getName();
-
-        // Transfer'dan gelen dosyalarda fileId^^ prefix'i var, onu kaldır
-        if (fileName.contains("^^")) {
-            headerKeyValue.put("etlApp.info.fileId", fileName.split("\\^\\^")[0]);
-            fileName = fileName.split("\\^\\^")[1];
+        if (getHandlerRecord().getFile().getName().contains("^^")) {
+            headerKeyValue.put("etlApp.info_fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
         }
 
-        // Dosya adı formatı: {measInfo}-{YYYY-MM-DD}.csv
-        String[] parts = fileName.split("-", 2);
-        measInfo = parts[0];
-
         headerKeyValue.put(
-                "etlApp.constant.fragmentDate",
+                "etlApp.constant_fragmentDate",
                 stringDateFormatter(
-                        parts[1].replace(".csv", "") + " 0000+03:00",
+                        getHandlerRecord()
+                                .getFile()
+                                .getName().split("-", 2)[1].replace(".csv", "") + " 0000+03:00",
                         "yyyy-MM-dd HHmmXXX",
                         "yyyy-MM-dd HH:mmZ"
                 )
         );
 
+        measInfo = getHandlerRecord()
+                .getFile()
+                .getName()
+                .split("-")[0]
+                .split("\\^\\^")[1];
         parseMap = getParseMapper().getMapByObjectKey(measInfo);
-
-        log.info("* OthTwampCmCsvParseHandler preHandler - measInfo: {}, parseMap: {}",
-                measInfo, (parseMap != null ? "found" : "NOT FOUND"));
     }
 
     @Override
     public void lineProgress(Long lineIndex, String[] line) {
         if (lineIndex == 0) {
-            // Header satırı - kolon isimlerini sakla
             for (int i = 0; i < line.length; i++) {
                 indexKey.put(i, line[i].trim());
             }
         } else {
-            // Data satırı
             keyValue.clear();
             for (int i = 0; i < indexKey.size(); i++) {
-                String columnName = indexKey.get(i);
-                String value = getSafeIndex(line, i);
-                keyValue.put(columnName, value);
+                keyValue.put(indexKey.get(i).trim(), getSafeIndex(line,i));
             }
+            keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
+            prepareUniqueRowCode(keyValue);
 
-            keyValue.put("etlApp.info.lineIndex", String.valueOf(lineIndex));
-
-            // Counter tanımla (sadece ilk satırda)
+            write();
             if (lineIndex == 1) {
                 autoCounterDefine(null, null, measInfo, keyValue.keySet());
             }
-
-            write();
         }
     }
 
@@ -88,22 +78,9 @@ public class OthTwampCmCsvParseHandler extends ParseCsvHandler {
     }
 
     private void write() {
+        keyValue.putAll(headerKeyValue);
         if (parseMap != null) {
-            keyValue.putAll(headerKeyValue);
-
-            // ⭐ ÖNEMLİ: Unique codes ve generated values ekle
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
-            keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
-
             syncWriteIntoFile(parseMap, keyValue);
-        }
-    }
-
-    private String getSafeIndex(String[] line, int index) {
-        try {
-            return line[index].replace("\t", " ").trim();
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return "";
         }
     }
 }

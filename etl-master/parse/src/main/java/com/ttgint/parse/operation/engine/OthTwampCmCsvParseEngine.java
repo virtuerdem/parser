@@ -4,7 +4,7 @@ import com.ttgint.library.enums.ProgressType;
 import com.ttgint.library.record.ParseHandlerRecord;
 import com.ttgint.parse.base.ParseBaseEngine;
 import com.ttgint.parse.base.ParseBaseHandler;
-import com.ttgint.parse.operation.handler.OthTwampPmCsvParseHandler;
+import com.ttgint.parse.operation.handler.OthTwampCmCsvParseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -15,34 +15,28 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Component("OTH_TWAMP_PM_PARSE")
-public class OthTwampPmCsvParseEngine extends ParseBaseEngine {
+@Component("OTH_TWAMP_CM_CSV_PARSE")
+public class OthTwampCmCsvParseEngine extends ParseBaseEngine {
 
-    public OthTwampPmCsvParseEngine(ApplicationContext applicationContext) {
+    public OthTwampCmCsvParseEngine(ApplicationContext applicationContext) {
         super(applicationContext);
     }
 
     @Override
     protected void onEngine() {
-        log.info("* OthTwampPmCsvParseEngine onEngine");
-
         ArrayList<File> files
                 = new ArrayList<>(fileLib.readFilesInWalkingPathByPostfix(engineRecord.getRawPath(), ".csv"));
-        log.info("* OthTwampPmCsvParseEngine onEngine fileSize: {}", files.size());
-
+        log.info("* OthTwampCmCsvParseEngine onEngine fileSize: {}", files.size());
         ExecutorService executor = Executors.newFixedThreadPool(engineRecord.getOnParseThreadCount());
         files.forEach(file -> {
             try {
-                ParseBaseHandler handler = new OthTwampPmCsvParseHandler(
-                        applicationContext,
-                        ParseHandlerRecord.getRecord(engineRecord, file, ProgressType.TEST));
+                ParseBaseHandler handler = new OthTwampCmCsvParseHandler(applicationContext,
+                        ParseHandlerRecord.getRecord(engineRecord, file, ProgressType.TEST),
+                        ';');
                 executor.execute(handler);
             } catch (Exception exception) {
-                log.error("! OthTwampPmCsvParseEngine handler creation/execution failed for file: {}",
-                        file.getName(), exception);
             }
         });
         shutdownExecutorService(executor);
     }
-
 }

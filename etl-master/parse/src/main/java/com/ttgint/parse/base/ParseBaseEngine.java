@@ -6,12 +6,14 @@ import com.ttgint.library.metadata.GenerateMetadata;
 import com.ttgint.library.model.NetworkItem;
 import com.ttgint.library.model.NetworkNode;
 import com.ttgint.library.record.*;
+import com.ttgint.library.repository.ManagerRepository;
 import com.ttgint.library.repository.NetworkItemRepository;
 import com.ttgint.library.repository.NetworkNodeRepository;
 import com.ttgint.library.util.*;
 import com.ttgint.library.validation.XmlValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 
 import java.io.File;
 import java.time.OffsetDateTime;
@@ -34,11 +36,15 @@ public class ParseBaseEngine {
     protected final AutoCounterDefine autoCounterDefine;
     protected final Writer writer;
     protected final ContentDate contentDate;
+    protected final CleanDuplicateProc cleanDuplicateProc;
 
     protected final NetworkNodeRepository networkNodeRepository;
     protected final NetworkItemRepository networkItemRepository;
+    protected final ManagerRepository managerRepository;
 
     protected ParseEngineRecord engineRecord;
+    private final String managerCode;
+    private final String schemaName;
 
     public ParseBaseEngine(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -47,9 +53,14 @@ public class ParseBaseEngine {
         this.autoCounterDefine = applicationContext.getBean(AutoCounterDefine.class);
         this.writer = applicationContext.getBean(Writer.class);
         this.contentDate = applicationContext.getBean(ContentDate.class);
+        this.cleanDuplicateProc = applicationContext.getBean(CleanDuplicateProc.class);
 
         this.networkNodeRepository = applicationContext.getBean(NetworkNodeRepository.class);
         this.networkItemRepository = applicationContext.getBean(NetworkItemRepository.class);
+        this.managerRepository = applicationContext.getBean(ManagerRepository.class);
+
+        this.managerCode = applicationContext.getBean(Environment.class).getProperty("app.scheduler.managerCode");
+        this.schemaName = applicationContext.getBean(Environment.class).getProperty("spring.jpa.properties.hibernate.default_schema");
     }
 
     public void startEngine(ParseEngineRecord record) {
@@ -206,6 +217,20 @@ public class ParseBaseEngine {
 
     protected void cleanDuplicateApp() {
         log.info("* ParseBaseEngine cleanDuplicateApp");
+        try {
+            String os = managerRepository.findByManagerCode(managerCode).getManagerOs();
+            Process process = new ProcessBuilder(
+                    ("WINDOWS".equals(os) ? "clean-duplicate.exe" : "./clean-duplicate"),
+                    String.valueOf(engineRecord.getFlowId()),
+                    engineRecord.getFlowProcessCode())
+                    .start();
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                log.error("! ParseBaseEngine cleanDuplicateApp failed. Exit code: {}", exitCode);
+            }
+        } catch (Exception e) {
+            log.error("! ParseBaseEngine cleanDuplicateApp exception ", e);
+        }
     }
 
     protected void loader() {
@@ -234,6 +259,14 @@ public class ParseBaseEngine {
 
     protected void cleanDuplicateProc() {
         log.info("* ParseBaseEngine cleanDuplicateProc");
+        cleanDuplicateProc.cleanDuplicateProc(
+                engineRecord.getFlowId(),
+                engineRecord.getFlowProcessCode(),
+                schemaName,
+                engineRecord.getCleanDuplicateProcVersion(),
+                engineRecord.getCleanDuplicateProcThreadCount(),
+                contentDate.getDates()
+        );
     }
 
     protected void callProcedure() {

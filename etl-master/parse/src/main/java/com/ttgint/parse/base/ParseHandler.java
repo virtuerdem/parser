@@ -21,7 +21,9 @@ public interface ParseHandler {
 
     String stringDateFormatter(String stringDate, String inputFormat, String outputFormat);
 
-    HashMap<String, String> prepareUniqueCodes(ParseMapRecord parseMap, HashMap<String, String> keyValue);
+    HashMap<String, String> prepareUniqueRowHashCode(ParseMapRecord parseMap, HashMap<String, String> keyValue);
+
+    void prepareUniqueRowCode(HashMap<String, String> keyValue);
 
     HashMap<String, String> prepareGeneratedValues(ParseMapRecord parseMap, HashMap<String, String> keyValue);
 

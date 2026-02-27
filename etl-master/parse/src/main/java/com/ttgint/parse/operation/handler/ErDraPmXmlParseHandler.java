@@ -35,16 +35,16 @@ public class ErDraPmXmlParseHandler extends ParseXmlHandler {
     @Override
     public void preHandler() {
         if (getHandlerRecord().getFile().getName().contains("^^")) {
-            headerKeyValue.put("etlApp.info.fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
+            headerKeyValue.put("etlApp.info_fileId", getHandlerRecord().getFile().getName().split("\\^")[0]);
         }
-        headerKeyValue.put("etlApp.constant.fragmentDate",
+        headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(getHandlerRecord().getFile().getName().split("A")[1].substring(0, 18),
                         "yyyyMMdd.HHmmZ", "yyyy-MM-dd HH:mmZ"));
-        headerKeyValue.put("etlApp.constant.nodeName",
+        headerKeyValue.put("etlApp.constant_nodeName",
                 "dra" + getHandlerRecord().getFile().getName().split("=dra")[1].split("\\,")[0]);
-        if (nodeIds.containsKey(headerKeyValue.get("etlApp.constant.nodeName"))) {
-            headerKeyValue.put("etlApp.constant.nodeId",
-                    nodeIds.get(headerKeyValue.get("etlApp.constant.nodeName")).toString());
+        if (nodeIds.containsKey(headerKeyValue.get("etlApp.constant_nodeName"))) {
+            headerKeyValue.put("etlApp.constant_nodeId",
+                    nodeIds.get(headerKeyValue.get("etlApp.constant_nodeName")).toString());
         }
     }
 
@@ -53,43 +53,43 @@ public class ErDraPmXmlParseHandler extends ParseXmlHandler {
         tagValue = "";
         switch (qName) {
 //            case "fileHeader":
-//                headerKeyValue.put("etlApp.constant.fileHeader.fileFormatVersion", attributes.getValue("fileFormatVersion"));
-//                headerKeyValue.put("etlApp.constant.fileHeader.dnPrefix", attributes.getValue("dnPrefix"));
-//                headerKeyValue.put("etlApp.constant.fileHeader.vendorName", attributes.getValue("vendorName"));
+//                headerKeyValue.put("etlApp.constant.fileHeader_fileFormatVersion", attributes.getValue("fileFormatVersion"));
+//                headerKeyValue.put("etlApp.constant.fileHeader_dnPrefix", attributes.getValue("dnPrefix"));
+//                headerKeyValue.put("etlApp.constant.fileHeader_vendorName", attributes.getValue("vendorName"));
 //                break;
 //            case "fileSender":
-//                headerKeyValue.put("etlApp.constant.fileSender.elementType", attributes.getValue("elementType"));
-//                headerKeyValue.put("etlApp.constant.fileSender.localDn", attributes.getValue("localDn"));
+//                headerKeyValue.put("etlApp.constant.fileSender_elementType", attributes.getValue("elementType"));
+//                headerKeyValue.put("etlApp.constant.fileSender_localDn", attributes.getValue("localDn"));
 //                break;
             case "measCollec":
                 if (!dateSet) {
-                    headerKeyValue.put("etlApp.constant.measCollec.beginTime",
+                    headerKeyValue.put("etlApp.constant.measCollec_beginTime",
                             stringDateFormatter(attributes.getValue("beginTime").replace("T", " "),
                                     "yyyy-MM-dd HH:mm:ssXXX", "yyyy-MM-dd HH:mmZ"));
                     dateSet = true;
 //                } else {
-//                    headerKeyValue.put("etlApp.constant.measCollec.endTime", attributes.getValue("endTime"));
+//                    headerKeyValue.put("etlApp.constant.measCollec_endTime", attributes.getValue("endTime"));
                 }
                 break;
 //            case "managedElement":
-//                headerKeyValue.put("etlApp.constant.managedElement.localDn", attributes.getValue("localDn"));
-//                headerKeyValue.put("etlApp.constant.managedElement.userLabel", attributes.getValue("userLabel"));
-//                headerKeyValue.put("etlApp.constant.managedElement.swVersion", attributes.getValue("swVersion"));
+//                headerKeyValue.put("etlApp.constant.managedElement_localDn", attributes.getValue("localDn"));
+//                headerKeyValue.put("etlApp.constant.managedElement_userLabel", attributes.getValue("userLabel"));
+//                headerKeyValue.put("etlApp.constant.managedElement_swVersion", attributes.getValue("swVersion"));
 //                break;
             case "measInfo":
                 measInfo = attributes.getValue("measInfoId");
                 break;
 //            case "job":
-//                measInfoKeyValue.put("etlApp.constant.job.jobId", attributes.getValue("jobId"));
+//                measInfoKeyValue.put("etlApp.constant.job_jobId", attributes.getValue("jobId"));
 //                break;
             case "granPeriod":
-                measInfoKeyValue.put("etlApp.constant.granPeriod.duration", attributes.getValue("duration"));
-                measInfoKeyValue.put("etlApp.constant.granPeriod.endTime",
+                measInfoKeyValue.put("etlApp.constant.granPeriod_duration", attributes.getValue("duration"));
+                measInfoKeyValue.put("etlApp.constant.granPeriod_endTime",
                         stringDateFormatter(attributes.getValue("endTime").replace("T", " "),
                                 "yyyy-MM-dd HH:mm:ssXXX", "yyyy-MM-dd HH:mmZ"));
                 break;
 //            case "repPeriod":
-//                measInfoKeyValue.put("etlApp.constant.repPeriod.duration", attributes.getValue("duration"));
+//                measInfoKeyValue.put("etlApp.constant.repPeriod_duration", attributes.getValue("duration"));
 //                break;
             case "measValue":
                 keyValue.clear();
@@ -140,16 +140,15 @@ public class ErDraPmXmlParseHandler extends ParseXmlHandler {
         indexKey.clear();
         measInfoKeyValue.clear();
         headerKeyValue.clear();
-        nodeIds.clear();
     }
 
     private void measObjLdnSplitter(String measObjLdn) {
         if (measObjLdn != null) {
-            keyValue.put("etlApp.constant.measValue.measObjLdn", measObjLdn);
+            keyValue.put("etlApp.constant.measValue_measObjLdn", measObjLdn);
             Arrays.stream(measObjLdn.split("\\,"))
                     .forEach(value -> {
                         try {
-                            keyValue.put("etlApp.measObjLdn." + value.split("\\=", 2)[0],
+                            keyValue.put("etlApp.measObjLdn_" + value.split("\\=", 2)[0],
                                     value.split("\\=", 2)[1]);
                         } catch (Exception e) {
                         }
@@ -162,12 +161,13 @@ public class ErDraPmXmlParseHandler extends ParseXmlHandler {
         keyValue.putAll(measInfoKeyValue);
         ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(measInfo);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (getHandlerRecord().getIsActiveAutoCounter()) {
-            keyValue.put("etlApp.info.uniqueRowHashCode", "");
-            keyValue.put("etlApp.info.uniqueRowCode", "");
+            keyValue.put("etlApp.info_uniqueRowHashCode", "");
+            keyValue.put("etlApp.info_uniqueRowCode", "");
         }
     }
 

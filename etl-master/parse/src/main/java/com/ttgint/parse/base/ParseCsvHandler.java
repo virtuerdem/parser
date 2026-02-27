@@ -52,4 +52,10 @@ public abstract class ParseCsvHandler extends ParseBaseHandler {
     public void postHandler() {
     }
 
+    public String getSafeIndex(String[] arr, int index) {
+        return (arr != null && index >= 0 && index < arr.length)
+                ? arr[index].trim()
+                : "";
+    }
+
 }
