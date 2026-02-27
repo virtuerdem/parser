@@ -11,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class CounterDefineRecord {
 
-    private String nodeGroupType;
+    private String elementType;
     private String counterGroupType;
     private String counterGroupKey; //objectKey of ParseTable
     private String counterKey; //objectKey of ParseColumn
@@ -22,7 +22,7 @@ public class CounterDefineRecord {
         if (!(o instanceof CounterDefineRecord)) return false;
 
         CounterDefineRecord that = (CounterDefineRecord) o;
-        return Objects.equals(this.nodeGroupType, that.nodeGroupType) &&
+        return Objects.equals(this.elementType, that.elementType) &&
                 Objects.equals(this.counterGroupType, that.counterGroupType) &&
                 Objects.equals(this.counterGroupKey, that.counterGroupKey) &&
                 Objects.equals(this.counterKey, that.counterKey);
@@ -30,6 +30,6 @@ public class CounterDefineRecord {
 
     @Override
     public int hashCode() {
-        return Objects.hash(nodeGroupType, counterGroupType, counterGroupKey, counterKey);
+        return Objects.hash(elementType, counterGroupType, counterGroupKey, counterKey);
     }
 }

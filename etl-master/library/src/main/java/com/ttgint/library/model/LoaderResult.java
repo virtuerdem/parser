@@ -25,13 +25,19 @@ public class LoaderResult implements Serializable {
     private String tableName;
     private String fileName;
     private OffsetDateTime fragmentDate;
-    private OffsetDateTime loadedTime;
-    private Long rowCount;
     private Integer loadTryCount;
-
+    private OffsetDateTime loadedTime;
+    private Long totalRowCount;
+    private Long loadedRowCount;
+    private Long failedRowCount;
+    private Boolean isLoaded;
     private OffsetDateTime createdTime;
 
-    public static LoaderResult getEntity(LoaderFileRecord record, OffsetDateTime fragmentDate, Long rowCount) {
+    public static LoaderResult getEntity(LoaderFileRecord record,
+                                         OffsetDateTime fragmentDate,
+                                         Long totalRowCount,
+                                         Long loadedRowCount,
+                                         Long failedRowCount) {
         LoaderResult entity = new LoaderResult();
         entity.setFlowId(record.getFlowId());
         entity.setSchemaName(record.getSchemaName());
@@ -39,8 +45,11 @@ public class LoaderResult implements Serializable {
         entity.setFileName(record.getFile().getName());
         entity.setFragmentDate(fragmentDate);
         entity.setLoadedTime(OffsetDateTime.now());
-        entity.setRowCount(rowCount);
+        entity.setTotalRowCount(totalRowCount);
+        entity.setLoadedRowCount(loadedRowCount);
+        entity.setFailedRowCount(failedRowCount);
         entity.setLoadTryCount(1);
+        entity.setIsLoaded(totalRowCount > 0);
         entity.setCreatedTime(OffsetDateTime.now());
         return entity;
     }

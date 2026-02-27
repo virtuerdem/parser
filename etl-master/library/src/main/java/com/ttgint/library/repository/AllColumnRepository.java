@@ -21,6 +21,8 @@ public interface AllColumnRepository extends JpaRepository<AllColumn, Long> {
                                                                                       Boolean isGenerated,
                                                                                       Boolean isFailed);
 
+    List<AllColumn> findAllByAllTableId(Long allTableId);
+
     @Modifying
     @Query("update AllColumn a " +
             "set a.updatedTime = :updatedTime, " +
@@ -49,4 +51,17 @@ public interface AllColumnRepository extends JpaRepository<AllColumn, Long> {
                                                     @Param("isGenerated") Boolean isGenerated,
                                                     @Param("isFailed") Boolean isFailed);
 
+    @Modifying
+    @Query("update AllColumn a " +
+            "set a.updatedTime = :updatedTime, " +
+            "a.needRefresh = :needRefresh, " +
+            "a.isGenerated = :isGenerated, " +
+            "a.isFailed = :isFailed " +
+            "where a.allTableId = :allTableId " +
+            "and a.isActive = true and a.needRefresh = true and a.isGenerated = false and a.isFailed = false")
+    void updateColumnStatusByAllTableId(@Param("allTableId") Long allTableId,
+                                        @Param("updatedTime") OffsetDateTime updatedTime,
+                                        @Param("needRefresh") Boolean needRefresh,
+                                        @Param("isGenerated") Boolean isGenerated,
+                                        @Param("isFailed") Boolean isFailed);
 }

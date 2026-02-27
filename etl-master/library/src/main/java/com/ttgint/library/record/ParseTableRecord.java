@@ -54,18 +54,14 @@ public class ParseTableRecord {
 
         record.setObjectType(table.getObjectType());
         record.setObjectKey(table.getObjectKey());
-        record.setObjectKeyLookup(table.getObjectKeyLookup());
 
         record.setDateColumnIndex(table.getDateColumnIndex());
         record.setDateColumnName(table.getDateColumnName());
         record.setResultFileDelimiter(table.getResultFileDelimiter());
 
         record.setNodeType(table.getNodeType());
-        record.setSubNodeType(table.getSubNodeType());
         record.setElementType(table.getElementType());
-        record.setSubElementType(table.getSubElementType());
         record.setItemType(table.getItemType());
-        record.setSubItemType(table.getSubItemType());
 
         record.setDataSource(table.getDataSource());
         record.setTableGroup(table.getTableGroup());

@@ -6,6 +6,7 @@ import org.apache.commons.compress.compressors.z.ZCompressorInputStream;
 import org.springframework.context.ApplicationContext;
 
 import java.io.*;
+import java.util.List;
 
 @Slf4j
 public class ZDecompress extends Decompress {
@@ -15,35 +16,27 @@ public class ZDecompress extends Decompress {
     }
 
     @Override
-    protected void decompress() {
-        File targetFile = new File(
-                (decompressRecord.getTargetPath() + "/" +
-                        (decompressRecord.getFileId() != null
-                                && !decompressRecord.getSourceFile().getName().contains("^^") ?
-                                decompressRecord.getFileId() + "^^" : "") +
-                        (decompressRecord.getFileNamePrefix() != null ?
-                                decompressRecord.getFileNamePrefix() + ";;" : "") +
-                        decompressRecord.getTargetFileName())
-                        .replace("//", "/"));
-        try (ZCompressorInputStream in =
-                     new ZCompressorInputStream(
-                             new BufferedInputStream(
-                                     new FileInputStream(decompressRecord.getSourceFile())));
-             BufferedOutputStream out =
-                     new BufferedOutputStream(
-                             new FileOutputStream(targetFile))) {
+    protected List<File> decompress() {
+        File targetFile = getTargetFile(decompressRecord.getTargetFileName());
+        try (FileInputStream fileInputStream = new FileInputStream(decompressRecord.getSourceFile());
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+             ZCompressorInputStream zCompressorInputStream = new ZCompressorInputStream(bufferedInputStream);
+             FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream)) {
             int len;
             byte[] buffer = new byte[1024];
-            while ((len = in.read(buffer)) > 0) {
-                out.write(buffer, 0, len);
+            while ((len = zCompressorInputStream.read(buffer)) > 0) {
+                bufferedOutputStream.write(buffer, 0, len);
             }
 
+            fileList.add(targetFile);
             insertResult(targetFile);
         } catch (Exception exception) {
             insertError("Z001", targetFile.getName(), exception.getMessage());
             deleteFile(targetFile);
         }
         deleteFile(decompressRecord.getSourceFile());
+        return fileList;
     }
 
 }

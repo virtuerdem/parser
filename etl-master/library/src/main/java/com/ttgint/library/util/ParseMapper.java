@@ -64,7 +64,43 @@ public class ParseMapper {
     public ParseMapRecord getMapByObjectKey(String objectKey) {
         return parserMaps
                 .stream()
+                .filter(e -> e.getParseTable().getObjectKey() != null)
                 .filter(e -> e.getParseTable().getObjectKey().equals(objectKey))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ParseMapRecord getMapByObjectTypeObjectKey(String objectType, String objectKey) {
+        return parserMaps
+                .stream()
+                .filter(e -> e.getParseTable().getObjectType() != null
+                        && e.getParseTable().getObjectKey() != null)
+                .filter(e -> e.getParseTable().getObjectType().equals(objectType)
+                        && e.getParseTable().getObjectKey().equals(objectKey))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ParseMapRecord getMapByElementTypeObjectKey(String elementType, String objectKey) {
+        return parserMaps
+                .stream()
+                .filter(e -> e.getParseTable().getElementType() != null
+                        && e.getParseTable().getObjectKey() != null)
+                .filter(e -> e.getParseTable().getElementType().equals(elementType)
+                        && e.getParseTable().getObjectKey().equals(objectKey))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ParseMapRecord getMapByElementTypeObjectTypeObjectKey(String elementType, String objectType, String objectKey) {
+        return parserMaps
+                .stream()
+                .filter(e -> e.getParseTable().getElementType() != null
+                        && e.getParseTable().getObjectType() != null
+                        && e.getParseTable().getObjectKey() != null)
+                .filter(e -> e.getParseTable().getElementType().equals(elementType)
+                        && e.getParseTable().getObjectType().equals(objectType)
+                        && e.getParseTable().getObjectKey().equals(objectKey))
                 .findFirst()
                 .orElse(null);
     }

@@ -13,17 +13,32 @@ import java.util.List;
 @Repository
 public interface NetworkNodeRepository extends JpaRepository<NetworkNode, Long> {
 
+    List<NetworkNode> findByBranchIdAndIsActive(Long branchId, Boolean isActive);
+
+    List<NetworkNode> findByFlowIdAndIsActive(Long flowId, Boolean isActive);
+
+    @Query("SELECT a.nodeCode "
+            + "FROM NetworkNode a "
+            + "WHERE a.branchId = :branchId "
+            + "and a.isActive = true ")
+    List<String> findActiveNodeCodesByBranchId(@Param("branchId") Long branchId);
+
+    @Query("SELECT a.nodeCode "
+            + "FROM NetworkNode a "
+            + "WHERE a.flowId = :flowId "
+            + "and a.isActive = true ")
+    List<String> findActiveNodeCodesByFlowId(@Param("flowId") Long flowId);
+
+    @Query("SELECT a.nodeName "
+            + "FROM NetworkNode a "
+            + "WHERE a.branchId = :branchId "
+            + "and a.isActive = true ")
+    List<String> findActiveNodeNamesByBranchId(@Param("branchId") Long branchId);
+
     @Query("SELECT a.nodeName "
             + "FROM NetworkNode a "
             + "WHERE a.flowId = :flowId "
             + "and a.isActive = true ")
     List<String> findActiveNodeNamesByFlowId(@Param("flowId") Long flowId);
-
-    List<NetworkNode> findByFlowIdAndIsActive(Long flowId, Boolean isActive);
-
-    @Query("SELECT a.nodeName " + "FROM NetworkNode a " + "WHERE a.branchId = :branchId " + "and a.isActive = true ")
-    List<String> findActiveNodeNamesByBranchId(@Param("branchId") Long branchId);
-
-    List<NetworkNode> findByBranchIdAndIsActive(Long branchId, Boolean isActive);
 
 }

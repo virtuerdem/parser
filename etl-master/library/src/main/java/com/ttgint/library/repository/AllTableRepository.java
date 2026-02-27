@@ -21,6 +21,10 @@ public interface AllTableRepository extends JpaRepository<AllTable, Long> {
                                                                                      Boolean isGenerated,
                                                                                      Boolean isFailed);
 
+    List<AllTable> findByFlowIdAndTimePeriod(Long flowId, Long timePeriod);
+
+    List<AllTable> findAllByFlowId(Long flowId);
+
     @Modifying
     @Query("update AllTable a " +
             "set a.updatedTime = :updatedTime, " +

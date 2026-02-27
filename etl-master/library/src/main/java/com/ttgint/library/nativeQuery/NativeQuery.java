@@ -73,7 +73,9 @@ public abstract class NativeQuery {
     public Boolean executeStoredProcedure(String storedProcedureCommand,
                                           Map<Integer, StoredProcedureParamRecord> params,
                                           String storedProcedureTag) {
-        log.info("{} has started ", storedProcedureTag);
+        if (!(storedProcedureTag == null || storedProcedureTag.isEmpty())) {
+            log.info("{} has started ", storedProcedureTag);
+        }
         boolean isSuccess = false;
         EntityManager entityManager = this.entityManager.getEntityManagerFactory().createEntityManager();
         EntityTransaction transaction = null;
@@ -94,7 +96,9 @@ public abstract class NativeQuery {
             storedProcedureQuery.execute();
             transaction.commit();
             isSuccess = true;
-            log.info("{} has done ", storedProcedureTag);
+            if (!(storedProcedureTag == null || storedProcedureTag.isEmpty())) {
+                log.info("{} has done ", storedProcedureTag);
+            }
         } catch (Exception exception) {
             log.error("{} has exception ", storedProcedureTag, exception);
             if (transaction != null && transaction.isActive()) {

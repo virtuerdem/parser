@@ -22,6 +22,7 @@ public class LoaderEnvironmentRecord {
     private String userName;
     private String userPass;
     private String sqlLdrPath;
+    private Long sqlLdrErrorLimit;
     private String localRootPath;
     private String localRawFolder;
     private String localLogFolder;

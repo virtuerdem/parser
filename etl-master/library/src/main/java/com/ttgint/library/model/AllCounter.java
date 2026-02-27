@@ -29,7 +29,7 @@ public class AllCounter implements Serializable {
     private Long branchId;
     private Long flowId;
 
-    private String nodeGroupType;
+    private String elementType;
     private String counterGroupType;
     private String counterGroupKey; //objectKey of ParseTable
     private String counterKey; //objectKey of ParseColumn
@@ -58,13 +58,14 @@ public class AllCounter implements Serializable {
         record.setBranchId(parseEngineRecord.getBranchId());
         record.setFlowId(parseEngineRecord.getFlowId());
 
+        record.setElementType(counterDefineRecord.getElementType());
         record.setCounterGroupType(counterDefineRecord.getCounterGroupType());
         record.setCounterGroupKey(counterDefineRecord.getCounterGroupKey());
         record.setCounterKey(counterDefineRecord.getCounterKey());
 
         record.setModelType(
                 (!counterDefineRecord.getCounterKey().startsWith("etlApp.") ? "VARIABLE"
-                        : counterDefineRecord.getCounterKey().split("\\.")[1].toUpperCase()));
+                        : counterDefineRecord.getCounterKey().split("\\.")[1].split("\\_")[0].toUpperCase()));
 
         record.setIsActive(true);
         record.setCreatedTime(OffsetDateTime.now());

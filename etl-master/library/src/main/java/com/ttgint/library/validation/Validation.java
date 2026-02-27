@@ -2,6 +2,8 @@ package com.ttgint.library.validation;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+
 @Slf4j
 public abstract class Validation implements Runnable {
 
@@ -14,6 +16,11 @@ public abstract class Validation implements Runnable {
     @Override
     public void run() {
         validate();
+    }
+
+    public File getValidatedFile() {
+        validate();
+        return new File(sourceFilePath);
     }
 
     protected abstract void validate();

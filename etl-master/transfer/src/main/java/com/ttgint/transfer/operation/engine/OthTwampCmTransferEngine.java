@@ -50,7 +50,7 @@ public class OthTwampCmTransferEngine extends TransferBaseEngine {
 
     @Override
     protected ArrayList<File> getDecompressFiles() {
-        return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".xml"));
+        return new ArrayList<>(fileLib.readFilesInCurrentPathByContains(engineRecord.getRawPath(), ".csv"));
     }
 
 

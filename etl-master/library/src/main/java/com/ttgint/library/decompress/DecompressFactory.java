@@ -38,11 +38,11 @@ public class DecompressFactory {
         }
     }
 
-    private void targetFileNameCheck(DecompressRecord decompressRecord, Integer extentionLength) {
+    private void targetFileNameCheck(DecompressRecord decompressRecord, Integer extensionLength) {
         if (decompressRecord.getSourceFile().getName().equals(decompressRecord.getTargetFileName())) {
             decompressRecord.setTargetFileName(
                     decompressRecord.getTargetFileName()
-                            .substring(0, decompressRecord.getTargetFileName().length() - extentionLength));
+                            .substring(0, decompressRecord.getTargetFileName().length() - extensionLength));
         }
     }
 

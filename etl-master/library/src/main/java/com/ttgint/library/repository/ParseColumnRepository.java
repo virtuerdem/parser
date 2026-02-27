@@ -13,5 +13,6 @@ public interface ParseColumnRepository extends JpaRepository<ParseColumn, Long> 
 
     List<ParseColumn> findAllByFlowIdAndIsActive(Long flowId, Boolean isActive);
 
+    List<ParseColumn> findAllByParseTableId(Long parseTableId);
 
 }

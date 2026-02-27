@@ -1,5 +1,6 @@
 package com.ttgint.library.model;
 
+import com.ttgint.library.record.MetadataDefineAllPartitionReqRec;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,6 @@ public class AllPartition implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "t_all_partition_seq_id")
     private Long id;
     private Long flowId;
-    private String flowCode;
 
     private Long allTableId;
     private String schemaName;
@@ -48,5 +48,35 @@ public class AllPartition implements Serializable {
     private OffsetDateTime updatedTime;
     private String updatedBy;
     private String extraInfo;
+
+    public AllPartition(Long flowId,
+                        Long allTableId,
+                        String schemaName,
+                        String tableName,
+                        MetadataDefineAllPartitionReqRec record) {
+        this.flowId = flowId;
+        this.allTableId = allTableId;
+        this.schemaName = schemaName;
+        this.tableName = tableName;
+
+        this.isRangePartitioned = record.getIsRangePartitioned();
+        this.partitionColumnName = record.getPartitionColumnName();
+        this.partitionStartDate = record.getPartitionStartDate();
+        this.partitionInterval = record.getPartitionInterval();
+        this.partitionPremake = record.getPartitionPremake();
+        this.partitionRetention = record.getPartitionRetention();
+        this.partitionRetentionKeepTable = record.getPartitionRetentionKeepTable();
+        this.partitionDefaultTable = record.getPartitionDefaultTable();
+
+        this.isCompressed = record.getIsCompressed();
+        this.uncompressedPartition = record.getUncompressedPartition();
+        this.isCompressing = record.getIsCompressing();
+
+        this.needRefresh = true;
+        this.isGenerated = false;
+        this.isFailed = false;
+        this.isActive = true;
+        this.createdTime = OffsetDateTime.now();
+    }
 
 }

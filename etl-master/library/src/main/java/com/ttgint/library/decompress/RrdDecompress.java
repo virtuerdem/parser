@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;
+import java.util.List;
 
 @Slf4j
 public class RrdDecompress extends Decompress {
@@ -14,7 +15,7 @@ public class RrdDecompress extends Decompress {
     }
 
     @Override
-    protected void decompress() {
+    protected List<File> decompress() {
         File targetFile = new File(
                 (decompressRecord.getTargetPath() + "/" +
                         (decompressRecord.getFileId() != null
@@ -32,12 +33,14 @@ public class RrdDecompress extends Decompress {
             proc.waitFor();
             proc.destroy();
 
+            fileList.add(targetFile);
             insertResult(targetFile);
         } catch (Exception exception) {
             insertError("RRD001", targetFile.getName(), exception.getMessage());
             deleteFile(targetFile);
         }
         deleteFile(decompressRecord.getSourceFile());
+        return fileList;
     }
 
 }

@@ -21,7 +21,7 @@ public class PostgresLoader extends Loader {
     }
 
     @Override
-    public void loader() {
+    public void loader() throws Exception {
         Properties properties = new Properties();
         properties.setProperty("user", getLoaderFileRecord().getLoaderEnvironment().getUserName());
         properties.setProperty("password", getLoaderFileRecord().getLoaderEnvironment().getUserPass());
@@ -50,12 +50,14 @@ public class PostgresLoader extends Loader {
             setLoadedCount(loadedCount);
             setErrorCount(0L);
         } catch (Exception exception) {
-            setLoadedCount(-1L);
+            setLoadedCount(0L);
             setErrorCount(getLoaderFileRecord().getContentDates().stream()
                     .mapToLong(ContentDateResultRecord::getRowCount).sum());
             log.error("! PostgresLoader exception for {} {}", getLoaderFileRecord().getFile().getName(), exception.getMessage());
+            throw exception;
+        } finally {
+            properties.clear();
         }
-        properties.clear();
     }
 
 }

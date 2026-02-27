@@ -2,21 +2,29 @@ package com.ttgint.transfer.base;
 
 import com.ttgint.library.decompress.DecompressFactory;
 import com.ttgint.library.model.Connection;
+import com.ttgint.library.model.NetworkItem;
+import com.ttgint.library.model.NetworkNode;
 import com.ttgint.library.record.DecompressRecord;
 import com.ttgint.library.record.TransferEngineRecord;
 import com.ttgint.library.record.TransferHandlerRecord;
 import com.ttgint.library.repository.ConnectionRepository;
+import com.ttgint.library.repository.NetworkItemRepository;
+import com.ttgint.library.repository.NetworkNodeRepository;
 import com.ttgint.library.util.FileLib;
 import com.ttgint.library.validation.XmlValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class TransferBaseEngine {
@@ -25,12 +33,18 @@ public class TransferBaseEngine {
     protected final ConnectionRepository connectionRepository;
     protected final FileLib fileLib;
 
+    protected final NetworkNodeRepository networkNodeRepository;
+    protected final NetworkItemRepository networkItemRepository;
+
     protected TransferEngineRecord engineRecord;
 
     public TransferBaseEngine(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
         this.connectionRepository = applicationContext.getBean(ConnectionRepository.class);
         this.fileLib = applicationContext.getBean(FileLib.class);
+
+        this.networkNodeRepository = applicationContext.getBean(NetworkNodeRepository.class);
+        this.networkItemRepository = applicationContext.getBean(NetworkItemRepository.class);
     }
 
     public void startEngine(TransferEngineRecord record) {
@@ -98,8 +112,21 @@ public class TransferBaseEngine {
         return null;
     }
 
-    protected DecompressRecord getDecompressRecord(File file) {
+    protected OffsetDateTime getDecompressRecordTime(String offsetDateTime, String dateTimeFormatter) {
+        return OffsetDateTime.parse(offsetDateTime, DateTimeFormatter.ofPattern(dateTimeFormatter));
+    }
+
+    protected OffsetDateTime getDecompressRecordTime(String fileName) {
         return null;
+    }
+
+    protected DecompressRecord getDecompressRecord(File file) {
+        return DecompressRecord.getRecord(engineRecord,
+                file,
+                getDecompressRecordTime(file.getName()),
+                (file.getName().contains("^^") ? file.getName().split("\\^")[0] : null),
+                null,
+                file.getName());
     }
 
     protected void decompress() {
@@ -154,6 +181,34 @@ public class TransferBaseEngine {
             }
         } catch (Exception exception) {
         }
+    }
+
+    protected Map<String, Long> getNetworkNodesByFlowId() {
+        return networkNodeRepository
+                .findByFlowIdAndIsActive(engineRecord.getFlowId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkNode::getNodeName, NetworkNode::getNodeId));
+    }
+
+    protected Map<String, Long> getNetworkNodesByBranchId() {
+        return networkNodeRepository
+                .findByBranchIdAndIsActive(engineRecord.getBranchId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkNode::getNodeName, NetworkNode::getNodeId));
+    }
+
+    protected Map<String, Long> getNetworkItemsByFlowId() {
+        return networkItemRepository
+                .findByFlowIdAndIsActive(engineRecord.getFlowId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkItem::getItemName, NetworkItem::getItemId));
+    }
+
+    protected Map<String, Long> getNetworkItemsByBranchId() {
+        return networkItemRepository
+                .findByBranchIdAndIsActive(engineRecord.getBranchId(), true)
+                .stream()
+                .collect(Collectors.toMap(NetworkItem::getItemName, NetworkItem::getItemId));
     }
 
 }
