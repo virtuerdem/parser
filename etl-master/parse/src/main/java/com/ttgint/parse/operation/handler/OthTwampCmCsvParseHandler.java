@@ -61,7 +61,6 @@ public class OthTwampCmCsvParseHandler extends ParseCsvHandler {
                 keyValue.put(indexKey.get(i).trim(), getSafeIndex(line,i));
             }
             keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
-            prepareUniqueRowCode(keyValue);
 
             write();
             if (lineIndex == 1) {
@@ -80,6 +79,9 @@ public class OthTwampCmCsvParseHandler extends ParseCsvHandler {
     private void write() {
         keyValue.putAll(headerKeyValue);
         if (parseMap != null) {
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
+            keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         }
     }

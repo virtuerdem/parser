@@ -74,7 +74,8 @@ public class OthTwampPmCsvParseHandler extends ParseCsvHandler {
 
         ParseMapRecord parseMap = getParseMapper().getMapByObjectKey(scenarioType);
         if (parseMap != null) {
-            keyValue.putAll(prepareUniqueCodes(parseMap, keyValue));
+            keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
+            prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
         } else if (lineIndex == 1) {
