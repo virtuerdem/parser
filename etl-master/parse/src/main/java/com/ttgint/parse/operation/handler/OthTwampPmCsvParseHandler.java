@@ -78,6 +78,9 @@ public class OthTwampPmCsvParseHandler extends ParseCsvHandler {
             prepareUniqueRowCode(keyValue);
             keyValue.putAll(prepareGeneratedValues(parseMap, keyValue));
             syncWriteIntoFile(parseMap, keyValue);
+            if (lineIndex == 1) {
+                autoCounterDefine(null, null, scenarioType, keyValue.keySet());
+            }
         } else if (lineIndex == 1) {
             // Sadece ilk data satırında uyar (spam önlemek için)
             log.warn("! OthTwampPmCsvParseHandler parseMap not found for scenarioType: {}", scenarioType);
