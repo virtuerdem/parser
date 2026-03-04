@@ -2,14 +2,14 @@ package com.ttgint.parse.operation.handler;
 
 import com.ttgint.library.record.ParseHandlerRecord;
 import com.ttgint.library.record.ParseMapRecord;
-import com.ttgint.parse.base.ParseCsvHandler;
+import com.ttgint.parse.base.ParseTxtHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
 
 @Slf4j
-public class OthVasPmCsvParseHandler extends ParseCsvHandler {
+public class OthVasPmCsvParseHandler extends ParseTxtHandler {
 
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
     private final HashMap<Integer, String> indexKey = new HashMap<>();
@@ -20,7 +20,7 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
 
     public OthVasPmCsvParseHandler(ApplicationContext applicationContext,
                                    ParseHandlerRecord handlerRecord) {
-        super(applicationContext, handlerRecord, ',');
+        super(applicationContext, handlerRecord);
     }
 
     @Override
@@ -57,15 +57,20 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
     }
 
     @Override
-    public void lineProgress(Long lineIndex, String[] line) {
+    public void lineProgress(Long lineIndex, String line) {
+        String[] parts = line.split("\\|\\|", -1);
+
         if (lineIndex == 0) {
-            for (int i = 0; i < line.length; i++) {
-                indexKey.put(i, line[i].trim());
+            for (int i = 0; i < parts.length; i++) {
+                indexKey.put(i, parts[i].trim());
             }
         } else {
             keyValue.clear();
-            for (int i = 0; i < indexKey.size(); i++) {
-                keyValue.put(indexKey.get(i), getSafeIndex(line, i));
+            for (int i = 0; i < parts.length; i++) {
+                String colName = indexKey.get(i);
+                if (colName != null && !colName.isEmpty()) {
+                    keyValue.put(colName, parts[i].trim());
+                }
             }
             keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
             prepareUniqueRowCode(keyValue);
