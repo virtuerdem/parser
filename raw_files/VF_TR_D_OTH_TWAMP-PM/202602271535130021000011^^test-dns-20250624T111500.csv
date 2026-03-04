@@ -1,1 +1,0 @@
-TimeGroup,VpnName,SrcProbeName,SrcProbeIp,DestIp,DestName,TestId,TestName,AlarmPolicyName,ScenarioName,ResponseCode,ResolveTime,Query,TTL,Type,MetricSampleCount,ResponseCodeThreshold,ResolveTimeThreshold,AVAILABILITY
