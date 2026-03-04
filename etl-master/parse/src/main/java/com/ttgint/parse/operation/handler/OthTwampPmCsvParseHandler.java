@@ -92,7 +92,7 @@ public class OthTwampPmCsvParseHandler extends ParseCsvHandler {
     private String parseTimestamp(String raw) {
         try {
             return LocalDateTime.parse(raw, INPUT_FMT)
-                    .atOffset(ZoneOffset.UTC)
+                    .atOffset(ZoneOffset.of("+03:00"))
                     .format(OUTPUT_FMT);
         } catch (Exception e) {
             log.warn("! OthTwampPmCsvParseHandler parseTimestamp failed for: {}", raw);
