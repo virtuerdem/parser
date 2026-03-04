@@ -62,6 +62,6 @@ public class OthVasPmTransferEngine extends TransferBaseEngine {
                         .contains("^^") ?
                         fileName.split("\\^")[2].split("_")[0] :
                         fileName.split("_")[0]) + " 00:00+03:00",
-                "yyyy-MM-dd HH:mmXXX");
+                "yyyyMMdd HH:mmXXX");
     }
 }
