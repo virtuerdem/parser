@@ -17,6 +17,7 @@ public class OthVasPmCsvParseHandler extends ParseTxtHandler {
 
     private String measInfo;
     private ParseMapRecord parseMap;
+    private boolean firstDataProcessed = false;
 
     public OthVasPmCsvParseHandler(ApplicationContext applicationContext,
                                    ParseHandlerRecord handlerRecord) {
@@ -58,11 +59,19 @@ public class OthVasPmCsvParseHandler extends ParseTxtHandler {
 
     @Override
     public void lineProgress(Long lineIndex, String line) {
+        if (line == null || line.trim().isEmpty()) {
+            return;
+        }
+
         String[] parts = line.split("\\|\\|", -1);
 
         if (lineIndex == 0) {
-            for (int i = 0; i < parts.length; i++) {
-                indexKey.put(i, parts[i].trim());
+            int dataIndex = 0;
+            for (String part : parts) {
+                String colName = part.trim();
+                if (!colName.equals("'|'")) {
+                    indexKey.put(dataIndex++, colName);
+                }
             }
         } else {
             keyValue.clear();
@@ -77,7 +86,8 @@ public class OthVasPmCsvParseHandler extends ParseTxtHandler {
 
             write();
 
-            if (lineIndex == 1) {
+            if (!firstDataProcessed) {
+                firstDataProcessed = true;
                 autoCounterDefine(null, null, measInfo, keyValue.keySet());
             }
         }
@@ -88,6 +98,7 @@ public class OthVasPmCsvParseHandler extends ParseTxtHandler {
         keyValue.clear();
         indexKey.clear();
         headerKeyValue.clear();
+        firstDataProcessed = false;
     }
 
     private void write() {
