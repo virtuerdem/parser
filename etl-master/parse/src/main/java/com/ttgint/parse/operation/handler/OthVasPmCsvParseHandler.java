@@ -2,14 +2,14 @@ package com.ttgint.parse.operation.handler;
 
 import com.ttgint.library.record.ParseHandlerRecord;
 import com.ttgint.library.record.ParseMapRecord;
-import com.ttgint.parse.base.ParseTxtHandler;
+import com.ttgint.parse.base.ParseCsvHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
 
 @Slf4j
-public class OthVasPmCsvParseHandler extends ParseTxtHandler {
+public class OthVasPmCsvParseHandler extends ParseCsvHandler {
 
     private final HashMap<String, String> headerKeyValue = new HashMap<>();
     private final HashMap<Integer, String> indexKey = new HashMap<>();
@@ -17,79 +17,64 @@ public class OthVasPmCsvParseHandler extends ParseTxtHandler {
 
     private String measInfo;
     private ParseMapRecord parseMap;
-    private boolean firstDataProcessed = false;
+    private boolean isDetailFile;
+    private boolean firstDataWritten;
 
     public OthVasPmCsvParseHandler(ApplicationContext applicationContext,
                                    ParseHandlerRecord handlerRecord) {
-        super(applicationContext, handlerRecord);
+        super(applicationContext, handlerRecord, ',');
     }
 
     @Override
     public void preHandler() {
         String fileName = getHandlerRecord().getFile().getName();
+        String baseName = fileName.contains("^^")
+                ? fileName.split("\\^\\^")[1]
+                : fileName;
 
-        if (fileName.contains("^^")) {
-            headerKeyValue.put("etlApp.info_fileId", fileName.split("\\^")[0]);
-            String afterPrefix = fileName.split("\\^\\^")[1];
-            String datePart = afterPrefix.split("_")[0];
-            measInfo = afterPrefix.split("_", 2)[1].replace(".csv", "");
-            headerKeyValue.put(
-                    "etlApp.constant_fragmentDate",
-                    stringDateFormatter(
-                            datePart + " 0000+03:00",
-                            "yyyyMMdd HHmmXXX",
-                            "yyyy-MM-dd HH:mmZ"
-                    )
-            );
-        } else {
-            String datePart = fileName.split("_")[0];
-            measInfo = fileName.split("_", 2)[1].replace(".csv", "");
-            headerKeyValue.put(
-                    "etlApp.constant_fragmentDate",
-                    stringDateFormatter(
-                            datePart + " 0000+03:00",
-                            "yyyyMMdd HHmmXXX",
-                            "yyyy-MM-dd HH:mmZ"
-                    )
-            );
-        }
+        String datePart = baseName.split("_")[0];
+        measInfo = baseName.split("_", 2)[1].replace(".csv", "");
+        isDetailFile = measInfo.contains("report_detail");
+        firstDataWritten = false;
+
+        headerKeyValue.put("etlApp.info_fileId", fileName.split("\\^")[0]);
+        headerKeyValue.put("etlApp.constant_fragmentDate",
+                stringDateFormatter(datePart + " 0000+03:00", "yyyyMMdd HHmmXXX", "yyyy-MM-dd HH:mmZ"));
 
         parseMap = getParseMapper().getMapByObjectKey(measInfo);
     }
 
     @Override
-    public void lineProgress(Long lineIndex, String line) {
-        if (line == null || line.trim().isEmpty()) {
+    public void lineProgress(Long lineIndex, String[] line) {
+        if (line == null || line.length == 0 || (line.length == 1 && line[0].trim().isEmpty())) {
             return;
         }
 
-        String[] parts = line.split("\\|\\|", -1);
-
-        if (lineIndex == 0) {
+        long headerLine = isDetailFile ? 0L : 1L;
+        if (lineIndex == headerLine) {
             int dataIndex = 0;
-            for (String part : parts) {
-                String colName = part.trim();
-                if (!colName.equals("'|'")) {
+            for (String col : line) {
+                String colName = col.replaceAll("[|']", "").trim();
+                if (!colName.isEmpty()) {
                     indexKey.put(dataIndex++, colName);
                 }
             }
-        } else {
-            keyValue.clear();
-            for (int i = 0; i < parts.length; i++) {
-                String colName = indexKey.get(i);
-                if (colName != null && !colName.isEmpty()) {
-                    keyValue.put(colName, parts[i].trim());
-                }
-            }
-            keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
-            prepareUniqueRowCode(keyValue);
+            return;
+        }
 
-            write();
+        if (!isDetailFile && (lineIndex == 0 || lineIndex == 2)) return;
 
-            if (!firstDataProcessed) {
-                firstDataProcessed = true;
-                autoCounterDefine(null, null, measInfo, keyValue.keySet());
-            }
+        keyValue.clear();
+        for (int i = 0; i < indexKey.size(); i++) {
+            keyValue.put(indexKey.get(i), getSafeIndex(line, i));
+        }
+        keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
+        prepareUniqueRowCode(keyValue);
+        write();
+
+        if (!firstDataWritten) {
+            autoCounterDefine(null, null, measInfo, keyValue.keySet());
+            firstDataWritten = true;
         }
     }
 
@@ -98,13 +83,14 @@ public class OthVasPmCsvParseHandler extends ParseTxtHandler {
         keyValue.clear();
         indexKey.clear();
         headerKeyValue.clear();
-        firstDataProcessed = false;
     }
 
     private void write() {
         keyValue.putAll(headerKeyValue);
         if (parseMap != null) {
             syncWriteIntoFile(parseMap, keyValue);
+        } else {
+            log.warn("! OthVasPmCsvParseHandler parseMap is null for measInfo: {}", measInfo);
         }
     }
 }
