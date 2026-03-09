@@ -4,6 +4,7 @@ t_all_counter tablosundaki kayıtları baz alarak:
   - t_all_table
   - t_all_column
   - t_parse_table
+  - t_parse_column
 tablolarına eklenecek INSERT SQL'lerini üretir.
 
 Kullanım:
@@ -15,6 +16,7 @@ import argparse
 import csv
 import os
 import re
+import xml.etree.ElementTree as ET
 from collections import defaultdict
 from datetime import datetime
 
@@ -48,6 +50,30 @@ def find_csv(prefix):
         if fname.startswith(prefix) and fname.endswith(".csv"):
             return fname
     return None
+
+def find_xml(prefix):
+    """database_tables/ altında prefix ile başlayan ilk XML dosyasını bulur."""
+    for fname in sorted(os.listdir(DB_DIR)):
+        if fname.startswith(prefix) and fname.endswith(".xml"):
+            return fname
+    return None
+
+def max_id_xml(filename, id_tag="id"):
+    """XML dosyasındaki max id değerini döndürür."""
+    path = os.path.join(DB_DIR, filename)
+    if not os.path.exists(path):
+        return 0
+    try:
+        tree = ET.parse(path)
+        root = tree.getroot()
+        ids = []
+        for elem in root:
+            id_elem = elem.find(id_tag)
+            if id_elem is not None and id_elem.text and id_elem.text.strip().isdigit():
+                ids.append(int(id_elem.text.strip()))
+        return max(ids) if ids else 0
+    except ET.ParseError:
+        return 0
 
 def max_id(rows, field="id"):
     ids = []
@@ -90,6 +116,12 @@ def get_column_length(counter_key):
         return "100"
     return ""
 
+def get_column_length_int(counter_key):
+    """t_parse_column için INTEGER column_length (NULL veya sayı)."""
+    if counter_key in ("etlApp.info_fileId", "etlApp.info_uniqueRowCode"):
+        return "100"
+    return "NULL"
+
 def sort_key(counter_key, model_type):
     """
     Sıralama:
@@ -124,6 +156,7 @@ def generate(flow_id: int, schema: str, only_group: str = None):
     f_table   = find_csv("t_all_table")
     f_column  = find_csv("t_all_column")
     f_ptable  = find_csv("t_parse_table")
+    f_pcolumn = find_xml("t_parse_column")
 
     if not all([f_counter, f_table, f_column, f_ptable]):
         print("[HATA] Gerekli CSV dosyaları bulunamadı.")
@@ -154,9 +187,10 @@ def generate(flow_id: int, schema: str, only_group: str = None):
     flow_table_count = len(existing_tables)
 
     # Max ID'ler
-    next_table_id   = max_id(all_table_rows)   + 1
-    next_column_id  = max_id(all_column_rows)  + 1
-    next_ptable_id  = max_id(parse_table_rows) + 1
+    next_table_id    = max_id(all_table_rows)   + 1
+    next_column_id   = max_id(all_column_rows)  + 1
+    next_ptable_id   = max_id(parse_table_rows) + 1
+    next_pcolumn_id  = (max_id_xml(f_pcolumn) if f_pcolumn else 0) + 1
 
     # Gruplama: counter_group_key → counter listesi
     groups = defaultdict(list)
@@ -249,6 +283,7 @@ def generate(flow_id: int, schema: str, only_group: str = None):
                                  ))
 
         col_values = []
+        pcol_values = []
         for order_idx, counter in enumerate(counters_sorted, start=1):
             counter_key  = counter.get("counter_key", "").strip().strip('"')
             model_type   = counter.get("model_type", "").strip().strip('"')
@@ -271,6 +306,20 @@ def generate(flow_id: int, schema: str, only_group: str = None):
                 f"{q(NOW)}, NULL, {q(NOW)}, NULL, NULL, NULL)"
             )
 
+            pcol_id = next_pcolumn_id
+            next_pcolumn_id += 1
+            col_length_int = get_column_length_int(counter_key)
+            col_formula_q  = q(column_formula) if column_formula else "NULL"
+
+            pcol_values.append(
+                f"  ({pcol_id}, {flow_id}, {ptable_id}, {q(schema)}, {q(table_name)}, "
+                f"{q(column_name)}, {q(counter_key)}, NULL, "
+                f"{q(model_type)}, {order_idx}, {q(column_type)}, {col_length_int}, {col_formula_q}, "
+                f"false, NULL, false, NULL, "
+                f"{is_active_c}, "
+                f"{q(NOW)}, NULL, {q(NOW)}, NULL, NULL)"
+            )
+
         lines.append("-- t_all_column")
         lines.append(
             f"INSERT INTO t_all_column ("
@@ -281,6 +330,18 @@ def generate(flow_id: int, schema: str, only_group: str = None):
             f"need_refresh, is_generated, is_failed, is_active, "
             f"created_time, created_by, updated_time, updated_by, extra_info, flow_code"
             f") VALUES\n" + ",\n".join(col_values) + ";\n"
+        )
+
+        lines.append("-- t_parse_column")
+        lines.append(
+            f"INSERT INTO t_parse_column ("
+            f"id, flow_id, parse_table_id, schema_name, table_name, "
+            f"column_name, object_key, object_key2, "
+            f"model_type, column_order_id, column_type, column_length, column_formula, "
+            f"is_default_value, column_default_value, is_column_gen, column_gen_formula, "
+            f"is_active, "
+            f"created_time, created_by, updated_time, updated_by, extra_info"
+            f") VALUES\n" + ",\n".join(pcol_values) + ";\n"
         )
 
         sql_blocks.append("\n".join(lines))
@@ -303,7 +364,7 @@ def generate(flow_id: int, schema: str, only_group: str = None):
         f.write(full_sql)
 
     print(f"\n[OK] SQL dosyası oluşturuldu: {output_path}")
-    print(f"     Toplam {new_table_count} yeni grup (table + parse_table + all_column) eklendi.")
+    print(f"     Toplam {new_table_count} yeni grup (table + parse_table + all_column + parse_column) eklendi.")
 
 
 # ── CLI ──────────────────────────────────────────────────────────────────────
