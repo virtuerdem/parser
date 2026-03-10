@@ -245,7 +245,7 @@ def generate(flow_id: int, schema: str, only_group: str = None):
             f"{q(table_alias)}, NULL, NULL, {q(group_key)}, "
             f"NULL, NULL, NULL, NULL, NULL, NULL, "
             f"NULL, NULL, NULL, NULL, 1, "
-            f"1, NULL, false, true, false, true, "
+            f"1, NULL, true, false, false, true, "
             f"{q(NOW)}, NULL, {q(NOW)}, NULL, NULL, NULL"
             f");\n"
         )
@@ -302,7 +302,7 @@ def generate(flow_id: int, schema: str, only_group: str = None):
                 f"{q(column_name)}, {q(counter_key)}, NULL, NULL, NULL, "
                 f"{order_idx}, {q(column_type)}, {q(column_formula)}, {q(column_length)}, {q(model_type)}, "
                 f"false, NULL, false, NULL, "
-                f"false, true, false, {is_active_c}, "
+                f"true, false, false, {is_active_c}, "
                 f"{q(NOW)}, NULL, {q(NOW)}, NULL, NULL, NULL)"
             )
 
