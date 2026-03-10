@@ -46,36 +46,56 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
 
     @Override
     public void lineProgress(Long lineIndex, String[] line) {
-        if (line == null || line.length == 0 || (line.length == 1 && line[0].trim().isEmpty())) {
-            return;
-        }
+        /*
+         * Normal dosya (report12, report15, peak_report12, peak_report15, *_new):
+         *   satır 0 → boş satır         → atla
+         *   satır 1 → header            → indexKey doldur
+         *   satır 2 → dashes (---...)   → atla
+         *   satır 3+ → data
+         *
+         * Detail dosya (report_detail, report_detail_new):
+         *   satır 0 → header            → indexKey doldur
+         *   satır 1 → boş satır         → atla
+         *   satır 2+ → data
+         */
 
         long headerLine = isDetailFile ? 0L : 1L;
+
+        // Header satırı
         if (lineIndex == headerLine) {
-            int dataIndex = 0;
-            for (String col : line) {
-                String colName = col.replaceAll("[|']", "").trim();
-                if (!colName.isEmpty()) {
-                    indexKey.put(dataIndex++, colName);
-                }
+            for (int i = 0; i < line.length; i++) {
+                // "||','||" kalıbındaki pipe ve quote karakterlerini temizle
+                String colName = line[i].replaceAll("[|' ]", "").trim();
+                indexKey.put(i, colName);
             }
             return;
         }
 
-        if (!isDetailFile && (lineIndex == 0 || lineIndex == 2)) return;
+        // Normal dosya: satır 0 (boş) ve satır 2 (dashes) atla
+        if (!isDetailFile && (lineIndex == 0L || lineIndex == 2L)) return;
 
+        // Detail dosya: satır 1 (boş) atla
+        if (isDetailFile && lineIndex == 1L) return;
+
+        // Genel guard: boş satır veya dashes satırı atla
+        if (line.length == 0) return;
+        if (line.length == 1 && line[0].startsWith("---")) return;
+
+        // Data satırı
         keyValue.clear();
         for (int i = 0; i < indexKey.size(); i++) {
             keyValue.put(indexKey.get(i), getSafeIndex(line, i));
         }
         keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
         prepareUniqueRowCode(keyValue);
-        write();
 
+        // autoCounterDefine write'tan ÖNCE çağrılmalı
         if (!firstDataWritten) {
             autoCounterDefine(null, null, measInfo, keyValue.keySet());
             firstDataWritten = true;
         }
+
+        write();
     }
 
     @Override
