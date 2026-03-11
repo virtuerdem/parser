@@ -16,6 +16,7 @@ public class HwNbCsvPmParseHandler extends ParseCsvHandler {
     private final HashMap<String, String> keyValue = new HashMap<>();
 
     private String measInfo;
+    private String itemCode;
     private ParseMapRecord parseMap;
     private boolean firstDataWritten;
 
@@ -34,7 +35,8 @@ public class HwNbCsvPmParseHandler extends ParseCsvHandler {
         headerKeyValue.put("etlApp.info_fileId", fileName.split("\\^")[0]);
 
         String[] parts = originalName.split("_");
-        measInfo = "pmresult_" + parts[2] + "_" + parts[3];
+        itemCode = parts[2];
+        measInfo = "pmresult_" + itemCode + "_" + parts[3];
 
         String datePart = parts[parts.length - 2];
         headerKeyValue.put("etlApp.constant_fragmentDate",
@@ -65,7 +67,7 @@ public class HwNbCsvPmParseHandler extends ParseCsvHandler {
         prepareUniqueRowCode(keyValue);
 
         if (!firstDataWritten) {
-            autoCounterDefine(null, null, measInfo, keyValue.keySet());
+            autoCounterDefine(null, null, itemCode, keyValue.keySet());
             firstDataWritten = true;
         }
 
