@@ -19,7 +19,6 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
     private ParseMapRecord parseMap;
     private boolean isDetailFile;
     private boolean firstDataWritten;
-    private long writtenRowCount;
 
     public OthVasPmCsvParseHandler(ApplicationContext applicationContext,
                                    ParseHandlerRecord handlerRecord) {
@@ -37,61 +36,32 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
         measInfo = baseName.split("_", 2)[1].replace(".csv", "");
         isDetailFile = measInfo.contains("report_detail");
         firstDataWritten = false;
-        writtenRowCount = 0;
 
         headerKeyValue.put("etlApp.info_fileId", fileName.split("\\^")[0]);
         headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(datePart + " 0000+03:00", "yyyyMMdd HHmmXXX", "yyyy-MM-dd HH:mmZ"));
 
         parseMap = getParseMapper().getMapByObjectKey(measInfo);
-        if (parseMap == null) {
-            log.warn("! VAS preHandler parseMap NULL for measInfo: {}", measInfo);
-        } else {
-            log.info("! VAS preHandler measInfo={} table={} columnCount={}",
-                    measInfo,
-                    parseMap.getParseTable().getTableName(),
-                    parseMap.getParseColumns().size());
-        }
     }
 
     @Override
     public void lineProgress(Long lineIndex, String[] line) {
-        /*
-         * Normal dosya (report12, report15, peak_report12, peak_report15, *_new):
-         *   satır 0 → boş satır         → atla
-         *   satır 1 → header            → indexKey doldur
-         *   satır 2 → dashes (---...)   → atla
-         *   satır 3+ → data
-         *
-         * Detail dosya (report_detail, report_detail_new):
-         *   satır 0 → header            → indexKey doldur
-         *   satır 1 → boş satır         → atla
-         *   satır 2+ → data
-         */
-
         long headerLine = isDetailFile ? 0L : 1L;
 
-        // Header satırı
         if (lineIndex == headerLine) {
             for (int i = 0; i < line.length; i++) {
-                // "||','||" kalıbındaki pipe ve quote karakterlerini temizle
                 String colName = line[i].replaceAll("[|' ]", "").trim();
                 indexKey.put(i, colName);
             }
             return;
         }
 
-        // Normal dosya: satır 0 (boş) ve satır 2 (dashes) atla
         if (!isDetailFile && (lineIndex == 0L || lineIndex == 2L)) return;
-
-        // Detail dosya: satır 1 (boş) atla
         if (isDetailFile && lineIndex == 1L) return;
 
-        // Genel guard: boş satır veya dashes satırı atla
         if (line.length == 0) return;
         if (line.length == 1 && line[0].startsWith("---")) return;
 
-        // Data satırı
         keyValue.clear();
         for (int i = 0; i < indexKey.size(); i++) {
             keyValue.put(indexKey.get(i), getSafeIndex(line, i));
@@ -99,7 +69,6 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
         keyValue.put("etlApp.info_lineIndex", String.valueOf(lineIndex));
         prepareUniqueRowCode(keyValue);
 
-        // autoCounterDefine write'tan ÖNCE çağrılmalı
         if (!firstDataWritten) {
             autoCounterDefine(null, null, measInfo, keyValue.keySet());
             firstDataWritten = true;
@@ -110,7 +79,6 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
 
     @Override
     public void postHandler() {
-        log.info("! VAS postHandler measInfo={} writtenRows={}", measInfo, writtenRowCount);
         keyValue.clear();
         indexKey.clear();
         headerKeyValue.clear();
@@ -120,9 +88,8 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
         keyValue.putAll(headerKeyValue);
         if (parseMap != null) {
             syncWriteIntoFile(parseMap, keyValue);
-            writtenRowCount++;
         } else {
-            log.warn("! OthVasPmCsvParseHandler parseMap is null for measInfo: {}", measInfo);
+            log.warn("No parse map found for measInfo: {}", measInfo);
         }
     }
 }
