@@ -53,6 +53,8 @@ public class HwNbCsvPmParseHandler extends ParseCsvHandler {
             return;
         }
 
+        if (lineIndex == 1) return; // units row (e.g. ",Minutes,,,None,None,...")
+
         if (line.length == 0) return;
 
         keyValue.clear();
