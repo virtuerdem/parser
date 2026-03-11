@@ -367,16 +367,130 @@ def generate(flow_id: int, schema: str, only_group: str = None):
     print(f"     Toplam {new_table_count} yeni grup (table + parse_table + all_column + parse_column) eklendi.")
 
 
+def generate_parse_column_safe(flow_id: int, schema: str):
+    """
+    Mevcut t_parse_table kayıtlarını baz alarak t_parse_column için
+    güvenli INSERT SQL üretir.
+
+    - ID için nextval('t_parse_column_seq_id') kullanır (ID çakışması olmaz)
+    - parse_table_id için subquery kullanır (hardcoded ID gerekmez)
+    - WHERE NOT EXISTS ile idempotent (birden fazla kez çalıştırılabilir)
+    """
+    print(f"\n[INFO] Güvenli t_parse_column INSERT üretiliyor (flow_id={flow_id})")
+
+    f_counter = find_csv("t_all_counter")
+    f_ptable  = find_csv("t_parse_table")
+    if not all([f_counter, f_ptable]):
+        print("[HATA] Gerekli CSV dosyaları bulunamadı.")
+        return
+
+    all_counter_rows = [r for r in read_csv(f_counter)
+                        if r.get("flow_id", "").strip().strip('"') == str(flow_id)]
+    parse_table_rows = [r for r in read_csv(f_ptable)
+                        if r.get("flow_id", "").strip().strip('"') == str(flow_id)]
+
+    if not all_counter_rows:
+        print("[HATA] Bu flow_id için t_all_counter kaydı yok.")
+        return
+
+    # Gruplama: t_all_counter'daki TÜM gruplar için SQL üret.
+    # parse_table_id subquery ile DB'den bulunur → git CSV'nin güncel olması şart değil.
+    groups = defaultdict(list)
+    for row in all_counter_rows:
+        gk = row.get("counter_group_key", "").strip().strip('"')
+        if gk:
+            groups[gk].append(row)
+
+    print(f"  Üretilecek grup sayısı: {len(groups)}")
+
+    lines_all = [
+        f"-- Güvenli t_parse_column INSERT (nextval + WHERE NOT EXISTS)",
+        f"-- Tarih: {NOW}",
+        f"-- flow_id: {flow_id}",
+        f"-- Bu script birden fazla kez çalıştırılabilir (idempotent)",
+        f"-- parse_table_id DB'den subquery ile bulunur (hardcoded ID yok)\n",
+    ]
+
+    total = 0
+    for group_key in sorted(groups.keys()):
+
+        counters = groups[group_key]
+        counters_sorted = sorted(counters,
+                                 key=lambda r: sort_key(
+                                     r.get("counter_key", "").strip().strip('"'),
+                                     r.get("model_type", "").strip().strip('"')
+                                 ))
+
+        lines_all.append(f"-- ─── {group_key} ───")
+
+        for order_idx, counter in enumerate(counters_sorted, start=1):
+            counter_key  = counter.get("counter_key", "").strip().strip('"')
+            model_type   = counter.get("model_type", "").strip().strip('"')
+            is_active_c  = counter.get("is_active", "true").strip().strip('"')
+
+            column_name    = derive_column_name(counter_key)
+            column_type    = get_column_type(counter_key, model_type)
+            column_formula = get_column_formula(counter_key)
+            col_length_int = get_column_length_int(counter_key)
+            col_formula_q  = q(column_formula) if column_formula else "NULL"
+
+            # Subquery ile parse_table_id ve table_name bul
+            ptable_subq = (f"(SELECT id FROM t_parse_table "
+                           f"WHERE flow_id={flow_id} AND object_key={q(group_key)} LIMIT 1)")
+            tname_subq  = (f"(SELECT table_name FROM t_all_table "
+                           f"WHERE flow_id={flow_id} AND object_key={q(group_key)} LIMIT 1)")
+
+            exists_check = (
+                f"(SELECT 1 FROM t_parse_column "
+                f"WHERE flow_id={flow_id} "
+                f"AND parse_table_id={ptable_subq} "
+                f"AND object_key={q(counter_key)})"
+            )
+
+            insert = (
+                f"INSERT INTO t_parse_column "
+                f"(id, flow_id, parse_table_id, schema_name, table_name, "
+                f"column_name, object_key, object_key2, "
+                f"model_type, column_order_id, column_type, column_length, column_formula, "
+                f"is_default_value, column_default_value, is_column_gen, column_gen_formula, "
+                f"is_active, created_time, created_by, updated_time, updated_by, extra_info)\n"
+                f"SELECT "
+                f"nextval('t_parse_column_seq_id'), {flow_id}, {ptable_subq}, "
+                f"{q(schema)}, {tname_subq}, "
+                f"{q(column_name)}, {q(counter_key)}, NULL, "
+                f"{q(model_type)}, {order_idx}, {q(column_type)}, {col_length_int}, {col_formula_q}, "
+                f"false, NULL, false, NULL, "
+                f"{is_active_c}, NOW(), NULL, NOW(), NULL, NULL\n"
+                f"WHERE NOT EXISTS {exists_check};"
+            )
+            lines_all.append(insert)
+            total += 1
+
+        lines_all.append("")
+
+    output_path = os.path.join(DB_DIR, f"insert_flow{flow_id}_parse_column_safe.sql")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines_all))
+
+    print(f"\n[OK] Güvenli SQL dosyası oluşturuldu: {output_path}")
+    print(f"     Toplam {total} t_parse_column satırı (WHERE NOT EXISTS ile)")
+
+
 # ── CLI ──────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="t_all_counter → t_all_table / t_all_column / t_parse_table INSERT SQL üretici"
+        description="t_all_counter → t_all_table / t_all_column / t_parse_table / t_parse_column INSERT SQL üretici"
     )
     parser.add_argument("--flow-id",  type=int, required=True, help="İşlenecek flow_id (örn: 164)")
     parser.add_argument("--schema",   type=str, default="pm",   help="DB schema adı (varsayılan: pm)")
     parser.add_argument("--group",    type=str, default=None,
                         help="Sadece belirtilen counter_group_key'i işle (örn: report12)")
+    parser.add_argument("--only-parse-column", action="store_true",
+                        help="Sadece t_parse_column için güvenli SQL üret (nextval + WHERE NOT EXISTS)")
     args = parser.parse_args()
 
-    generate(flow_id=args.flow_id, schema=args.schema, only_group=args.group)
+    if args.only_parse_column:
+        generate_parse_column_safe(flow_id=args.flow_id, schema=args.schema)
+    else:
+        generate(flow_id=args.flow_id, schema=args.schema, only_group=args.group)
