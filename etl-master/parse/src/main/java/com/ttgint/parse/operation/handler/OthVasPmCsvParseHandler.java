@@ -19,6 +19,7 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
     private ParseMapRecord parseMap;
     private boolean isDetailFile;
     private boolean firstDataWritten;
+    private long writtenRowCount;
 
     public OthVasPmCsvParseHandler(ApplicationContext applicationContext,
                                    ParseHandlerRecord handlerRecord) {
@@ -36,12 +37,21 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
         measInfo = baseName.split("_", 2)[1].replace(".csv", "");
         isDetailFile = measInfo.contains("report_detail");
         firstDataWritten = false;
+        writtenRowCount = 0;
 
         headerKeyValue.put("etlApp.info_fileId", fileName.split("\\^")[0]);
         headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(datePart + " 0000+03:00", "yyyyMMdd HHmmXXX", "yyyy-MM-dd HH:mmZ"));
 
         parseMap = getParseMapper().getMapByObjectKey(measInfo);
+        if (parseMap == null) {
+            log.warn("! VAS preHandler parseMap NULL for measInfo: {}", measInfo);
+        } else {
+            log.info("! VAS preHandler measInfo={} table={} columnCount={}",
+                    measInfo,
+                    parseMap.getParseTable().getTableName(),
+                    parseMap.getParseColumns().size());
+        }
     }
 
     @Override
@@ -100,6 +110,7 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
 
     @Override
     public void postHandler() {
+        log.info("! VAS postHandler measInfo={} writtenRows={}", measInfo, writtenRowCount);
         keyValue.clear();
         indexKey.clear();
         headerKeyValue.clear();
@@ -109,6 +120,7 @@ public class OthVasPmCsvParseHandler extends ParseCsvHandler {
         keyValue.putAll(headerKeyValue);
         if (parseMap != null) {
             syncWriteIntoFile(parseMap, keyValue);
+            writtenRowCount++;
         } else {
             log.warn("! OthVasPmCsvParseHandler parseMap is null for measInfo: {}", measInfo);
         }
