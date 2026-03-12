@@ -101,14 +101,8 @@ public class PostgresqlQuery extends NativeQuery {
                     .append(")");
         }
 
-        boolean execution = super.executeQuery(tableBuilder.toString().toLowerCase(),
+        return super.executeQuery(tableBuilder.toString().toLowerCase(),
                 "generateTable " + record.getSchemaName() + "." + record.getTableName());
-
-        if (execution && record.getPartition() != null && record.getPartition().getIsRangePartitioned()) {
-            execution = generatePartition(record.getPartition());
-        }
-
-        return execution;
     }
 
     @Override
