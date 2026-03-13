@@ -338,3 +338,7 @@ id,flow_id,parse_table_id,schema_name,table_name,column_name,object_key,object_k
 2346,171,96,pm,t00171n000002,t00171n000002c0106,50342579,,,,VARIABLE,112,NUMERIC,,,false,,false,,,,true,2026-03-14 00:03:32.119 +0300,,,,,,
 2347,171,96,pm,t00171n000002,t00171n000002c0107,50342580,,,,VARIABLE,113,NUMERIC,,,false,,false,,,,true,2026-03-14 00:03:32.119 +0300,,,,,,
 2348,171,96,pm,t00171n000002,t00171n000002c0108,50342581,,,,VARIABLE,114,NUMERIC,,,false,,false,,,,true,2026-03-14 00:03:32.119 +0300,,,,,,
+2349,171,96,pm,t00171n000002,fragment_date,etlApp.constant_fragmentDate,,,,CONSTANT,1,TIMESTAMPTZ,,yyyy-mm-dd hh24:miZ,false,,false,,,,true,2026-03-14 00:03:32.106 +0300,,,,,,
+2350,171,96,pm,t00171n000002,unique_row_code,etlApp.info_uniqueRowCode,,,,INFO,2,VARCHAR,100,,false,,false,,,,true,2026-03-14 00:03:32.106 +0300,,,,,,
+2351,171,96,pm,t00171n000002,file_id,etlApp.info_fileId,,,,INFO,3,VARCHAR,100,,false,,false,,,,true,2026-03-14 00:03:32.106 +0300,,,,,,
+2352,171,96,pm,t00171n000002,line_index,etlApp.info_lineIndex,,,,INFO,5,VARCHAR,,,false,,false,,,,true,2026-03-14 00:03:32.106 +0300,,,,,,
