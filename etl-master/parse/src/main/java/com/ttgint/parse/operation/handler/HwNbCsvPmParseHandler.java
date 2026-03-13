@@ -36,7 +36,7 @@ public class HwNbCsvPmParseHandler extends ParseCsvHandler {
 
         String[] parts = originalName.split("_");
         itemCode = parts[2];
-        measInfo = "pmresult_" + itemCode + "_" + parts[3];
+        measInfo = itemCode;
 
         String datePart = parts[parts.length - 2];
         headerKeyValue.put("etlApp.constant_fragmentDate",
