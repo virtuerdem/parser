@@ -54,7 +54,15 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
         // File format: metadata block (lines 0-10), then column header, then data rows.
         // Detect header as first line with more than one column.
         if (!headerFound) {
-            if (line.length > 1) {
+            if (line.length == 1 && line[0].startsWith("Save Time:")) {
+                String saveTime = line[0].replace("Save Time:", "").trim();
+                String formatted = stringDateFormatter(saveTime + " +03:00", "MM/dd/yyyy HH:mm:ss XXX", "yyyy-MM-dd HH:mmZ");
+                if (formatted != null) {
+                    headerKeyValue.put("etlApp.constant_fragmentDate", formatted);
+                } else {
+                    log.warn("! HwMwCsvPmParseHandler could not parse Save Time: {}", saveTime);
+                }
+            } else if (line.length > 1) {
                 for (int i = 0; i < line.length; i++) {
                     indexKey.put(i, line[i].trim().replace("\"", ""));
                 }
