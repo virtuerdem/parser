@@ -1,6 +1,6 @@
 "id","flow_id","all_table_id","schema_name","table_name","object_key","object_type","element_type","node_type","item_type","table_type","sub_table_type","network_type","sub_network_type","group_type","data_type","data_source","table_group","data_group","date_column_index","date_column_name","result_file_delimiter","loader_target","is_active","created_time","created_by","updated_time","updated_by","extra_info","flow_code","measurement_key","object_id","object_id_lookup","object_key_lookup","sub_element_type","sub_item_type"
-96,171,69,pm,t00171n000002,"50331649",,,,,,,,,,,,,,112,fragment_date,|,,true,2026-03-12 13:11:43.532 +0300,,,,,,,,,,,
-85,171,58,pm,t00171n000001,"50331648",,,,,,,,,,,,,,227,fragment_date,|,,true,2026-03-11 18:28:36.506 +0300,,,,,,,,,,,
+96,171,69,pm,t00171n000002,"50331649",,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 13:11:43.532 +0300,,,,,,,,,,,
+85,171,58,pm,t00171n000001,"50331648",,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-11 18:28:36.506 +0300,,,,,,,,,,,
 77,164,54,pm,t00164n000010,report_detail_new,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-09 22:42:04.000 +0300,,2026-03-09 22:42:04.000 +0300,,,,,,,,,
 72,164,49,pm,t00164n000005,peak_report15_new,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-09 22:42:04.000 +0300,,2026-03-09 22:42:04.000 +0300,,,,,,,,,
 74,164,51,pm,t00164n000007,report12_new,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-09 22:42:04.000 +0300,,2026-03-09 22:42:04.000 +0300,,,,,,,,,
