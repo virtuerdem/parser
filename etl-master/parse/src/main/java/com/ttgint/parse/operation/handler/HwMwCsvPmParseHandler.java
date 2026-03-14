@@ -36,6 +36,7 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
 
         String[] parts = originalName.split("_");
         String datePart = parts[parts.length - 2];
+        String timePart = parts[parts.length - 1].replace(".csv", "").replace(".CSV", "");
 
         // item code is everything except the last two underscore-separated parts (_date_HH-mm-ss.csv)
         measInfo = originalName.replace("_" + datePart + "_" + parts[parts.length - 1], "");
@@ -43,6 +44,11 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
         String dateFormat = (datePart.split("-")[0].length() == 4 ? "yyyy-MM-dd" : "MM-dd-yyyy") + " HH:mmXXX";
         headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(datePart + " 00:00+03:00", dateFormat, "yyyy-MM-dd HH:mmZ"));
+
+        // file_date: combine date + time from filename (e.g. 05-20-2025 + 23-23-05 → 2025-05-20 23:23+0300)
+        String timeFormatted = timePart.replace("-", ":");
+        headerKeyValue.put("etlApp.constant_fileDate",
+                stringDateFormatter(datePart + " " + timeFormatted + "+03:00", dateFormat.replace("HH:mmXXX", "HH:mm:ssXXX"), "yyyy-MM-dd HH:mmZ"));
 
         parseMap = getParseMapper().getMapByObjectKey(measInfo);
         headerFound = false;
@@ -54,15 +60,7 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
         // File format: metadata block (lines 0-10), then column header, then data rows.
         // Detect header as first line with more than one column.
         if (!headerFound) {
-            if (line.length == 1 && line[0].startsWith("Save Time:")) {
-                String saveTime = line[0].replace("Save Time:", "").trim();
-                String formatted = stringDateFormatter(saveTime + " +03:00", "MM/dd/yyyy HH:mm:ss XXX", "yyyy-MM-dd HH:mmZ");
-                if (formatted != null) {
-                    headerKeyValue.put("etlApp.constant_fileDate", formatted);
-                } else {
-                    log.warn("! HwMwCsvPmParseHandler could not parse Save Time: {}", saveTime);
-                }
-            } else if (line.length > 1) {
+            if (line.length > 1) {
                 for (int i = 0; i < line.length; i++) {
                     indexKey.put(i, line[i].trim().replace("\"", ""));
                 }
