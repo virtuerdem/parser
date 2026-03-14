@@ -58,7 +58,7 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
                 String saveTime = line[0].replace("Save Time:", "").trim();
                 String formatted = stringDateFormatter(saveTime + " +03:00", "MM/dd/yyyy HH:mm:ss XXX", "yyyy-MM-dd HH:mmZ");
                 if (formatted != null) {
-                    headerKeyValue.put("etlApp.constant_fragmentDate", formatted);
+                    headerKeyValue.put("etlApp.constant_fileDate", formatted);
                 } else {
                     log.warn("! HwMwCsvPmParseHandler could not parse Save Time: {}", saveTime);
                 }
