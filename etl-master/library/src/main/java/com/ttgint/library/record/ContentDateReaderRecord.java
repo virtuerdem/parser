@@ -47,6 +47,7 @@ public class ContentDateReaderRecord {
                         .stream()
                         .filter(e -> e.getColumnOrderId().equals(record.getDateColumnIndex()))
                         .map(ParseColumnRecord::getColumnFormula)
+                        .filter(f -> f != null)
                         .findFirst()
                         .orElse(null));
         record.setResultFileDelimiter(parseMapRecord.getParseTable().getResultFileDelimiter());

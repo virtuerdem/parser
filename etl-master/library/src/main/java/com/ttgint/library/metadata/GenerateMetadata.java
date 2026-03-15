@@ -109,6 +109,19 @@ public class GenerateMetadata {
             return new ArrayList<>();
         }
 
+        List<String> existsTables =
+                nativeQueryFactory.getNativeQuery().getExistsTables(
+                        getSchemaNames(definedColumnsFinal.stream().map(AllColumn::getSchemaName)));
+
+        definedColumnsFinal = definedColumnsFinal.stream()
+                .filter(e -> existsTables.contains(
+                        (e.getSchemaName().trim() + "." + e.getTableName().trim()).toLowerCase()))
+                .toList();
+
+        if (definedColumnsFinal.isEmpty()) {
+            return new ArrayList<>();
+        }
+
         List<String> existsColumns =
                 nativeQueryFactory.getNativeQuery().getExistsColumns(
                         getSchemaNames(definedColumnsFinal.stream().map(AllColumn::getSchemaName)), null);

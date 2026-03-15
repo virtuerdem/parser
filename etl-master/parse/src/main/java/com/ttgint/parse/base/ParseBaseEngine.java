@@ -252,6 +252,7 @@ public class ParseBaseEngine {
                         ).getLoader()
                 );
             } catch (Exception exception) {
+                log.error("! ParseBaseEngine loader setup failed for file: {}", file.getName(), exception);
             }
         });
         shutdownExecutorService(executor);

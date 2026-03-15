@@ -1,0 +1,9 @@
+"id","vendor_code","vendor_name","is_active","created_time","created_by","updated_time","updated_by","extra_info"
+11,HW,HUAWEI,true,,,,,
+12,ER,ERICSSON,true,,,,,
+13,NK,NOKIA,true,,,,,
+14,UL,ULAK,true,,,,,
+15,DF,DEFNE,true,,,,,
+16,HPE,HPE,true,,,,,
+17,OTH,OTHER,true,,,,,
+18,IG,I2I-GEMS,true,,,,,

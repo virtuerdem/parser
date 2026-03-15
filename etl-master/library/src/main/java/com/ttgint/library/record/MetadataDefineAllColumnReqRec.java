@@ -28,10 +28,22 @@ public class MetadataDefineAllColumnReqRec {
     private String columnAggFormula;
 
     public MetadataDefineAllColumnReqRec(AllCounter counter) {
+        this.columnName = toColumnName(counter.getCounterKey());
         this.objectKey = counter.getCounterKey();
         this.columnNameLookup = counter.getCounterLookup();
         this.columnDescription = counter.getCounterDescription();
         this.modelType = counter.getModelType();
+    }
+
+    private static String toColumnName(String counterKey) {
+        if (counterKey == null) return null;
+        String raw = counterKey.startsWith("etlApp.")
+                ? counterKey.replaceFirst("etlApp\\.\\w+?_", "")
+                : counterKey;
+        return raw
+                .replaceAll("([A-Z]+)([A-Z][a-z])", "$1_$2")
+                .replaceAll("([a-z])([A-Z])", "$1_$2")
+                .toLowerCase();
     }
 
 }
