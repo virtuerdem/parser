@@ -95,6 +95,9 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
 
     private void write() {
         keyValue.putAll(headerKeyValue);
+        // Include Link ID in hash to make unique_row_hash_code distinct per row within a date
+        keyValue.put("etlApp.constant_linkId", keyValue.getOrDefault("Link ID", ""));
+        keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
         if (parseMap != null) {
             syncWriteIntoFile(parseMap, keyValue);
         } else {
