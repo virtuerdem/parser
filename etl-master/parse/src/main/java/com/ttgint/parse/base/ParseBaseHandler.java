@@ -153,6 +153,11 @@ public abstract class ParseBaseHandler extends DefaultHandler implements ParseHa
                                         .orElse(c.getIsDefaultValue() ? c.getColumnDefaultValue() : "")
                                 )
                 );
+        if (stringBuilder.length() == 0) {
+            log.warn("! ParseBaseHandler prepareRecord no columns defined for objectKey: {}",
+                    parseMap.getParseTable().getObjectKey());
+            return "";
+        }
         return stringBuilder.substring(1);
     }
 
