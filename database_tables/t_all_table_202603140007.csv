@@ -1,3 +1,0 @@
-"id","flow_id","db_catalog","schema_name","table_name","tablespace_name","table_name_alias","table_name_lookup","table_description","object_key","object_key2","object_type","element_type","node_type","item_type","table_type","sub_table_type","network_type","sub_network_type","data_type","data_interval","time_period","time_delay","need_refresh","is_generated","is_failed","is_active","created_time","created_by","updated_time","updated_by","extra_info","flow_code"
-58,171,,pm,t00171n000001,,t171n1,,,"50331648",,,,,,,,,,,,1,,false,true,false,true,2026-03-11 18:04:10.494 +0300,,2026-03-13 23:50:37.556 +0300,,,
-69,171,,pm,t00171n000002,,t171n2,,,"50331649",,,,,,,,,,,,1,,false,true,false,true,2026-03-12 13:05:47.363 +0300,,2026-03-13 23:50:38.987 +0300,,,
