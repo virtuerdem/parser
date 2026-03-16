@@ -17,6 +17,7 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
 
     private String measInfo;
     private ParseMapRecord parseMap;
+    private boolean headerFound;
     private boolean firstDataWritten;
 
     public HwMwCsvPmParseHandler(ApplicationContext applicationContext,
@@ -35,28 +36,40 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
 
         String[] parts = originalName.split("_");
         String datePart = parts[parts.length - 2];
+        String timePart = parts[parts.length - 1].replace(".csv", "").replace(".CSV", "");
 
-        // item code is everything except the last two underscore-separated parts (_date_filename)
+        // item code is everything except the last two underscore-separated parts (_date_HH-mm-ss.csv)
         measInfo = originalName.replace("_" + datePart + "_" + parts[parts.length - 1], "");
 
         String dateFormat = (datePart.split("-")[0].length() == 4 ? "yyyy-MM-dd" : "MM-dd-yyyy") + " HH:mmXXX";
         headerKeyValue.put("etlApp.constant_fragmentDate",
                 stringDateFormatter(datePart + " 00:00+03:00", dateFormat, "yyyy-MM-dd HH:mmZ"));
 
+        // file_date: combine date + time from filename (e.g. 05-20-2025 + 23-23-05 → 2025-05-20 23:23+0300)
+        String timeFormatted = timePart.replace("-", ":");
+        headerKeyValue.put("etlApp.constant_fileDate",
+                stringDateFormatter(datePart + " " + timeFormatted + "+03:00", dateFormat.replace("HH:mmXXX", "HH:mm:ssXXX"), "yyyy-MM-dd HH:mmZ"));
+
         parseMap = getParseMapper().getMapByObjectKey(measInfo);
+        headerFound = false;
         firstDataWritten = false;
     }
 
     @Override
     public void lineProgress(Long lineIndex, String[] line) {
-        if (lineIndex == 0) {
-            for (int i = 0; i < line.length; i++) {
-                indexKey.put(i, line[i].trim());
+        // File format: metadata block (lines 0-10), then column header, then data rows.
+        // Detect header as first line with more than one column.
+        if (!headerFound) {
+            if (line.length > 1) {
+                for (int i = 0; i < line.length; i++) {
+                    indexKey.put(i, line[i].trim().replace("\"", ""));
+                }
+                headerFound = true;
             }
             return;
         }
 
-        if (line.length == 0) return;
+        if (line.length == 0 || (line.length == 1 && line[0].trim().isEmpty())) return;
 
         keyValue.clear();
         for (int i = 0; i < indexKey.size(); i++) {
@@ -82,6 +95,9 @@ public class HwMwCsvPmParseHandler extends ParseCsvHandler {
 
     private void write() {
         keyValue.putAll(headerKeyValue);
+        // Include Link ID in hash to make unique_row_hash_code distinct per row within a date
+        keyValue.put("etlApp.constant_linkId", keyValue.getOrDefault("Link ID", ""));
+        keyValue.putAll(prepareUniqueRowHashCode(parseMap, keyValue));
         if (parseMap != null) {
             syncWriteIntoFile(parseMap, keyValue);
         } else {
