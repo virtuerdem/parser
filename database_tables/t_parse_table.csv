@@ -1,10 +1,8 @@
 "id","flow_id","all_table_id","schema_name","table_name","object_key","object_type","element_type","node_type","item_type","table_type","sub_table_type","network_type","sub_network_type","group_type","data_type","data_source","table_group","data_group","date_column_index","date_column_name","result_file_delimiter","loader_target","is_active","created_time","created_by","updated_time","updated_by","extra_info","flow_code","measurement_key","object_id","object_id_lookup","object_key_lookup","sub_element_type","sub_item_type"
-102,171,75,pm,t00171n000003,"50331650",,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 13:11:43.532 +0300,,,,,,,,,,,
+104,139,77,pm,t00139n000001,NE_Report,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-17 23:09:55.653 +0300,,,,,,,,,,,
+103,138,76,pm,t00138n000001,Microwave Link Report,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-17 14:04:27.639 +0300,,,,,,,,,,,
+102,171,75,pm,t00171n000003,"50331650",,,,,,,,,,,,,,19,fragment_date,|,,true,2026-03-12 13:11:43.532 +0300,,,,,,,,,,,
 101,180,74,pm,t00180n000001,Microwave Link Report,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-15 02:42:17.162 +0300,,,,,,,,,,,
-100,141,73,pm,t00141n000004,NESecurityLog_Condition,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 21:45:14.235 +0300,,,,,,,,,,,
-99,141,72,pm,t00141n000003,NELogTable_ConditionRnc,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 21:44:55.339 +0300,,,,,,,,,,,
-98,141,71,pm,t00141n000002,NELogTable_ConditionNodeb,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 21:44:40.131 +0300,,,,,,,,,,,
-97,141,70,pm,t00141n000001,NELogTable_ConditionEnodeb,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 21:44:26.488 +0300,,,,,,,,,,,
 96,171,69,pm,t00171n000002,"50331649",,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-12 13:11:43.532 +0300,,,,,,,,,,,
 85,171,58,pm,t00171n000001,"50331648",,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-11 18:28:36.506 +0300,,,,,,,,,,,
 84,145,57,pm,t00145n000001,FTTSDBReport,,,,,,,,,,,,,,1,fragment_date,|,,true,2026-03-11 15:08:45.769 +0300,,,,,,,,,,,
