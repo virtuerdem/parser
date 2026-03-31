@@ -22,7 +22,7 @@ public class PostgresqlQuery extends NativeQuery {
                 = "select distinct "
                 + "lower(table_schema || '.' || table_name) as table_name "
                 + "from information_schema.tables "
-                + "where table_type = 'base table' "
+                + "where upper(table_type) = 'BASE TABLE' "
                 + (schemaName == null ? "" : "and lower(table_schema) in ('" + schemaName.toLowerCase() + "') ");
         return super.getResultListForSingleColumn(query, "PostgresqlQuery getExistsTables");
     }
@@ -33,7 +33,7 @@ public class PostgresqlQuery extends NativeQuery {
                 = "select distinct "
                 + "lower(table_schema || '.' || table_name) as table_name "
                 + "from information_schema.tables "
-                + "where table_type = 'base table' "
+                + "where upper(table_type) = 'BASE TABLE' "
                 + "and lower(table_schema) = '" + schemaName.toLowerCase() + "' "
                 + "and lower(table_name) = '" + tableName.toLowerCase() + "' ";
         return !super.getResultListForSingleColumn(query, "PostgresqlQuery isTableExists").isEmpty();
@@ -101,14 +101,8 @@ public class PostgresqlQuery extends NativeQuery {
                     .append(")");
         }
 
-        boolean execution = super.executeQuery(tableBuilder.toString().toLowerCase(),
+        return super.executeQuery(tableBuilder.toString().toLowerCase(),
                 "generateTable " + record.getSchemaName() + "." + record.getTableName());
-
-        if (execution && record.getPartition() != null && record.getPartition().getIsRangePartitioned()) {
-            execution = generatePartition(record.getPartition());
-        }
-
-        return execution;
     }
 
     @Override

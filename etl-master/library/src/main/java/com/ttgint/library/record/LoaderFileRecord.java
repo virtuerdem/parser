@@ -51,7 +51,9 @@ public class LoaderFileRecord {
                 parseMapRecord.getParseColumns().stream()
                         .filter(e -> e.getColumnOrderId().equals(record.getFragmentDateIndex()))
                         .map(ParseColumnRecord::getColumnFormula)
-                        .findFirst().get());
+                        .filter(f -> f != null)
+                        .findFirst()
+                        .orElse(null));
         record.setSchemaName(parseMapRecord.getParseTable().getSchemaName());
         record.setTableName(parseMapRecord.getParseTable().getTableName());
         record.setColumnRecord(SqlLdrColumnPatternRecord.getRecords(parseMapRecord.getParseColumns()));
